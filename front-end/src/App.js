@@ -1,21 +1,18 @@
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import Header from './components/Header';
-import MainContent from './components/MainContent';
-import { Footer } from './components/Footer';
-import Player from './components/Player';
 import '../../front-end/src/utils/Global.css';
+import { Route, Routes } from 'react-router-dom';
+import { Home } from './pages/Home';
+import SignIn from './pages/SignIn';
+import { SignUp } from './pages/SignUp';
 function App() {
     return (
         <div>
-            <Header />
-            <main>
-                <MainContent/>
-            </main>
-            <div className=' sticky bottom-0 z-[99]'>
-                <Player/>
-            </div>
-            <Footer/>
+            <Routes>
+                <Route path='/' element={<Home />} />
+                <Route path='/signin' element={<SignIn />} />
+                <Route path='/signup' element={<SignUp />} />
+            </Routes>
         </div>
     );
 }
