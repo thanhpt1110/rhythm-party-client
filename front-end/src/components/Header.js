@@ -34,9 +34,9 @@ const Header = () => {
               </a>
             </li>
             <li>
-              <a href='#Room' className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 '>
+              <Link to='/rooms' className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 '>
                 Room
-              </a>
+              </Link>
             </li>
             <li>
               <a href='#Contact' className='block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 '>
