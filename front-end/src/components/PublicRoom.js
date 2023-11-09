@@ -4,7 +4,7 @@ import React from 'react'
 const PublicRoom = ({ roomName, urlImg, song, artist }) => {
   return (
   <div className='flex '>
-      <div className='bg-gray-500 w-full text-white flex items-center flex-col gap-4 cursor-pointer hover:bg-gray-400 rounded-lg py-2 px-4'>
+      <div className='bg-gray-500 w-full text-white flex items-center flex-col gap-4 cursor-pointer hover:bg-gray-600 rounded-lg py-2 px-4'>
       <h2 className='text-3xl pt-8 font-bold'>{roomName}</h2>
       <div className='w-40 h-40'>
         <img src={urlImg} alt="SongImage" />
