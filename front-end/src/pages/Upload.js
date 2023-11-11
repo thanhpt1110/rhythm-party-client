@@ -155,7 +155,7 @@ const Upload = () => {
               <div className='flex gap-4 text-sm'>
                 <button className='hover:bg-slate-300 px-6 rounded py-2'
                   onClick={handleCancelUpload}>Cancel</button>
-                <button className='bg-blue-400 px-6 rounded py-2 text-white'>Save</button>
+                <button className='bg-blue-400 px-6 rounded py-2 text-white hover:bg-blue-500'>Save</button>
               </div>
             </div>
           </form>

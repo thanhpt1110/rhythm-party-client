@@ -12,13 +12,13 @@ export const Home = () => {
             </header>
             <main>
                 <MainContent />
-                <div className=' sticky bottom-0 z-[99]'>
-                    <Player />
-                </div>
             </main>
             <footer>
                 <Footer />
             </footer>
+             <div >
+                    <Player />
+              </div>
         </div>
     );
 };

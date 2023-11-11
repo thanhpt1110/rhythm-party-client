@@ -14,8 +14,6 @@ const PublicRoom = ({ roomName, urlImg, song, artist }) => {
     </div>
   </div>
 
-
-
   );
 };
 
