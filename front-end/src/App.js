@@ -9,6 +9,7 @@ import Room from './pages/Room';
 import Upload from './pages/Upload';
 import { useEffect, useState } from 'react';
 import Profile from './pages/Profile';
+import Account from './pages/Account';
 function App() {
     const [user, setUser] = useState(null)
 
@@ -25,7 +26,7 @@ function App() {
                 },
             }
         ).then(respone => {
-            if(respone.status === 200)  
+            if(respone.status === 200)
                 return respone.json();
             return {user: null, isAuthentication: false }
         }).then(resObject=>{
@@ -43,6 +44,7 @@ function App() {
                 <Route path='/rooms' element={<Room user = {user}/>} />
                 <Route path='/upload' element={<Upload user = {user}/>} />
                 <Route path='/profile' element={<Profile user = {user} />} />
+                <Route path='/accountsetting' element={<Account user = {user} />} />
             </Routes>
         </div>
     );

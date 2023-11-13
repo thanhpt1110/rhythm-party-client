@@ -4,6 +4,7 @@ import logoRoom from '../../src/assets/images/logoRoom.png';
 import PublicRoom from '../components/PublicRoom';
 import {useState} from 'react';
 import UserAvatar from '../components/UserAvatar';
+import LOGO from '../../src/assets/images/LOGO.png'
 const Room = ({user}) => {
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => {
@@ -19,7 +20,7 @@ const Room = ({user}) => {
         <nav className='bg-[#101010] text-white fixed w-full z-20 top-0 left-0 shadow'>
           <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
             <div className='flex items-center'>
-              <img src='https://flowbite.com/docs/images/logo.svg' className='h-8 mr-3' alt='Flowbite Logo'/>
+              <img src={LOGO} className='h-8 mr-3' alt='WebsiteLogo'/>
               <span className='self-center text-2xl font-semibold whitespace-nowrap '>
                 <Link to='/'>
                   Rhythm Party
@@ -82,9 +83,9 @@ const Room = ({user}) => {
       showModal && (
         <div className='fixed inset-0 flex items-center justify-center z-50'>
           <div className='fixed inset-0 bg-gray-900 opacity-50'></div>
-          <div className='modal-container bg-white w-96 rounded-lg p-6 z-50'>
+          <div className='modal-container bg-white w-96 rounded-lg p-6 z-50 text-black'>
             <div className='flex justify-between items-center mb-4'>
-              <h2 className='text-2xl font-bold'>Create a Room</h2>
+              <h2 className='text-2xl font-bold '>Create a Room</h2>
               <button className='text-gray-600 hover:text-gray-800 text-2xl rounded-md px-2 hover:bg-slate-200'
                 onClick={handleCloseModal}>
                 &times;

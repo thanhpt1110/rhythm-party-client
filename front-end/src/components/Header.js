@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LOGO from '../assets/images/LOGO.png';
 const Header = () => {
   return (
     <nav className='bg-[#101010] text-white fixed w-full z-20 top-0 left-0 shadow '>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
         <a href='/' className='flex items-center'>
-          <img src='https://flowbite.com/docs/images/logo.svg' className='h-8 mr-3' alt='Flowbite Logo'/>
-          <span className='self-center text-2xl font-semibold whitespace-nowrap '>
+          <img src={LOGO} className='w-12 h-12 mr-3' alt='WebsiteLogo'/>
+          <span className='self-center text-2xl font-semibold whitespace-nowrap  '>
             Rhythm Party
           </span>
         </a>
