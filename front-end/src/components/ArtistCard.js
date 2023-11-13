@@ -44,7 +44,7 @@ const ArtistCard = () => {
             <div className='flex gap-1'>
                <h2 className='text-2xl py-4'>Top Artists:</h2>
             </div>
-            <span className='text-indigo-500 cursor-pointer text-xs font-semibold'>View All</span>
+            <span className='text-indigo-500 cursor-pointer text-xs font-semibold mr-8'>View All</span>
           </div>
           <Swiper
           slidesPerView="auto"

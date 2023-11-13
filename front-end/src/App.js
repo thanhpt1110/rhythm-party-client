@@ -8,6 +8,7 @@ import { SignUp } from './pages/SignUp';
 import Room from './pages/Room';
 import Upload from './pages/Upload';
 import { useEffect, useState } from 'react';
+import Profile from './pages/Profile';
 function App() {
     const [user, setUser] = useState(null)
 
@@ -26,13 +27,12 @@ function App() {
         ).then(respone => {
             if(respone.status === 200)  
                 return respone.json();
-            throw new Error('Authentication has been fail')
+            return {user: null, isAuthentication: false }
         }).then(resObject=>{
-            setUser(resObject.user)
+                setUser(resObject.user)
         })
         }
         getUser();
-        console.log('hello from app.js')
     },[])
     return (
         <div>
@@ -40,8 +40,9 @@ function App() {
                 <Route path='/' element={<Home user = {user}/>} />
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
-                <Route path='/rooms' element={<Room />} />
-                <Route path='/upload' element={<Upload />} />
+                <Route path='/rooms' element={<Room user = {user}/>} />
+                <Route path='/upload' element={<Upload user = {user}/>} />
+                <Route path='/profile' element={<Profile user = {user} />} />
             </Routes>
         </div>
     );

@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 import ListenTogether from '../../src/assets/images/ListenTogether.png';
 import PublicRoom from '../components/PublicRoom';
 import {useState} from 'react';
-const Room = () => {
+const Room = ({user}) => {
+  const isLogin = user !== null
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => {
     setShowModal(true); // Hiển thị modal khi người dùng nhấp vào nút mở modal
@@ -11,6 +12,12 @@ const Room = () => {
   const handleCloseModal = () => {
     setShowModal(false); // Ẩn modal khi người dùng nhấp vào nút đóng modal
   };
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div>
       <header>
@@ -32,12 +39,30 @@ const Room = () => {
                   Create a Room
                 </span>
               </button>
-              <div className='ml-10 flex items-center cursor-pointer'>
-                <img className='h-10 w-10 rounded-full' src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar'/>
-                <div>
-                  <i className='ri-arrow-drop-down-line text-2xl'></i>
-                </div>
-              </div>
+               <div className="relative inline-block">
+      <button className="ml-10 flex items-center cursor-pointer" onClick={toggleMenu}>
+        <img className="h-10 w-10 rounded-full" src={isLogin ? user.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
+        <div>
+          <i className="ri-arrow-drop-down-line text-2xl"></i>
+        </div>
+      </button>
+      {isOpen && (
+        <ul className="absolute mt-2 bg-white rounded-lg shadow-md w-40">
+          <li className="py-2 px-4 hover:bg-gray-100">
+            <a href="/profile">Profile</a>
+          </li>
+           <li className="py-2 px-4 hover:bg-gray-100">
+            <a href="/accountsetting">Account Setting</a>
+          </li>
+          <li className="py-2 px-4 hover:bg-gray-100">
+            <a href="#a">Report issues</a>
+          </li>
+          <li className="py-2 px-4 hover:bg-gray-100">
+            <a href="#a">Sign out</a>
+          </li>
+        </ul>
+      )}
+    </div>
             </div>
             <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
               <div className='flex flex-col p-4 md:p-0 mt-4 font-bold border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white md:text-xl '>
@@ -93,7 +118,8 @@ const Room = () => {
             <p className='font-semibold'>Room name:</p>
             <input className="border border-gray-300 shadow-sm rounded-lg py-2 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500 mt-4 w-full" type="text" placeholder="Your Room"/>
             <div className='flex justify-between mt-16'>
-              <button onClick={handleCloseModal} className=' hover:bg-slate-200 border border-gray-300 shadow-sm rounded-lg py-2 px-6'>Cancel</button>
+              <button onClick={handleCloseModal}
+                className=' hover:bg-slate-200 border border-gray-300 shadow-sm rounded-lg py-2 px-6'>Cancel</button>
               <button className='border border-gray-300 shadow-sm rounded-lg py-2 px-6 bg-blue-700 hover:bg-blue-800 text-white'>Create</button>
             </div>
           </div>

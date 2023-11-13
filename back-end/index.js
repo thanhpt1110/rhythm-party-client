@@ -7,7 +7,7 @@ const port = process.env.PORT
 const passport = require('passport')
 const session = require('express-session')
 const cors = require('cors')
-require('./auth.js')
+require('./authentication/auth.js')
 
 app.use(cors({
     origin: 'http://localhost:3000',
