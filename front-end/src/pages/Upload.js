@@ -2,9 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {Footer} from '../components/Footer';
 import {useRef, useState} from 'react';
+import UserAvatar from '../components/UserAvatar';
 
 
-const Upload = () => {
+const Upload = ({user}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [show, setShow] = useState(false);
   const fileInputRef = useRef(null);
@@ -41,12 +42,7 @@ const Upload = () => {
               </span>
             </div>
             <div className='flex md:order-2'>
-              <div className='ml-10 flex items-center cursor-pointer'>
-                <img className='h-10 w-10 rounded-full' src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar'/>
-                <div>
-                  <i className='ri-arrow-drop-down-line text-2xl'></i>
-                </div>
-              </div>
+              <UserAvatar user={user}/>
             </div>
             <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
               <div className='flex flex-col p-4 md:p-0 mt-4 font-bold rounded-lg text-white  md:flex-row md:space-x-8 md:mt-0 md:border-0 md:text-xl '>

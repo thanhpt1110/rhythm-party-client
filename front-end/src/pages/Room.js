@@ -3,19 +3,14 @@ import {Link} from 'react-router-dom';
 import logoRoom from '../../src/assets/images/logoRoom.png';
 import PublicRoom from '../components/PublicRoom';
 import {useState} from 'react';
+import UserAvatar from '../components/UserAvatar';
 const Room = ({user}) => {
-  const isLogin = user !== null
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => {
     setShowModal(true); // Hiển thị modal khi người dùng nhấp vào nút mở modal
   };
   const handleCloseModal = () => {
     setShowModal(false); // Ẩn modal khi người dùng nhấp vào nút đóng modal
-  };
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
   };
 
   return (
@@ -39,30 +34,9 @@ const Room = ({user}) => {
                   Create a Room
                 </span>
               </button>
+              <UserAvatar user={user}/>
                <div className="relative inline-block">
-      <button className="ml-10 flex items-center cursor-pointer" onClick={toggleMenu}>
-        <img className="h-10 w-10 rounded-full" src={isLogin ? user.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
-        <div>
-          <i className="ri-arrow-drop-down-line text-2xl"></i>
-        </div>
-      </button>
-      {isOpen && (
-        <ul className="absolute mt-2 bg-black rounded-lg shadow-md w-40">
-          <li className="py-2 px-4 hover:bg-gray-800">
-            <a href="/profile">Profile</a>
-          </li>
-           <li className="py-2 px-4 hover:bg-gray-800">
-            <a href="/accountsetting">Account Setting</a>
-          </li>
-          <li className="py-2 px-4 hover:bg-gray-800">
-            <a href="#a">Report issues</a>
-          </li>
-          <li className="py-2 px-4 hover:bg-gray-800">
-            <a href="#a">Sign out</a>
-          </li>
-        </ul>
-      )}
-    </div>
+          </div>
             </div>
             <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
               <div className='flex flex-col p-4 md:p-0 mt-4 font-bold border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0  md:text-xl text-white '>
