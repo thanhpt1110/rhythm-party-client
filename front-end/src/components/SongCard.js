@@ -52,7 +52,7 @@ const SongCard = () => {
     const visibleSongs = songs.slice(startIndex, endIndex);
 
     return visibleSongs.map((song, index) => (
-      <div key={index} className="flex flex-col cursor-pointer bg-slate-300 rounded-lg mx-4 pb-3">
+      <div key={index} className="flex flex-col cursor-pointer bg-[#181818] hover:bg-gray-800 rounded-lg mx-4 pb-3">
         <div className=" mx-2 my-2">
           <img
             src={song.imageUrl}

@@ -9,7 +9,7 @@ const RightSideBar = () => {
                <h2 className='font-bold'>Favorite Playlist</h2>
             <i className="ri-heart-3-fill"></i>
             </div>
-            <span className='text-indigo-500 cursor-pointer text-xs'>See more</span>
+            <span className='text-blue-700 cursor-pointer text-xs hover:underline'>See more</span>
           </div>
           <div className='mt-6'>
             <FavoriteSongs/>

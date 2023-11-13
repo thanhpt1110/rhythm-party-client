@@ -10,10 +10,10 @@ export const Home = () => {
             <header>
                 <Header />
             </header>
-            <main>
+            <main className='bg-black opacity-90'>
                 <MainContent />
             </main>
-            <footer>
+            <footer className='bg-black opacity-90'>
                 <Footer />
             </footer>
              <div >

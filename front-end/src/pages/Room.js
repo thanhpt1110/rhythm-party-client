@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import ListenTogether from '../../src/assets/images/ListenTogether.png';
+import logoRoom from '../../src/assets/images/logoRoom.png';
 import PublicRoom from '../components/PublicRoom';
 import {useState} from 'react';
 const Room = () => {
@@ -20,7 +20,7 @@ const Room = () => {
   return (
     <div>
       <header>
-        <nav className='bg-white fixed w-full z-20 top-0 left-0 border-b border-gray-200 shadow'>
+        <nav className='bg-[#101010] text-white fixed w-full z-20 top-0 left-0 shadow'>
           <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
             <div className='flex items-center'>
               <img src='https://flowbite.com/docs/images/logo.svg' className='h-8 mr-3' alt='Flowbite Logo'/>
@@ -46,17 +46,17 @@ const Room = () => {
         </div>
       </button>
       {isOpen && (
-        <ul className="absolute mt-2 bg-white rounded-lg shadow-md w-40">
-          <li className="py-2 px-4 hover:bg-gray-100">
+        <ul className="absolute mt-2 bg-black rounded-lg shadow-md w-40">
+          <li className="py-2 px-4 hover:bg-gray-800">
             <a href="/profile">Profile</a>
           </li>
-           <li className="py-2 px-4 hover:bg-gray-100">
+           <li className="py-2 px-4 hover:bg-gray-800">
             <a href="/accountsetting">Account Setting</a>
           </li>
-          <li className="py-2 px-4 hover:bg-gray-100">
+          <li className="py-2 px-4 hover:bg-gray-800">
             <a href="#a">Report issues</a>
           </li>
-          <li className="py-2 px-4 hover:bg-gray-100">
+          <li className="py-2 px-4 hover:bg-gray-800">
             <a href="#a">Sign out</a>
           </li>
         </ul>
@@ -64,20 +64,21 @@ const Room = () => {
     </div>
             </div>
             <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
-              <div className='flex flex-col p-4 md:p-0 mt-4 font-bold border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white md:text-xl '>
+              <div className='flex flex-col p-4 md:p-0 mt-4 font-bold border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0  md:text-xl text-white '>
                 Join a room to start listening to music!
               </div>
             </div>
           </div>
         </nav>
       </header>
-      <main className=' py-20 max-w-screen-xl flex flex-col flex-wrap mx-auto p-4 items-center justify-center gap-4'>
-        <div className='pt-8 '>
-          <img src={ListenTogether}
+      <div className='bg-black opacity-90 text-white'>
+        <main className=' max-w-screen-xl flex flex-col flex-wrap mx-auto p-4 items-center justify-center gap-4'>
+        <div className=''>
+          <img src={logoRoom}
             alt='listenImg'
-            className='h-48 w-52'/>
+            className=' h-96 w-96'/>
         </div>
-        <div className='text-3xl font-bold pt-2 text-center'>
+        <div className='text-3xl font-bold text-center pb-4'>
           Welcome back, UserName !
         </div>
         <p>It's great to see you again.</p>
@@ -85,7 +86,7 @@ const Room = () => {
           Have a room code? Join a room with it:
         </p>
         <div className='flex'>
-          <input type='text' placeholder='XXXXXX' className='border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500'/>
+          <input type='text' placeholder='XXXXXX' className=' rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-700 bg-[#181818] '/>
           <button className='bg-blue-700 text-white hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-r-md px-4 py-2'>
             Join
           </button>
@@ -125,6 +126,8 @@ const Room = () => {
         </div>
       )
     } </div>
+      </div>
+
   );
 };
 
