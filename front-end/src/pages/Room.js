@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 import logoRoom from '../../src/assets/images/logoRoom.png';
 import PublicRoom from '../components/PublicRoom';
 import {useState} from 'react';
-const Room = () => {
+const Room = ({user}) => {
+  const isLogin = user !== null
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => {
     setShowModal(true); // Hiển thị modal khi người dùng nhấp vào nút mở modal
@@ -40,7 +41,7 @@ const Room = () => {
               </button>
                <div className="relative inline-block">
       <button className="ml-10 flex items-center cursor-pointer" onClick={toggleMenu}>
-        <img className="h-10 w-10 rounded-full" src="https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg" alt="avatar" />
+        <img className="h-10 w-10 rounded-full" src={isLogin ? user.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
         <div>
           <i className="ri-arrow-drop-down-line text-2xl"></i>
         </div>

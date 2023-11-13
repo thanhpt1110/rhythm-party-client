@@ -6,14 +6,19 @@ const url = process.env.CONNECTION_STRING
 const port = process.env.PORT
 const passport = require('passport')
 const session = require('express-session')
-require('./auth.js')
+const cors = require('cors')
+require('./authentication/auth.js')
 
-
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true
+}))
 app.use(session({
     secret: '2',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false, maxAge: 60*60*1000 }
   }))
 app.use(passport.initialize())
 app.use(passport.session())

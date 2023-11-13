@@ -13,6 +13,10 @@ const SignIn = () => {
   // setEmail('');
   // setPassword('');
   // };
+  // Google login fucntion
+  const googleLogin = ()=>{
+    window.open('http://localhost:8080/auth/google','self')
+  };
   return (
     <section className=' bg-gray-200 min-h-screen flex items-center justify-center '>
       <div className='bg-gray-100 p-5 flex rounded-2xl shadow-lg md:w-1/3'>
@@ -50,7 +54,7 @@ const SignIn = () => {
             <hr className='border-gray-500'/>
           </div>
 
-          <button className='bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 '>
+          <button onClick={googleLogin} className='bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 '>
             <img src='https://storage.googleapis.com/support-kms-prod/ZAl1gIwyUsvfwxoW9ns47iJFioHXODBbIkrK' alt='googleimg' className='h-6 w-6'/>
             <span className='ml-4'>Login with Google</span>
           </button>

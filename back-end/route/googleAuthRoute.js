@@ -1,36 +1,21 @@
 const express = require('express')
-const router = express.Router();
-require('../auth.js')
 const passport = require('passport')
-const isLoggedIn = (req,res,next)=>{
-    req.user ? next(): res.sendStatus(401);
-}
-router.route('/').get(
+const router = express.Router();
+require('dotenv').config();
+require('../authentication/auth.js')
+const CLIENT_URL = process.env.CLIENT_URL;
+const {isLoggedIn,isAuthenticatedCallBack, isSuccessLogin, isFailureLogin, Logout} = require('../controller/googleAuthController.js')
+router.route('').get(
   passport.authenticate('google', { scope:
       [ 'email', 'profile' ] }
 ));
 
 router.route('/callback').get(
-    passport.authenticate( 'google', {
-        successRedirect: '/auth/google/protected',
-        failureRedirect: '/auth/google/failure'
+  passport.authenticate( 'google', {
+    successRedirect: CLIENT_URL,
+    failureRedirect: '/auth/google/failure'
 }));
-router.route('/protected').get(isLoggedIn,(req,res)=>{
-    if(req.isAuthenticated()){
-        const googleAccount = req.user;
-        console.log(googleAccount)
-        res.send(googleAccount.displayName  )
-    }
-})
-router.route('/failure').get((req,res)=>{
-    res.json({loginStatus: "failed"})
-})
-router.route('/logout').get( (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error(err);
-      }
-      res.redirect('/'); // Điều hướng đến trang chính hoặc trang đăng nhập
-    });
-  });
+router.route('/success').get(isLoggedIn,isSuccessLogin)
+router.route('/failure').get(isFailureLogin)
+router.route('/logout').get(Logout);
 module.exports = router;
