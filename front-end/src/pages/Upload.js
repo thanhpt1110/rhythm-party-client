@@ -11,7 +11,8 @@ const Upload = () => {
         setSelectedFile(event.target.files[0]);
         console.log("Hello");
     };
-    const handleFileSelection = () => {
+    const handleFileSelection = (e) => {
+        e.preventDefault();
       fileInputRef.current.click();
     };
     const onFileUpload = () => {
@@ -102,14 +103,12 @@ const Upload = () => {
                             type='file'
                             onChange={onFileChange}
                             accept='*/*'
-                            // style={{ display: 'none' }}
+                            style={{ display: 'none' }}
                             ref={fileInputRef}
                         />
                         <button
                             className='bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-6 rounded hover:scale-105 duration-300 mt-2'
                             onClick={handleFileSelection}
-                            onChange={onFileChange}
-                            ref={fileInputRef}
                         >
                             Choose File
                         </button>
