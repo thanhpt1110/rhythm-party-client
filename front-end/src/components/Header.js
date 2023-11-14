@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import LOGO from '../assets/images/LOGO.png';
+
 const Header = () => {
   return (
     <nav className='bg-[#101010] text-white fixed w-full z-20 top-0 left-0 shadow '>
@@ -23,20 +24,20 @@ const Header = () => {
           </button>
         </div>
         <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
-          <ul className='flex flex-col items-center p-4 md:p-0 ml-24
+          <ul className='ul-underline flex flex-col items-center p-4 md:p-0 ml-24
            font-medium border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 gap-8 '>
             <li>
-              <a href='/' className='block py-2 pl-3 pr-4 text-white text-[17px] rounded md:hover:text-blue-700  md:p-0 ' aria-current='page'>
+              <a href='/' className='block py-2 pl-3 pr-4 text-white text-[17px] rounded md:hover:text-blue-700  md:p-0  underline underline-offset-[6px] ' aria-current='page'>
                 Home
               </a>
             </li>
             <li>
-              <a href='#About' className='block py-2 pl-3 pr-4 text-white rounded  md:hover:bg-transparent md:hover:text-blue-700 md:p-0 '>
+              <a href='/about' className='block py-2 pl-3 pr-4 text-white rounded md:p-0 focus:underline '>
                 About
               </a>
             </li>
             <li>
-              <Link to='/rooms' className='block py-2 pl-3 pr-4 text-white  rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 '>
+              <Link to='/rooms' className='block py-2 pl-3 pr-4 text-white  rounded md:p-0  '>
                 Room
               </Link>
             </li>

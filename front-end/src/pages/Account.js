@@ -9,7 +9,7 @@ const Account = () => {
       <div className='py-16 bg-black opacity-90 text-white '>
           <div className='max-w-screen-xl mx-auto pt-16 pl-56 h-full'>
               <div>
-                <i class="ri-account-pin-box-line text-3xl mb-4"></i>
+                <i className="ri-account-pin-box-line text-3xl mb-4"></i>
               </div>
               <h2 className='font-bold text-4xl'>Account Setting</h2>
               <div className='mt-12 flex flex-col gap-4'>
