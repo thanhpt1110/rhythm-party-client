@@ -10,7 +10,7 @@ export const Home = ({user}) => {
     return (
         <div>
             <header>
-                <Header user = {user}/>
+                <Header user = {user} type='home'/>
             </header>
             <main className='bg-black opacity-90'>
                 <MainContent />

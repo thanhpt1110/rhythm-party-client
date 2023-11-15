@@ -5,7 +5,7 @@ import { Footer } from '../components/Footer'
 const About = () => {
   return (
     <div >
-      <Header/>
+      <Header type='about'/>
        <div className='py-16 bg-black opacity-90 text-white'>
          <div className='max-w-screen-xl mx-auto pt-16 md:px-56 h-full px-4'>
            <div>
