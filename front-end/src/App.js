@@ -10,6 +10,7 @@ import Upload from './pages/Upload';
 import { useEffect, useState } from 'react';
 import Profile from './pages/Profile';
 import Account from './pages/Account';
+import About from './pages/About';
 function App() {
     const [user, setUser] = useState(null)
 
@@ -45,6 +46,7 @@ function App() {
                 <Route path='/upload' element={<Upload user = {user}/>} />
                 <Route path='/profile' element={<Profile user = {user} />} />
                 <Route path='/accountsetting' element={<Account user = {user} />} />
+                <Route path='/about' element={<About user = {user} />} />
             </Routes>
         </div>
     );

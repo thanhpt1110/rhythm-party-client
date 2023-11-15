@@ -1,9 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import {Footer} from '../components/Footer';
 import {useRef, useState} from 'react';
-import UserAvatar from '../components/UserAvatar';
-import LOGO from '../../src/assets/images/LOGO.png'
+import Header from '../components/Header';
 
 const Upload = ({user}) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,26 +30,7 @@ const Upload = ({user}) => {
   // };
   return (
     <div>
-      <header>
-        <nav className='bg-[#101010] fixed w-full z-20 top-0 left-0  shadow'>
-          <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
-            <div className='flex items-center'>
-              <img src={LOGO} className='h-8 mr-3' alt='Flowbite Logo'/>
-              <span className='self-center text-2xl font-semibold whitespace-nowrap text-white '>
-                <Link to='/'>Rhythm Party</Link>
-              </span>
-            </div>
-            <div className='flex md:order-2'>
-              <UserAvatar user={user}/>
-            </div>
-            <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
-              <div className='flex flex-col p-4 md:p-0 mt-4 font-bold rounded-lg text-white  md:flex-row md:space-x-8 md:mt-0 md:border-0 md:text-xl '>
-                Share Your Music with the World
-              </div>
-            </div>
-          </div>
-        </nav>
-      </header>
+      <Header user={user} type='upload' />
       <div className='bg-black opacity-90 text-white'>
          <main className=' container py-24  mx-auto px-4 md:px-0 md:w-[60%] '>
         {
