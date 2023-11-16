@@ -17,7 +17,7 @@ const About = () => {
               Boasting an extensive library featuring a diverse range of tracks, Rhythm Party brings together over 50 million songs from a community of 10 million artists. With its commitment to empowering both artists and fans alike, Rhythm Party envisions a future where the joy of music is celebrated and shared collaboratively.</p>
               <p className='mt-16 text-[14px]'>Don't have a free account yet?</p>
 
-              <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700'>Create your Account</button>
+              <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300'>Create your Account</button>
               {/* Nếu User đã có SignIn, khi ấn vào nút này thì sẽ điều hướng đến pageProfile, còn nếu kh thì điều hướng đến page Sign Up */}
               <p className='font-bold text-2xl my-8'>Follow us</p>
               <div className='flex flex-col gap-6'>

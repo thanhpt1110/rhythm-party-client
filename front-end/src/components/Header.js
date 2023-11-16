@@ -46,7 +46,7 @@ const Header = ({type}) => {
             {Menus.map((menu,index)=>(
               <li key={index} className='block py-2 pl-3 pr-4'>
                 <a href={menu.href} className={menu.color} onClick={()=>setActive(index)}>
-                  <span className={` ${active === index ? 'border-b-2' : ''} `}>{menu.name}</span>
+                  <span className={` ${active === index ? 'pb-1 border-b-2' : ''} `}>{menu.name}</span>
                 </a>
               </li>
             ))}
