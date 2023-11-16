@@ -7,6 +7,25 @@ const UserAvatar = ({user}) => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+  const logout = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/auth/google/logout', {
+        method: 'GET',
+        credentials: 'include', // Đảm bảo gửi cookie với yêu cầu
+      });
+  
+      if (response.ok) {
+        // Xử lý khi logout thành công
+        console.log('Logout thành công');
+        window.location.reload();
+      } else {
+        // Xử lý khi có lỗi trong quá trình logout
+        console.error('Logout thất bại');
+      }
+    } catch (error) {
+      console.error('Lỗi kết nối đến máy chủ:', error);
+    }
+  };
   return (
     <div>
        <button className="ml-10 flex items-center cursor-pointer" onClick={toggleMenu}>
@@ -27,7 +46,7 @@ const UserAvatar = ({user}) => {
             <a href="#a">Report issues</a>
           </li>
           <li className="py-2 px-4 hover:bg-gray-800">
-            <a href="#a">Sign out</a>
+            <a href="#a" onClick={logout} >Sign out</a>
           </li>
         </ul>
       )}

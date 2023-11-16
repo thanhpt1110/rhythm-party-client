@@ -7,13 +7,14 @@ const port = process.env.PORT
 const passport = require('passport')
 const session = require('express-session')
 const cors = require('cors')
+const errorHandler = require('./middleware/errorHandler.js')
 require('./authentication/auth.js')
-
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: "GET,POST,PUT,DELETE",
     credentials: true
 }))
+app.use(errorHandler);
 app.use(session({
     secret: '2',
     resave: false,
@@ -23,6 +24,7 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use('/auth/google',require('./route/googleAuthRoute.js'))
+app.use('/user',require('./route/userRoute.js'))
 const connect = async ()=>{
     try{
         await mongoose.connect(url)
@@ -32,4 +34,5 @@ const connect = async ()=>{
         console.log(error)
     }   
 }
+connect();
 app.listen(port,()=>{console.log(`server run on port ${port}`)})

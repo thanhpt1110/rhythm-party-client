@@ -1,17 +1,18 @@
 require('dotenv').config();
 const User = require('../entity/User.js')
 const passport = require('passport')
+const CLIENT_URL = process.env.CLIENT_URL;
 const isLoggedIn = (req,res,next)=>{
     req.user ? next(): res.sendStatus(401);
 }
 const isAuthenticatedCallBack = ()=>{}
 const isSuccessLogin = (req,res)=>{
     if(req.isAuthenticated()){
-        const userAccount = new User(req.user.id, req.user.displayName, req.user.picture, req.user.email, User.TYPE_GOOGLE,true);
+      //console.log(req)
         res.status(200).json({
           success: true,
           message: "Sucesss",
-          user: userAccount
+          user: req.user
         })
     }
 }

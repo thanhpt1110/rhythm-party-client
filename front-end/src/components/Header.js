@@ -1,8 +1,9 @@
 import React,{useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import LOGO from '../assets/images/LOGO.png';
-
-const Header = ({type}) => {
+import UserAvartar from './UserAvatar'
+const Header = ({type,user}) => {
+  const isAuthenticated = user !==null
   const Menus = [
     {name : 'Home' , href:'/' , color: 'text-white' },
     {name : 'Room' , href:'/rooms' ,color: 'text-white' },
@@ -30,9 +31,14 @@ const Header = ({type}) => {
           </span>
         </a>
         <div className='flex md:order-2'>
-          <div className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 '>
-            <Link to="/signin">Sign In</Link>
-          </div>
+          {
+            isAuthenticated ? (<UserAvartar user= {user}/>): 
+            (
+            <div className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 '>
+              <Link to="/signin">Sign In</Link>
+            </div>
+            )
+          }
           <button data-collapse-toggle='navbar-sticky' type='button' className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 0 ' aria-controls='navbar-sticky' aria-expanded='false'>
             <span className='sr-only'>Open main menu</span>
             <svg className='w-5 h-5' aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 17 14'>
