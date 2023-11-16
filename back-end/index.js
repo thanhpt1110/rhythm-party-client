@@ -14,6 +14,7 @@ app.use(cors({
     methods: "GET,POST,PUT,DELETE",
     credentials: true
 }))
+app.use(express.json());
 app.use(errorHandler);
 app.use(session({
     secret: '2',
@@ -23,7 +24,7 @@ app.use(session({
   }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use('/auth/google',require('./route/googleAuthRoute.js'))
+app.use('/auth',require('./route/authRoute.js'))
 app.use('/user',require('./route/userRoute.js'))
 const connect = async ()=>{
     try{

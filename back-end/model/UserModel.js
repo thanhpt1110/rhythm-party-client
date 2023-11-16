@@ -46,6 +46,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, "Please add you type"]
     },
+    role: {
+        type: String,
+        required: [true, "Please add your role"]
+    },
+    isAvailable:{
+        type: Boolean,
+        default: true
+    }
     
 },  
 {

@@ -1,7 +1,7 @@
 class User {
     static TYPE_GOOGLE = 'Google'
     static TYPE_FACEBOOK = 'Facebook'
-    static TYP_LOCAL_ACCOUNT = 'LocalAccount'
+    static TYPE_LOCAL_ACCOUNT = 'LocalAccount'
     constructor(id, name, avatar, email, type, isAuthentication)
     {
         this.id = id;
