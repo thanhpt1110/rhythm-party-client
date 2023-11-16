@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 const UserAvatar = ({user}) => {
-  const isLogin = user !== null
+  const isLogin = user != null
    const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -13,7 +13,7 @@ const UserAvatar = ({user}) => {
         method: 'GET',
         credentials: 'include', // Đảm bảo gửi cookie với yêu cầu
       });
-  
+
       if (response.ok) {
         // Xử lý khi logout thành công
         console.log('Logout thành công');
@@ -43,7 +43,7 @@ const UserAvatar = ({user}) => {
             <a href="/accountsetting">Account Setting</a>
           </li>
           <li className="py-2 px-4 hover:bg-gray-800">
-            <a href="#a">Report issues</a>
+            <a href="/report">Report issues</a>
           </li>
           <li className="py-2 px-4 hover:bg-gray-800">
             <a href="#a" onClick={logout} >Sign out</a>

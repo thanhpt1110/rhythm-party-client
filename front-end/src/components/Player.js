@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const Player = () => {
+    const [isLiked, setIsLiked] = useState(false);
+     const handleIconClick = () => {
+            setIsLiked(!isLiked);
+        };
     return (
       <div className='z-[99] fixed w-full bottom-0'>
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
@@ -15,6 +19,11 @@ const Player = () => {
                     <h3 className=' font-bold text-base'>Song's Name</h3>
                     <p className=' font-semibold text-xs'>Song's Artist</p>
                 </div>
+                <i
+                    className={isLiked ? 'ri-heart-3-fill text-xl' : 'ri-heart-3-line text-xl'}
+                    onClick={handleIconClick}
+                    >
+                    </i>
             </div>
             {/* Center */}
             <div className='items-center flex md:flex-col justify-evenly '>

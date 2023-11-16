@@ -11,30 +11,31 @@ import { useEffect, useState } from 'react';
 import Profile from './pages/Profile';
 import Account from './pages/Account';
 import About from './pages/About';
+import ReportIssues from './pages/ReportIssues';
 function App() {
     const [user, setUser] = useState(null)
 
     useEffect(()=>{
-        const getUser = ()=>{
-            fetch('http://localhost:8080/auth/google/success',
-            {
-                method: 'GET',
-                credentials: 'include',
-                header: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Credentials': true,
-                },
-            }
-        ).then(respone => {
-            if(respone.status === 200)
-                return respone.json();
-            return {user: null, isAuthentication: false }
-        }).then(resObject=>{
-                setUser(resObject.user)
-        })
-        }
-        getUser();
+        // const getUser = ()=>{
+        //     fetch('http://localhost:8080/auth/google/success',
+        //     {
+        //         method: 'GET',
+        //         credentials: 'include',
+        //         header: {
+        //             Accept: 'application/json',
+        //             'Content-Type': 'application/json',
+        //             'Access-Control-Allow-Credentials': true,
+        //         },
+        //     }
+        // ).then(respone => {
+        //     if(respone.status === 200)
+        //         return respone.json();
+        //     return {user: null, isAuthentication: false }
+        // }).then(resObject=>{
+        //         setUser(resObject.user)
+        // })
+        // }
+        // getUser();
     },[])
     return (
         <div>
@@ -47,6 +48,7 @@ function App() {
                 <Route path='/profile' element={<Profile user = {user} />} />
                 <Route path='/accountsetting' element={<Account user = {user} />} />
                 <Route path='/about' element={<About user = {user} />} />
+                <Route path='/report' element={<ReportIssues user = {user} />} />
             </Routes>
         </div>
     );

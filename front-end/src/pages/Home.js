@@ -21,6 +21,7 @@ export const Home = ({user}) => {
              <div >
                     <Player />
               </div>
+              
         </div>
     );
 };

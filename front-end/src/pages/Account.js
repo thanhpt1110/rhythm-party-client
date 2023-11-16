@@ -14,19 +14,19 @@ const Account = () => {
               <h2 className='font-bold text-4xl'>Account Setting</h2>
               <div className='mt-12 flex flex-col gap-4'>
                 <p>UserName :</p>
-                <input type="text" value='UserName_Google' className='w-2/3 bg-black border border-slate-800 rounded h-12 px-2' />
+                <input type="text" value='UserName_Google' className='w-2/3 bg-black border border-gray-400 rounded h-12 px-2' />
                 <p>Email :</p>
-                <input type="text" value='Email of User' className='w-2/3 bg-black border border-slate-800 rounded h-12
+                <input type="text" value='Email of User' className='w-2/3 bg-black border border-gray-400  rounded h-12
                 px-2' />
                 <p>Gender :</p>
-                <select name="genderUser" id="genderUser" className='w-2/3 bg-black border border-slate-800 rounded h-12
+                <select name="genderUser" id="genderUser" className='w-2/3 bg-black border border-gray-400 rounded h-12
                 px-2'>
                   <option>Male</option>
                   <option>Female</option>
                   <option>Others</option>
                 </select>
                 <p>Password :</p>
-                <input type="password" value='123456' className='w-2/3 bg-black border border-slate-800 rounded h-12
+                <input type="password" value='123456' className='w-2/3 bg-black border border-gray-400  rounded h-12
                 px-2 ' />
                 <div className='flex flex-row gap-2 items-center'>
                   <input type="checkbox" id="myCheckbox" className='h-4'/>
@@ -34,7 +34,7 @@ const Account = () => {
                 </div>
                 <div className='flex flex-row justify-end gap-8 w-2/3 items-center'>
                   <a href='/' className='hover:scale-110 duration-300'>Cancel</a>
-                  <button className='px-8 py-2 rounded bg-blue-700 hover:scale-105 duration-300'>Save</button>
+                  <a href='/profile' className='px-8 py-2 rounded bg-blue-700 hover:scale-105 duration-300'>Save</a>
                 </div>
               </div>
           </div>

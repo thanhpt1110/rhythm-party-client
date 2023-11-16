@@ -39,10 +39,10 @@ const ArtistCard = () => {
     const topPlays = data?.slice(0, 5);
     return (
 
-      <div className='w-full flex flex-col mt-8 '>
+      <div className='w-full flex flex-col mt-10 '>
           <div className='flex flex-row justify-between items-center '>
             <div className='flex gap-1'>
-               <h2 className='text-2xl py-4'>Top Artists:</h2>
+               <p className='text-white font-bold text-2xl py-4'>Top Artists</p>
             </div>
             <span className='text-blue-700 cursor-pointer text-xs font-semibold mr-8 hover:underline'>View All</span>
           </div>
@@ -61,7 +61,7 @@ const ArtistCard = () => {
               style={{ width: '24%', height: 'auto' }}
               className=" rounded-full animate-slideright"
             >
-              <div className='flex flex-col items-center gap-2'>
+              <div className='flex flex-col items-center gap-2 cursor-pointer'>
                 <img src={artist.imageUrl} alt="Name" className="rounded-full object-cover h-40 w-40" />
                 <p className='text-xs font-bold'>Artist's Name</p>
               </div>

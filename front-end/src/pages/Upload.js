@@ -16,7 +16,6 @@ const Upload = ({user}) => {
   }
   const handleFileSelection = (event) => {
     event.preventDefault();
-    console.log('hello');
     fileInputRef.current.click();
 
   };

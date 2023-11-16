@@ -3,8 +3,21 @@ import Header from '../components/Header'
 import Player from '../components/Player'
 import Playlist from '../components/Playlist'
 import ArtistFav from '../components/ArtistFav'
+import {useRef, useState} from 'react';
+
 
 const Profile = () => {
+
+  const fileInputRef = useRef(null);
+  const [image, setImage] = useState(null);
+
+  const handleImageClick = (event) => {
+    event.preventDefault();
+    fileInputRef.current.click();
+  };
+  const handleImageChange = (event) => {
+    setImage(event.target.files[0]);
+  };
   return (
     <div className=''>
       <Header />
@@ -14,7 +27,29 @@ const Profile = () => {
             <div className=" h-72 w-full bg-cover bg-center bg-gradient-to-b from-transparent to-[#181818]">
             </div>
             <div className="absolute top-1/2 ml-32 transform -translate-y-1/2 items-center flex flex-row ">
-              <img className="h-44 w-44 rounded-full" src="https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg" alt="profile"/>
+              <div className="relative ">
+
+                {
+                image ? <img src={URL.createObjectURL(image)} alt='' className="h-44 w-44 rounded-full"
+                />
+                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='' className='"h-44 w-44 rounded-full'/>
+
+                }
+
+                <button className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-6 py-1 rounded text-white flex flex-row gap-2"
+                        onClick={handleImageClick}
+                >
+                  <i class="ri-camera-line"></i>
+                  Update
+                </button>
+                 <input type='file'
+                onChange={handleImageChange}
+                accept='*/*'
+                style={
+                  {display: 'none'}
+                }
+                ref={fileInputRef}/>
+              </div>
               <div className=' absolute  ml-56  w-40  py-2 text-white'>
                 <p>Profile</p>
                 <p className='font-bold text-3xl'>UserName</p>
@@ -50,11 +85,10 @@ const Profile = () => {
                 <ArtistFav urlImg='https://vcdn1-giaitri.vnecdn.net/2020/12/22/EdSheeran-1608608466-4639-1608608573.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=yXB5BHHa0ts49EPE0f-WrQ' ArtistName='Ed Sheeran' role='Artist'/>
                 <ArtistFav urlImg='https://tieusu.com/wp-content/uploads/2023/06/tieu-su-ca-si-Phuong-Ly-4.jpg' ArtistName='Phuong Ly' role='Artist'/>
                 <ArtistFav urlImg='https://media-cdn-v2.laodong.vn/storage/newsportal/2023/9/11/1240204/Lyly3.jpg' ArtistName='LyLy' role='Artist'/>
-
               </div>
           </div>
-        </div>
 
+        </div>
       </div>
 
       <Player/>
