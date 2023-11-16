@@ -1,7 +1,10 @@
 const passport = require('passport')
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const User = require('../model/UserModel')
+const asyncHandler = require('express-async-handler')
 const User1 = require('../entity/User')
+const LocalStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt')
 require('dotenv').config();
 passport.use(new GoogleStrategy({
     clientID:     process.env.GOOGLE_CLIENT_ID,
@@ -9,28 +12,44 @@ passport.use(new GoogleStrategy({
     callbackURL: `http://localhost:${process.env.PORT}/auth/google/callback`,
     passReqToCallback   : true
   },
-  async function(request, accessToken, refreshToken, profile, done) {
-    const existingUser = await User.findOne({ googleID: profile.id , accountType: User1.TYPE_GOOGLE});
-    if(existingUser===null)
+  asyncHandler (async function(request, accessToken, refreshToken, profile, done) {
+    try{
+        const existingUser = await User.findOne({ googleID: profile.id , accountType: User1.TYPE_GOOGLE});
+        if(existingUser===null)
+        {
+            const user = await User.create({
+                googleID: profile.id,
+                displayName: profile.displayName,
+                email: profile.email,
+                avatar: profile.picture,
+                accountType: User1.TYPE_GOOGLE,
+                gender: null,
+                role: "user"
+            })
+            console.log("first Create")
+            done(null,user)
+        }
+        else{
+            done(null,existingUser);
+        }
+    }
+    catch(Exception)
     {
-        const user = await User.create({
-            googleID: profile.id,
-            displayName: profile.displayName,
-            email: profile.email,
-            avatar: profile.picture,
-            accountType: User1.TYPE_GOOGLE,
-            gender: null
-        })
-        console.log("first Create")
-        done(null,user)
+        console.log(Exception)
+        done(null,profile)
     }
-    else{
-        done(null,existingUser);
-    }
-
-   
-  }
+  })
 ));
+passport.use(new LocalStrategy(
+    asyncHandler( async function(username, password, done) {
+        const existingUser = await User.findOne({username: username, accountType: User1.TYPE_LOCAL_ACCOUNT});
+        console.log(existingUser)
+        if(existingUser&& (await bcrypt.compare(password, existingUser.password)))
+            return done(null, existingUser)
+        else
+            return done(null,false)
+    }
+  )));
 passport.serializeUser((user,done)=>{
     done(null,user)
 })
