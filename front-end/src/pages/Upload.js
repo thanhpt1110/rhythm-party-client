@@ -1,5 +1,5 @@
 import React from 'react';
-import {Footer} from '../components/Footer';
+import Footer from '../components/Footer';
 import {useRef, useState} from 'react';
 import Header from '../components/Header';
 
