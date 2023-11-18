@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 const Player = () => {
     const [isLiked, setIsLiked] = useState(false);
-     const handleIconClick = () => {
+    const handleIconClick = () => {
             setIsLiked(!isLiked);
-        };
+    };
     return (
       <div className='z-[99] fixed w-full bottom-0'>
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
@@ -20,7 +20,7 @@ const Player = () => {
                     <p className=' font-semibold text-xs'>Song's Artist</p>
                 </div>
                 <i
-                    className={isLiked ? 'ri-heart-3-fill text-xl' : 'ri-heart-3-line text-xl'}
+                    className={isLiked ? 'ri-heart-3-fill text-xs md:text-xl  cursor-pointer' : 'ri-heart-3-line text-xs md:text-xl cursor-pointer'}
                     onClick={handleIconClick}
                     >
                     </i>
@@ -51,20 +51,20 @@ const Player = () => {
                     >
                     </button>
                 </div>
-                <div className='flex items-stretch justify-evenly gap-2 md:gap-14  '>
+                <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
                     <i className='ri-arrow-left-right-fill button'></i>
                     <i className='ri-rewind-fill button'></i>
-                    <i className='ri-play-circle-fill h-10 w-10 text-base md:text-2xl cursor-pointer hover:scale-125 transition transform duration-100 ease-out text-center'></i>
+                    <i className='ri-play-circle-fill h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center'></i>
                     <i className='ri-speed-fill button'></i>
                     <i className='ri-loop-left-fill button'></i>
                 </div>
 
             </div>
             {/* Right */}
-            <div className='flex items-center space-x-1 md:space-x-3 justify-end pl-2 md:pl-0 md:pr-3'>
+            <div className='flex flex-row items-center space-x-1 md:space-x-3 justify-end md:pl-0 md:pr-3 mt-3 md:mt-0'>
                 <i className='ri-volume-down-fill button '></i>
                 <input
-                    className='w-14 md:w-24 mt-1 h-1 rounded-full'
+                    className='w-14 md:w-24 mb-[6px] md:mt-3 h-1 rounded-full'
                     type='range'
                     // value=''
                     min={0}

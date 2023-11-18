@@ -32,9 +32,9 @@ const Header = ({type,user}) => {
         </a>
         <div className='flex md:order-2'>
           {
-            isAuthenticated ? (<UserAvartar user= {user}/>): 
+            isAuthenticated ? (<UserAvartar user= {user}/>):
             (
-            <div className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 '>
+            <div className='text-white bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300   rounded font-bold text-sm px-6 py-2 mr-3 md:mr-0 '>
               <Link to="/signin">Sign In</Link>
             </div>
             )
@@ -50,9 +50,9 @@ const Header = ({type,user}) => {
           <ul className='flex flex-col items-center p-4 md:p-0 ml-24
            font-medium border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 gap-8 '>
             {Menus.map((menu,index)=>(
-              <li key={index} className='block py-2 pl-3 pr-4'>
+              <li key={index} className='block py-2 pl-3 pr-4 '>
                 <a href={menu.href} className={menu.color} onClick={()=>setActive(index)}>
-                  <span className={` ${active === index ? 'pb-1 border-b-2' : ''} `}>{menu.name}</span>
+                  <span className={` ${active === index ? 'pb-2 border-b-2' : 'hover:border-b-2 hover:pb-2'} `}>{menu.name}</span>
                 </a>
               </li>
             ))}

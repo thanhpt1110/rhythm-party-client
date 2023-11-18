@@ -5,9 +5,75 @@ import Playlist from '../components/Playlist'
 import ArtistFav from '../components/ArtistFav'
 import {useRef, useState} from 'react';
 
+const playlistsData = [
+  {
+    urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
+    playlistName: 'Taylor Swift',
+    author: 'LuongLe'
+  },
+  {
+    urlImg: 'https://i1.sndcdn.com/artworks-W86AP4p4wNY1zuR5-tog6CQ-t500x500.jpg',
+    playlistName: 'Ngot',
+    author: 'QuocDung'
+  },
+  {
+    urlImg: 'https://avatar-ex-swe.nixcdn.com/playlist/2023/05/25/5/3/5/f/1684996435586_500.jpg',
+    playlistName: 'Yên',
+    author: 'Hunter'
+  },
+  {
+    urlImg: 'https://i1.sndcdn.com/artworks-uzmx8xPhbzlA3kjl-5oDvYA-t500x500.jpg',
+    playlistName: 'Từng Quen',
+    author: 'Wren Evans'
+  },
+  {
+    urlImg: 'https://i.scdn.co/image/ab67616d00001e02e50594eb6a3b518dcb78bf59',
+    playlistName: 'Cá Hồi Hoang',
+    author: 'PhuongAnh'
+  },
+  {
+    urlImg: 'https://upload.wikimedia.org/wikipedia/vi/5/5f/Blackpink-_The_Album.png',
+    playlistName: 'BlackPink',
+    author: 'BlinkVN'
+  },
+  // Thêm các playlist khác vào đây
+];
+const artistsData = [
+  {
+    urlImg: 'https://ss-images.saostar.vn/w800/pc/1680851009890/saostar-2ka5fti72hsf2wck.jpeg',
+    artistName: 'IU',
+    role: 'Artist'
+  },
+  {
+    urlImg: 'https://cdn.tuoitre.vn/thumb_w/640/471584752817336320/2023/2/13/tieu-su-ca-si-rose-blackpink-12-167628252304049682913.jpg',
+    artistName: 'Rose',
+    role: 'Artist'
+  },
+  {
+    urlImg: 'https://www.rappler.com/tachyon/2021/12/Screen-Shot-2021-12-17-at-2.23.27-PM.png',
+    artistName: 'Charlie Puth',
+    role: 'Artist'
+  },
+  {
+    urlImg: 'https://vcdn1-giaitri.vnecdn.net/2020/12/22/EdSheeran-1608608466-4639-1608608573.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=yXB5BHHa0ts49EPE0f-WrQ',
+    artistName: 'Ed Sheeran',
+    role: 'Artist'
+  },
+  {
+    urlImg: 'https://tieusu.com/wp-content/uploads/2023/06/tieu-su-ca-si-Phuong-Ly-4.jpg',
+    artistName: 'Phuong Ly',
+    role: 'Artist'
+  },
+  {
+    urlImg: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/9/11/1240204/Lyly3.jpg',
+    artistName: 'LyLy',
+    role: 'Artist'
+  },
+  // Thêm các nghệ sĩ khác vào đây
+];
+
 
 const Profile = () => {
-
   const fileInputRef = useRef(null);
   const [image, setImage] = useState(null);
 
@@ -62,13 +128,14 @@ const Profile = () => {
                  <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
               </div>
               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                <Playlist urlImg='https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg' playlistName="Taylor Swift" author='LuongLe' />
-                <Playlist urlImg='https://i1.sndcdn.com/artworks-W86AP4p4wNY1zuR5-tog6CQ-t500x500.jpg' playlistName='Ngot' author='QuocDung'/>
-                <Playlist urlImg='https://avatar-ex-swe.nixcdn.com/playlist/2023/05/25/5/3/5/f/1684996435586_500.jpg' playlistName='Yên' author='Hunter'/>
-                <Playlist urlImg='https://i1.sndcdn.com/artworks-uzmx8xPhbzlA3kjl-5oDvYA-t500x500.jpg' playlistName='Từng Quen' author='Wren Evans'/>
-                <Playlist urlImg='https://i.scdn.co/image/ab67616d00001e02e50594eb6a3b518dcb78bf59' playlistName='Cá Hồi Hoang'
-                author='PhuongAnh'/>
-                <Playlist urlImg='https://upload.wikimedia.org/wikipedia/vi/5/5f/Blackpink-_The_Album.png' playlistName='BlackPink' author='BlinkVN'/>
+                {playlistsData.slice(0, 6).map((playlist, index) => (
+                  <Playlist
+                    key={index}
+                    urlImg={playlist.urlImg}
+                    playlistName={playlist.playlistName}
+                    author={playlist.author}
+                  />
+                ))}
 
               </div>
               <div className='flex items-baseline mt-8 justify-between'>
@@ -79,18 +146,18 @@ const Profile = () => {
                  <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
               </div>
               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                <ArtistFav urlImg='https://ss-images.saostar.vn/w800/pc/1680851009890/saostar-2ka5fti72hsf2wck.jpeg' ArtistName='IU' role='Artist'/>
-                <ArtistFav urlImg='https://cdn.tuoitre.vn/thumb_w/640/471584752817336320/2023/2/13/tieu-su-ca-si-rose-blackpink-12-167628252304049682913.jpg' ArtistName='Rose' role='Artist'/>
-                <ArtistFav urlImg='https://www.rappler.com/tachyon/2021/12/Screen-Shot-2021-12-17-at-2.23.27-PM.png' ArtistName='Charlie Puth' role='Artist'/>
-                <ArtistFav urlImg='https://vcdn1-giaitri.vnecdn.net/2020/12/22/EdSheeran-1608608466-4639-1608608573.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=yXB5BHHa0ts49EPE0f-WrQ' ArtistName='Ed Sheeran' role='Artist'/>
-                <ArtistFav urlImg='https://tieusu.com/wp-content/uploads/2023/06/tieu-su-ca-si-Phuong-Ly-4.jpg' ArtistName='Phuong Ly' role='Artist'/>
-                <ArtistFav urlImg='https://media-cdn-v2.laodong.vn/storage/newsportal/2023/9/11/1240204/Lyly3.jpg' ArtistName='LyLy' role='Artist'/>
+                {artistsData.slice(0, 6).map((artist, index) => (
+                  <ArtistFav
+                    key={index}
+                    urlImg={artist.urlImg}
+                    artistName={artist.artistName}
+                    role={artist.role}
+                  />
+                ))}
               </div>
           </div>
-
         </div>
       </div>
-
       <Player/>
     </div>
   )

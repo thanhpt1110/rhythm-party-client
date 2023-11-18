@@ -29,7 +29,7 @@ const Room = ({user}) => {
             </div>
             <div className='flex md:order-2'>
               <button onClick={handleOpenModal}
-                className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center md:mr-0 cursor-pointer'>
+                className='text-white bg-gradient-to-r from-indigo-600 to-purple-700 font-medium rounded-lg text-sm px-4 py-2 text-center md:mr-0 cursor-pointer'>
                 <i className='ri-add-line mr-2'></i>
                 <span>
                   Create a Room
@@ -62,8 +62,8 @@ const Room = ({user}) => {
           Have a room code? Join a room with it:
         </p>
         <div className='flex'>
-          <input type='text' placeholder='XXXXXX' className=' rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-700 bg-[#181818] '/>
-          <button className='bg-blue-700 text-white hover:bg-blue-800 focus:ring-2 focus:outline-none focus:ring-blue-300 font-medium rounded-r-md px-4 py-2'>
+          <input type='text' placeholder='XXXXXX' className=' rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300 bg-[#181818] '/>
+          <button className='bg-gradient-to-r from-indigo-600 to-purple-700  text-white font-medium rounded-r-md px-4 py-2'>
             Join
           </button>
         </div>

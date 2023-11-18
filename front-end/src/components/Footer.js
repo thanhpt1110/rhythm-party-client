@@ -2,7 +2,7 @@ import React from 'react'
 
 export const Footer = () => {
   return (
-    <footer className="shadow pb-40 bg-black opacity-90">
+    <footer className="shadow pb-20 bg-black opacity-90">
     <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
       <span className="text-sm text-gray-500 sm:text-center ">© 2023 <a href="https://google.com/" className="hover:underline">RhythmParty</a> All Rights Reserved.
     </span>
