@@ -30,6 +30,15 @@ const Header = ({type,user}) => {
             Rhythm Party
           </span>
         </a>
+        <div className=' relative hidden md:block ml-8 focus:text-white '>
+          <button className=" absolute left top-1/2 -translate-y-1/2 px-4">
+              <i className="ri-search-line text-gray-400 hover:text-white "></i>
+          </button>
+           <input
+            type="search"
+            className=" pl-14 pr-6 py-2 rounded-md bg-[#222222] "
+            placeholder="Search"/>
+        </div>
         <div className='flex md:order-2'>
           {
             isAuthenticated ? (<UserAvartar user= {user}/>):
@@ -47,10 +56,10 @@ const Header = ({type,user}) => {
           </button>
         </div>
         <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
-          <ul className='flex flex-col items-center p-4 md:p-0 ml-24
+          <ul className='flex flex-col items-center p-4 md:p-0 ml-10
            font-medium border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 gap-8 '>
             {Menus.map((menu,index)=>(
-              <li key={index} className='block py-2 pl-3 pr-4 '>
+              <li key={index} className='block py-2 pr-4 '>
                 <a href={menu.href} className={menu.color} onClick={()=>setActive(index)}>
                   <span className={` ${active === index ? 'pb-2 border-b-2' : 'hover:border-b-2 hover:pb-2'} `}>{menu.name}</span>
                 </a>

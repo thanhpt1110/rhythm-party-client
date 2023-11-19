@@ -12,6 +12,8 @@ import Profile from './pages/Profile';
 import Account from './pages/Account';
 import About from './pages/About';
 import ReportIssues from './pages/ReportIssues';
+import { AllPlaylist } from './pages/AllPlaylist';
+import AllTopSong from './pages/AllTopSong';
 function App() {
     const [user, setUser] = useState(null)
 
@@ -49,6 +51,8 @@ function App() {
                 <Route path='/accountsetting' element={<Account user = {user} />} />
                 <Route path='/about' element={<About user = {user} />} />
                 <Route path='/report' element={<ReportIssues user = {user} />} />
+                <Route path='/AllPlaylists' element={<AllPlaylist user = {user} />} />
+                <Route path='/AllTopSongs' element={<AllTopSong user = {user} />} />
             </Routes>
         </div>
     );

@@ -3,6 +3,7 @@ import SongCard from './SongCard'
 import ArtistCard from './ArtistCard'
 import Playlist from './Playlist'
 import FavSongs from './FavSongs'
+import { Link } from 'react-router-dom'
 
  const TopsongsData = [
     {
@@ -83,7 +84,7 @@ const MainContent = () => {
           {showFavSongs && <FavSongs />}
                   <div className='flex items-baseline justify-between pt-12'>
                     <p className='text-white font-bold text-2xl mb-4 '>Top Songs</p>
-                    <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
+                    <Link to='/AllTopSongs' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
                   </div>
                   <h6 className='text-gray-400 text-[14px] pb-4'>The most played tracks on RhythmParty this week</h6>
                    <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
