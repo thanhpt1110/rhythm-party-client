@@ -4,7 +4,7 @@ import Player from '../components/Player'
 import Playlist from '../components/Playlist'
 import ArtistFav from '../components/ArtistFav'
 import {useRef, useState} from 'react';
-
+import { Link } from 'react-router-dom'
 const playlistsData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -125,7 +125,7 @@ const Profile = () => {
           <div className='max-w-screen-xl mx-auto p-4 h-full'>
               <div className='flex items-baseline mt-4 justify-between'>
                  <p className='text-white font-bold text-2xl '>Recent Playlists</p>
-                 <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
+                 <Link to='/AllPlaylists' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
               </div>
               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
                 {playlistsData.slice(0, 6).map((playlist, index) => (
