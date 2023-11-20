@@ -6,8 +6,6 @@ import Footer from '../components/Footer';
 import Error from '../components/Error'
 
 export const Home = ({ user }) => {
-    const isAuthenticated = user !== null
-    console.log('hello')
     return (
         <div>
             <header>
