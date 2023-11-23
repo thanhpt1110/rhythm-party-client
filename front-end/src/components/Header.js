@@ -2,8 +2,14 @@ import React,{useState , useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import LOGO from '../assets/images/LOGO.png';
 import UserAvartar from './UserAvatar'
-const Header = ({type,user}) => {
-  const isAuthenticated = user !==null
+import { useAuth } from '../utils/AuthContext';
+const Header = ({type}) => {
+  const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
+  console.log(authUser  )
+  const [isLogin, setIsLogin] = useState()
+  useEffect(()=>{
+    setIsLogin(isLoggedIn)
+  },[isLoggedIn])
   const [openMenus, setOpenMenus] = useState(false);
   const Menus = [
     {name : 'Home' , href:'/' , color: 'text-white' },
@@ -42,7 +48,7 @@ const Header = ({type,user}) => {
         </div>
         <div className='flex md:order-2'>
           {
-            isAuthenticated ? (<UserAvartar user= {user}/>):
+            isLogin ? (<UserAvartar />):
             (
             <div className='text-white bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300   rounded font-bold text-sm px-6 py-2 ml-10 md:ml-0 md:mr-0 '>
               <Link to="/signin">Sign In</Link>
@@ -57,10 +63,10 @@ const Header = ({type,user}) => {
         <ul className={`md:flex md:items-center pl-16 md:pl-0 transition-all duration-500 ease-in w-full md:w-96 md:gap-8 absolute md:static
         ${openMenus ? ' top-20 bg-gray-800 ' : 'top-[-490px]'}`}>
             {Menus.map((menu,index)=>(
-              <li key={index} className='md:ml-8 md:my-0 my-7'>
-                <a href={menu.href} className={menu.color} onClick={()=>setActive(index)}>
+              <li key={index} className='block py-2 pl-3 pr-4 '>
+                <Link to={menu.href} className={menu.color} onClick={()=>setActive(index)}>
                   <span className={` ${active === index ? 'pb-2 border-b-2' : 'hover:border-b-2 hover:pb-2'} `}>{menu.name}</span>
-                </a>
+                </Link>
               </li>
             ))}
       </ul>

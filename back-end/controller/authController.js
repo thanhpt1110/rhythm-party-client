@@ -28,7 +28,10 @@ const Logout =(req, res) => {
       if (err) {
         console.error(err);
       }
-      res.redirect(CLIENT_URL); // Điều hướng đến trang chính hoặc trang đăng nhập
+      res.status(200).json({
+        success: true,
+        message: "Sucesss"
+      })
     });
   }
   module.exports = {isLoggedIn, isAuthenticatedCallBack, isSuccessLogin, isFailureLogin, Logout};

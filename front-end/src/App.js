@@ -12,33 +12,47 @@ import Profile from './pages/Profile';
 import Account from './pages/Account';
 import About from './pages/About';
 import ReportIssues from './pages/ReportIssues';
+import { useAuth } from './utils/AuthContext';
 import { AllPlaylist } from './pages/AllPlaylist';
 import AllTopSong from './pages/AllTopSong';
 import RoomDetails from './pages/RoomDetails';
 function App() {
     const [user, setUser] = useState(null)
-
+   const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
     useEffect(()=>{
-        // const getUser = ()=>{
-        //     fetch('http://localhost:8080/auth/google/success',
-        //     {
-        //         method: 'GET',
-        //         credentials: 'include',
-        //         header: {
-        //             Accept: 'application/json',
-        //             'Content-Type': 'application/json',
-        //             'Access-Control-Allow-Credentials': true,
-        //         },
-        //     }
-        // ).then(respone => {
-        //     if(respone.status === 200)
-        //         return respone.json();
-        //     return {user: null, isAuthentication: false }
-        // }).then(resObject=>{
-        //         setUser(resObject.user)
-        // })
-        // }
-        // getUser();
+        const getUser = ()=>{
+            fetch('http://localhost:8080/auth/success',
+            {
+                method: 'GET',
+                credentials: 'include',
+                header: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+            }
+        ).then(respone => {
+            if(respone.status === 200)
+                return respone.json();
+            return {user: null, isAuthentication: false }
+        }).then(resObject=>{
+            if(resObject.user!==null)
+             {
+                setUser(resObject.user)
+                setAuthUser(resObject.user)
+                setIsLoggedIn(true)
+             }   
+             else
+             {
+                setUser(resObject.user)
+                setAuthUser(resObject.user)
+                setIsLoggedIn(false)
+                console.log(authUser)
+
+             }
+        })
+        }
+        getUser();
     },[])
     return (
         <div>
