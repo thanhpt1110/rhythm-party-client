@@ -2,7 +2,7 @@ import React from "react";
 const SongCard = ({SongImg , SongName, SongArtist}) => {
   return (
     <div>
-         <div className="bg-[#181818] w-full text-white flex flex-col gap-1 cursor-pointer hover:bg-gray-800 rounded-lg pb-4 pt-2 px-[10px] items-center 2xl:items-start">
+         <div className="bg-[#181818] w-full text-white flex flex-col items-center gap-1 cursor-pointer hover:bg-gray-800 rounded-lg pb-4 pt-2 px-[10px] 2xl:items-start text-center md:text-start">
           <div className="w-40 h-40">
             <img src={SongImg} alt="SongImage" className="rounded object-cover h-40 w-40" />
           </div>

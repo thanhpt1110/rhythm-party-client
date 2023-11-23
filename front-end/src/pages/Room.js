@@ -5,6 +5,7 @@ import PublicRoom from '../components/PublicRoom';
 import {useState} from 'react';
 import UserAvatar from '../components/UserAvatar';
 import LOGO from '../../src/assets/images/LOGO.png'
+
 const Room = ({user}) => {
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => {
@@ -74,9 +75,9 @@ const Room = ({user}) => {
         </p>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6'>
           <PublicRoom roomName="David's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
-          <PublicRoom roomName="David's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
-          <PublicRoom roomName="David's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
-          <PublicRoom roomName="David's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
+          <PublicRoom roomName="Hanna's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
+          <PublicRoom roomName="Lucy's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
+          <PublicRoom roomName="Vuong Pham's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
         </div>
       </div>
       {

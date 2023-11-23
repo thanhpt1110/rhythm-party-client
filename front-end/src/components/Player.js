@@ -2,26 +2,30 @@ import React, { useState } from 'react';
 
 const Player = () => {
     const [isLiked, setIsLiked] = useState(false);
-    const handleIconClick = () => {
+    const handleIconLikeClick = () => {
             setIsLiked(!isLiked);
+    };
+    const [isPlaying, setIsPlaying] = useState(false);
+    const handlePlayIconClick = () => {
+            setIsPlaying(!isPlaying);
     };
     return (
       <div className='z-[99] fixed w-full bottom-0'>
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
             {/* Left */}
-            <div className='flex items-center space-x-4'>
+            <div className='flex items-center gap-2 md:gap-0'>
                 <img
                     className='hidden md:inline h-10 w-10'
                     src='https://media.pitchfork.com/photos/650de105eacc5b460e151343/master/w_1280%2Cc_limit/Taylor-Swift-1989-Taylors-Version.jpg'
                     alt='playerImg'
                 />
-                <div>
-                    <h3 className=' font-bold text-base'>Song's Name</h3>
-                    <p className=' font-semibold text-xs'>Song's Artist</p>
+                <div className='md:w-36 md:ml-4 '>
+                    <h3 className=' font-bold text-base truncate'>Song's Name</h3>
+                    <p className=' font-semibold text-xs truncate'>Song's Artist</p>
                 </div>
                 <i
                     className={isLiked ? 'ri-heart-3-fill text-xs md:text-xl  cursor-pointer' : 'ri-heart-3-line text-xs md:text-xl cursor-pointer'}
-                    onClick={handleIconClick}
+                    onClick={handleIconLikeClick}
                     >
                     </i>
             </div>
@@ -54,7 +58,10 @@ const Player = () => {
                 <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
                     <i className='ri-arrow-left-right-fill button'></i>
                     <i className='ri-rewind-fill button'></i>
-                    <i className='ri-play-circle-fill h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center'></i>
+                     <i
+                        className={`ri-${isPlaying ? 'pause-circle-fill' : 'play-circle-fill'} h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center`}
+                        onClick={handlePlayIconClick}
+                    ></i>
                     <i className='ri-speed-fill button'></i>
                     <i className='ri-loop-left-fill button'></i>
                 </div>

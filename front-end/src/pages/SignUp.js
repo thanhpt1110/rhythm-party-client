@@ -1,8 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Header from '../components/Header'
 export const SignUp = () => {
   return (
-     <section className=' bg-black opacity-90 min-h-screen flex items-center justify-center '>
+    <div>
+      <Header/>
+      <section className=' bg-black opacity-90 min-h-screen flex items-center justify-center pt-24'>
       <div className='bg-[#181818] text-white p-5 flex rounded-2xl shadow-lg md:w-1/3 my-8'>
         <div className='md:w-full px-5'>
           <h2 className='text-3xl font-bold text-[#377dee] text-center'>Sign Up</h2>
@@ -11,24 +14,21 @@ export const SignUp = () => {
           </p>
           <form className='mt-8' action='#'>
             <div>
-              <label className='block text-gray-400'>Email:</label>
-              <input type='email' name='' id='email' placeholder='Enter your Email' className=' text-black w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none hover:border-blue-500' autoFocus autoComplete='' required/>
+              <label className='block text-gray-200'>Email:</label>
+              <input type='email' name='' id='email' placeholder='Enter your Email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' autoFocus autoComplete='' required/>
             </div>
              <div className='mt-4'>
-              <label className='block text-gray-400'>UserName:</label>
-              <input type='username' name='' id='username' placeholder='Your name' className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 text-black
-                                  focus:bg-white focus:outline-none hover:border-blue-500' required/>
+              <label className='block text-gray-200'>UserName:</label>
+              <input type='username' name='' id='username' placeholder='Your name' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
             <div className='mt-4'>
-              <label className='block text-gray-400'>Password:</label>
-              <input type='password' name='' id='pass' placeholder='Enter Password' minLength='6' className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 text-black
-                                  focus:bg-white focus:outline-none hover:border-blue-500' required/>
+              <label className='block text-gray-200'>Password:</label>
+              <input type='password' name='' id='pass' placeholder='Enter Password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <div className='mt-4'>
-              <label className='block text-gray-400'>Confirm Password:</label>
-              <input type='password' name='' id='pass' placeholder='Confirm your Password' minLength='6' className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 text-black
-                                  focus:bg-white focus:outline-none hover:border-blue-500' required/>
+              <label className='block text-gray-200'>Confirm Password:</label>
+              <input type='password' name='' id='pass' placeholder='Confirm your Password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <button type='submit' className='w-full block bg-blue-500 text-white font-semibold rounded-lg px-4 py-3 mt-6 hover:scale-105 duration-300'>
@@ -58,6 +58,8 @@ export const SignUp = () => {
         </div>
       </div>
     </section>
+    </div>
+
   )
 }
 

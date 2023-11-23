@@ -37,7 +37,7 @@ const Upload = ({user}) => {
           <form className='min-h-[400px] flex items-center justify-center flex-col gap-4 rounded-xl bg-[#181818] hover:bg-gray-800'
           >
             <i className='ri-upload-cloud-line text-5xl text-blue-400 '></i>
-            <h1 className='text-2xl font-bold '>
+            <h1 className='text-2xl font-bold text-center'>
               Choose or drag and drop files to upload.
             </h1>
             <div>

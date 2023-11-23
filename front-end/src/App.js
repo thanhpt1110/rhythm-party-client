@@ -14,6 +14,7 @@ import About from './pages/About';
 import ReportIssues from './pages/ReportIssues';
 import { AllPlaylist } from './pages/AllPlaylist';
 import AllTopSong from './pages/AllTopSong';
+import RoomDetails from './pages/RoomDetails';
 function App() {
     const [user, setUser] = useState(null)
 
@@ -53,6 +54,7 @@ function App() {
                 <Route path='/report' element={<ReportIssues user = {user} />} />
                 <Route path='/AllPlaylists' element={<AllPlaylist user = {user} />} />
                 <Route path='/AllTopSongs' element={<AllTopSong user = {user} />} />
+                <Route path='/room-detail/:roomName' element={<RoomDetails user = {user} />} />
             </Routes>
         </div>
     );

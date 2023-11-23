@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header';
 
 const SignIn = () => {
   // const [email, setEmail] = useState('');
@@ -18,7 +19,9 @@ const SignIn = () => {
     window.open('http://localhost:8080/auth/google','self')
   };
   return (
-    <section className=' bg-black opacity-90  min-h-screen flex items-center justify-center '>
+    <div>
+      <Header/>
+      <div className=' bg-black opacity-90  min-h-screen flex items-center justify-center py-24 '>
       <div className='bg-[#181818] text-white p-5 flex rounded-2xl shadow-lg md:w-1/3'>
         <div className='md:w-full px-5'>
           <h2 className='text-3xl font-bold text-[#377dee] text-center'>Login</h2>
@@ -27,18 +30,17 @@ const SignIn = () => {
           </p>
           <form className='mt-6' action='#'>
             <div>
-              <label className='block text-gray-400'>Email:</label>
-              <input type='email' name='' id='email' placeholder='Enter your Email' className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none hover:border-blue-500' autoFocus autoComplete='' required/>
+              <label className='block text-gray-200'>Email:</label>
+              <input type='email' name='' id='email' placeholder='Enter your Email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white ' autoFocus autoComplete='' required/>
             </div>
 
             <div className='mt-4'>
-              <label className='block text-gray-400'>Password:</label>
-              <input type='password' name='' id='pass' placeholder='Enter Password' minLength='6' className='w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
-                                  focus:bg-white focus:outline-none hover:border-blue-500' required/>
+              <label className='block text-gray-200'>Password:</label>
+              <input type='password' name='' id='pass' placeholder='Enter Password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <div className='text-right mt-2'>
-              <a href='#password-reset' className='text-sm font-semibold text-gray-400 hover:text-blue-700 focus:text-blue-700'>
+              <a href='#password-reset' className='text-sm font-semibold text-gray-400 hover:text-blue-700 hover:underline focus:text-blue-700'>
                 Forgot Password?
               </a>
             </div>
@@ -69,7 +71,8 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-    </section>
+    </div>
+    </div>
   );
 };
 

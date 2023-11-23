@@ -41,32 +41,32 @@ const playlistsData = [
 const artistsData = [
   {
     urlImg: 'https://ss-images.saostar.vn/w800/pc/1680851009890/saostar-2ka5fti72hsf2wck.jpeg',
-    artistName: 'IU',
+    ArtistName: 'IU',
     role: 'Artist'
   },
   {
     urlImg: 'https://cdn.tuoitre.vn/thumb_w/640/471584752817336320/2023/2/13/tieu-su-ca-si-rose-blackpink-12-167628252304049682913.jpg',
-    artistName: 'Rose',
+    ArtistName: 'Rose',
     role: 'Artist'
   },
   {
     urlImg: 'https://www.rappler.com/tachyon/2021/12/Screen-Shot-2021-12-17-at-2.23.27-PM.png',
-    artistName: 'Charlie Puth',
+    ArtistName: 'Charlie Puth',
     role: 'Artist'
   },
   {
     urlImg: 'https://vcdn1-giaitri.vnecdn.net/2020/12/22/EdSheeran-1608608466-4639-1608608573.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=yXB5BHHa0ts49EPE0f-WrQ',
-    artistName: 'Ed Sheeran',
+    ArtistName: 'Ed Sheeran',
     role: 'Artist'
   },
   {
     urlImg: 'https://tieusu.com/wp-content/uploads/2023/06/tieu-su-ca-si-Phuong-Ly-4.jpg',
-    artistName: 'Phuong Ly',
+    ArtistName: 'Phuong Ly',
     role: 'Artist'
   },
   {
     urlImg: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/9/11/1240204/Lyly3.jpg',
-    artistName: 'LyLy',
+    ArtistName: 'LyLy',
     role: 'Artist'
   },
   // Thêm các nghệ sĩ khác vào đây
@@ -150,7 +150,7 @@ const Profile = () => {
                   <ArtistFav
                     key={index}
                     urlImg={artist.urlImg}
-                    artistName={artist.artistName}
+                    ArtistName={artist.ArtistName}
                     role={artist.role}
                   />
                 ))}
