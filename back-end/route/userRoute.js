@@ -4,5 +4,4 @@ const router = express.Router()
 
 router.route("/").get(getUser).post(createNewAccount);
 router.route("/:id").get(getUserByID).put(updateUserById);
-
 module.exports = router;

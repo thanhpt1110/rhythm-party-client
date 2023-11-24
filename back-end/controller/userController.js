@@ -2,7 +2,7 @@ require('dotenv').config();
 const User = require('../model/UserModel')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcrypt')
-const User1 = require('../entity/User')
+const UserTable = require('../entity/UserTable')
 const getUser = asyncHandler (async(req,res)=>{
     if(req.isAuthenticated())
     {
@@ -112,7 +112,7 @@ const createNewAccount = asyncHandler(async(req,res) =>{
             password: hashedPassword,
             email: email,
             avatar: null,
-            accountType: User1.TYPE_LOCAL_ACCOUNT,
+            accountType: UserTable.TYPE_LOCAL_ACCOUNT,
             gender: null,
             role: "user"
         })

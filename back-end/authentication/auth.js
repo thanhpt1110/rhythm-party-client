@@ -2,7 +2,7 @@ const passport = require('passport')
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const User = require('../model/UserModel')
 const asyncHandler = require('express-async-handler')
-const User1 = require('../entity/User')
+const UserTable = require('../entity/UserTable')
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt')
 require('dotenv').config();
@@ -14,7 +14,7 @@ passport.use(new GoogleStrategy({
   },
   asyncHandler (async function(request, accessToken, refreshToken, profile, done) {
     try{
-        const existingUser = await User.findOne({ googleID: profile.id , accountType: User1.TYPE_GOOGLE});
+        const existingUser = await User.findOne({ googleID: profile.id , accountType: UserTable.TYPE_GOOGLE});
         if(existingUser===null)
         {
             const user = await User.create({
@@ -22,7 +22,7 @@ passport.use(new GoogleStrategy({
                 displayName: profile.displayName,
                 email: profile.email,
                 avatar: profile.picture,
-                accountType: User1.TYPE_GOOGLE,
+                accountType: UserTable.TYPE_GOOGLE,
                 gender: null,
                 role: "user"
             })
@@ -42,8 +42,8 @@ passport.use(new GoogleStrategy({
 ));
 passport.use(new LocalStrategy(
     asyncHandler( async function(username, password, done) {
-        const existingUser = await User.findOne({username: username, accountType: User1.TYPE_LOCAL_ACCOUNT});
-        console.log(existingUser)
+        const existingUser = await User.findOne({username: username, accountType: UserTable.TYPE_LOCAL_ACCOUNT});
+        console.log(existingUser)   
         if(existingUser&& (await bcrypt.compare(password, existingUser.password)))
             return done(null, existingUser)
         else

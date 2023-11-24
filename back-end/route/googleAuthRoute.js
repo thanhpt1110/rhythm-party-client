@@ -9,13 +9,9 @@ router.route('').get(
   passport.authenticate('google', { scope:
       [ 'email', 'profile' ] }
 ));
-
 router.route('/callback').get(
   passport.authenticate( 'google', {
     successRedirect: CLIENT_URL,
     failureRedirect: '/auth/google/failure'
 }));
-router.route('/success').get(isLoggedIn,isSuccessLogin)
-router.route('/failure').get(isFailureLogin)
-router.route('/logout').get(Logout);
 module.exports = router;

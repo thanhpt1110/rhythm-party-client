@@ -1,6 +1,4 @@
 require('dotenv').config();
-const User = require('../entity/User.js')
-const passport = require('passport')
 const CLIENT_URL = process.env.CLIENT_URL;
 const isLoggedIn = (req,res,next)=>{
     req.user ? next(): res.sendStatus(401);
