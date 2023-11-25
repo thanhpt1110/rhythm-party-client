@@ -24,7 +24,7 @@ passport.use(new GoogleStrategy({
                 avatar: profile.picture,
                 accountType: UserTable.TYPE_GOOGLE,
                 gender: null,
-                role: "user"
+                role: UserTable.ROLE_USER
             })
             console.log("first Create")
             done(null,user)

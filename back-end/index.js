@@ -25,7 +25,8 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 app.use('/auth',require('./route/authRoute.js'))
-app.use('/user',require('./route/userRoute.js'))
+app.use('/api/user',require('./route/userRoute.js'))
+app.use('/api/music',require('./route/musicRoute.js'))
 const connect = async ()=>{
     try{
         await mongoose.connect(url)

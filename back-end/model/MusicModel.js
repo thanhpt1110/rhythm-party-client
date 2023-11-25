@@ -9,7 +9,7 @@ const musicSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    Genre: {
+    genre: {
         type: [String],
         require: [true, "Please add your music Genre"]
     },

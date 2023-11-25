@@ -7,7 +7,7 @@ const getUser = asyncHandler (async(req,res)=>{
     if(req.isAuthenticated())
     {
         User.find()
-        res.status(200).json(req.user)
+        res.status(200).json({message:"success", data: req.user})
     }
     else
     {
@@ -15,9 +15,18 @@ const getUser = asyncHandler (async(req,res)=>{
     } 
 })
 const getUserByID = asyncHandler(async(req,res)=>{
-    const user = await User.findById(req.params.id);
-    console.log(user);
-    res.json(user)
+    try{
+        const user = await User.findById(req.params.id);
+        if(user !==null && user !==undefined)
+            res.status(200).json({message:"Success", data: user})
+        else
+            res.status(404).json({message: "User not existed", data: null})
+    }
+    catch(ex)
+    {
+        res.status(500).json({message:"Server error",error: ex})
+    }
+
 })
 const updateUserById = asyncHandler(async(req,res)=>{
     const id = req.params.id;
@@ -28,58 +37,22 @@ const updateUserById = asyncHandler(async(req,res)=>{
         if(id === req.user._id || req.user.role === "admin")
         {
             try {
-                const { username, password, displayName, googleID, facebookID, email, gender, birthday, avatar, accountType, role, isAvailable } = req.body;
+                const {displayName, gender, birthday, avatar} = req.body;
                 const user = await User.findById(id);
                 if (!user) {
                     return res.status(404).json({ message: 'User not found' });
-                }
-        
-                if (username != null) {
-                    user.username = username;
-                }
-        
-                if (password != null) {
-                    user.password = password;
-                }
-        
+                }  
                 if (displayName != null) {
                     user.displayName = displayName;
                 }
-        
-                if (googleID != null) {
-                    user.googleID = googleID;
-                }
-        
-                if (facebookID != null) {
-                    user.facebookID = facebookID;
-                }
-        
-                if (email != null ) {
-                    user.email = email;
-                }
-        
                 if (gender != null) {
                     user.gender = gender;
                 }
-        
                 if (birthday != null) {
                     user.birthday = birthday;
                 }
-        
                 if (avatar != null) {
                     user.avatar = avatar;
-                }
-        
-                if (accountType !== undefined) {
-                    user.accountType = accountType;
-                }
-        
-                if (role !== undefined) {
-                    user.role = role;
-                }
-        
-                if (isAvailable !== undefined) {
-                    user.isAvailable = isAvailable;
                 }
                 await user.save();
                 res.status(200).json({message: "success", user: user});
@@ -97,8 +70,8 @@ const updateUserById = asyncHandler(async(req,res)=>{
 })
 const createNewAccount = asyncHandler(async(req,res) =>{
     console.log(req.body)
-    const {email, password, displayName} = req.body;
-    const existingUser = await User.findOne({username: email})
+    const {username, email, password, displayName} = req.body;
+    const existingUser = await User.findOne({username: username})
     if(existingUser!==null)
     {
         res.status(200).json({isSuccess: false, message: "Account already existed"})
@@ -108,13 +81,13 @@ const createNewAccount = asyncHandler(async(req,res) =>{
         const hashedPassword = await bcrypt.hash(password,10)
         const user = await User.create({
             displayName: displayName,
-            username: email,
+            username: username,
             password: hashedPassword,
             email: email,
             avatar: null,
             accountType: UserTable.TYPE_LOCAL_ACCOUNT,
             gender: null,
-            role: "user"
+            role: UserTable.ROLE_USER
         })
         console.log("first Create")
         res.json({isSuccess: true, message: "Success", user: user})
