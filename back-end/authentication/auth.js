@@ -40,9 +40,19 @@ passport.use(new GoogleStrategy({
     }
   })
 ));
-passport.use(new LocalStrategy(
+passport.use(UserTable.ROLE_USER,new LocalStrategy(
     asyncHandler( async function(username, password, done) {
         const existingUser = await User.findOne({username: username, accountType: UserTable.TYPE_LOCAL_ACCOUNT});
+        console.log(existingUser)   
+        if(existingUser&& (await bcrypt.compare(password, existingUser.password)))
+            return done(null, existingUser)
+        else
+            return done(null,false)
+    }
+  )));
+  passport.use(UserTable.ROLE_ADMIN,new LocalStrategy(
+    asyncHandler( async function(username, password, done) {
+        const existingUser = await User.findOne({username: username, accountType: UserTable.TYPE_LOCAL_ACCOUNT,role: UserTable.ROLE_ADMIN});
         console.log(existingUser)   
         if(existingUser&& (await bcrypt.compare(password, existingUser.password)))
             return done(null, existingUser)

@@ -1,5 +1,6 @@
 const express = require('express')
 const passport = require('passport')
+const UserTable = require('../entity/UserTable.js')
 const router = express.Router();
 require('dotenv').config();
 require('../authentication/auth.js')
@@ -15,7 +16,12 @@ router.route('/google/callback').get(
     failureRedirect: '/auth/failure'
 }));
 router.post("/user/login",
-passport.authenticate('local',{
+passport.authenticate(UserTable.ROLE_USER,{
+  successRedirect: CLIENT_URL,
+  failureRedirect: "/auth/failure"
+}))
+router.post("/admin/login",
+passport.authenticate(UserTable.ROLE_ADMIN,{
   successRedirect: CLIENT_URL,
   failureRedirect: "/auth/failure"
 }))
