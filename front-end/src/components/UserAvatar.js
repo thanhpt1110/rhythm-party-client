@@ -6,33 +6,29 @@ import { useNavigate } from 'react-router-dom';
 
 const UserAvatar = () => {
   const navigate = useNavigate();
-  const [userAuth, setUserAuth] = useState(null)
-  const [isLogin, setIsLogin] = useState(null)
   const [isOpen, setIsOpen] = useState(false);
-  const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
+  const {authUser, setAuthUser} = useAuth()
   const toggleMenu = () => {
   setIsOpen(!isOpen);
 };
-   useEffect(()=>{
-    setUserAuth(authUser)
-    setIsLogin(isLoggedIn)
-    console.log("authUser")
-   },[authUser,isLoggedIn])
-  const logout = async (e) => {
+
+  const onLogout = async (e) => {
     try {
       const response = await fetch('http://localhost:8080/auth/logout', {
         method: 'GET',
         credentials: 'include', // Đảm bảo gửi cookie với yêu cầu
       });
+      console.log('logout response: ' + response.ok);
       if (response.ok) {
         // Xử lý khi logout thành công
-        console.log('Logout thành công');  
+
+        console.log('Logout thành công');
         setAuthUser(null)
-        setIsLoggedIn(false)
+
       } else {
         // Xử lý khi có lỗi trong quá trình logout
         console.error('Logout thất bại');
-      }     
+      }
     } catch (error) {
       console.error('Lỗi kết nối đến máy chủ:', error);
     }
@@ -40,7 +36,7 @@ const UserAvatar = () => {
   return (
     <div>
        <button className="ml-10 flex items-center cursor-pointer" onClick={toggleMenu}>
-        <img className="h-10 w-10 rounded-full" src={isLogin ? userAuth.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
+        <img className="h-10 w-10 rounded-full" src={authUser ? authUser.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
         <div>
           <i className="ri-arrow-drop-down-line text-2xl text-white"></i>
         </div>
@@ -48,16 +44,16 @@ const UserAvatar = () => {
       {isOpen && (
         <ul className="absolute mt-2 bg-black rounded-lg shadow-md w-40 text-white">
           <li className="py-2 px-4 hover:bg-gray-800">
-            <Link href="/profile">Profile</Link>
+            <Link to="/profile">Profile</Link>
           </li>
            <li className="py-2 px-4 hover:bg-gray-800">
-            <Link href="/accountsetting">Account Setting</Link>
+            <Link to="/accountsetting">Account Setting</Link>
           </li>
           <li className="py-2 px-4 hover:bg-gray-800">
-            <Link href="/report">Report issues</Link>
+            <Link to="/report">Report issues</Link>
           </li>
           <li className="py-2 px-4 hover:bg-gray-800">
-            <Link href="/" onClick={logout} >Sign out</Link>
+            <Link to="/" onClick={onLogout} >Sign out</Link>
           </li>
         </ul>
       )}

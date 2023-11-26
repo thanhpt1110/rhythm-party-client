@@ -4,6 +4,7 @@ import ArtistCard from './ArtistCard'
 import Playlist from './Playlist'
 import FavSongs from './FavSongs'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../utils/AuthContext'
 
  const TopsongsData = [
     {
@@ -71,17 +72,12 @@ const TrendingData = [
   // Thêm các playlist khác vào đây
 ];
 const MainContent = () => {
-  const [showFavSongs, setShowFavSongs] = useState(false);
-  const handleToggleFavSongs = () => {
-    setShowFavSongs(!showFavSongs);
-  };
+  const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
   return (
      <div className=' py-20 max-w-screen-xl md:flex flex-wrap justify-between mx-auto p-4 text-white'>
                 <div>
-                  <button onClick={handleToggleFavSongs}>
-            {showFavSongs ? 'Unmount FavSongs' : 'Mount FavSongs'}
-          </button>
-          {showFavSongs && <FavSongs />}
+
+          {authUser && <FavSongs />}
                   <div className='flex items-baseline justify-between pt-12'>
                     <p className='text-white font-bold text-2xl mb-4 '>Top Songs</p>
                     <Link to='/AllTopSongs' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>

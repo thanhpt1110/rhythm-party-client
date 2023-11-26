@@ -1,9 +1,9 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
 import Player from '../components/Player';
-import { ChatEngine } from 'react-chat-engine'
-import ChatFeed from '../components/ChatApp/ChatFeed';
 import SonginQueue from '../components/SonginQueue';
+import MessageForm from '../components/ChatApp/MessageForm';
+import ChatBox from '../components/ChatApp/ChatBox';
 
   const SonginQueueData = [
   {
@@ -54,18 +54,16 @@ import SonginQueue from '../components/SonginQueue';
             onClick={handleBackClick}>
         </i>
         <div className='pt-8 pb-24'>
-          <ChatEngine
-            height='100vh'
-            projectID='40ee95b5-89c9-429e-84d2-b4fb889a91e5'
-            userName='QuocDung'
-            userSecret='123456'
-            renderChatFeed ={(chatAppProps) => <ChatFeed {...chatAppProps} />}
-        />
+          <ChatBox/>
+          <MessageForm/>
         </div>
         <Player/>
       </div>
-      <div className="w-[30%] bg-black opacity-90 text-white px-8">
-        <p className='my-8 font-bold text-xl'>Songs in Queue</p>
+      <div className="w-[30%] bg-black opacity-90 text-white px-8 pb-20">
+        <div className='flex flex-row justify-between items-center'>
+          <p className='my-8 font-bold text-xl'>Songs in Queue</p>
+          <i className="ri-play-list-add-line cursor-pointer text-xl"></i>
+        </div>
         <div>
           {SonginQueueData.slice(0, 6).map((songs, index) => (
                   <SonginQueue
@@ -75,9 +73,6 @@ import SonginQueue from '../components/SonginQueue';
                     Artist={songs.Artist}
                   />
                 ))}
-        </div>
-        <div className='text-center cursor-pointer'>
-          <i className="ri-add-circle-fill text-3xl "></i>
         </div>
       </div>
     </div>

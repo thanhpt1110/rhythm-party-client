@@ -4,12 +4,8 @@ import LOGO from '../assets/images/LOGO.png';
 import UserAvartar from './UserAvatar'
 import { useAuth } from '../utils/AuthContext';
 const Header = ({type}) => {
-  const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
-  console.log(authUser  )
-  const [isLogin, setIsLogin] = useState()
-  useEffect(()=>{
-    setIsLogin(isLoggedIn)
-  },[isLoggedIn])
+  const {authUser, } = useAuth()
+
   const [openMenus, setOpenMenus] = useState(false);
   const Menus = [
     {name : 'Home' , href:'/' , color: 'text-white' },
@@ -48,7 +44,7 @@ const Header = ({type}) => {
         </div>
         <div className='flex md:order-2'>
           {
-            isLogin ? (<UserAvartar />):
+            authUser ?(<UserAvartar />):
             (
             <div className='text-white bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300   rounded font-bold text-sm px-6 py-2 ml-10 md:ml-0 md:mr-0 '>
               <Link to="/signin">Sign In</Link>
@@ -58,7 +54,7 @@ const Header = ({type}) => {
         </div>
         <button className='inline-flex items-center p-2 w-10 h-10 justify-center  text-gray-500 rounded-lg md:hidden hover:bg-gray-600 focus:outline-none '
         onClick={()=>setOpenMenus(!openMenus)}>
-            {openMenus?<i class="ri-close-line"></i> :<i class="ri-menu-line"></i> }
+            {openMenus?<i className="ri-close-line"></i> :<i className="ri-menu-line"></i> }
         </button>
         <ul className={`md:flex md:items-center pl-16 md:pl-0 transition-all duration-500 ease-in w-full md:w-96 md:gap-8 absolute md:static
         ${openMenus ? ' top-20 bg-gray-800 ' : 'top-[-490px]'}`}>

@@ -1,57 +1,19 @@
-import React , { useState } from 'react'
-import { sendMessage, isTyping } from 'react-chat-engine';
+import React, { useState } from 'react'
 
-const MessageForm = (props) => {
-  const [value, setValue] = useState('');
-  const { chatId, creds } = props;
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-
-    isTyping(props, chatId);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    const text = value.trim();
-
-    if (text.length > 0) {
-      sendMessage(creds, chatId, { text });
-    }
-
-    setValue('');
-  };
-
-  const handleUpload = (event) => {
-    sendMessage(creds, chatId, { files: event.target.files, text: '' });
-  };
-
+const MessageForm = () => {
+  const [value, setValue] = useState("");
+  const handleSendMessage = (e) =>{
+    e.preventDefault();
+    console.log(value);
+    setValue("");
+  }
   return (
-    <form className="message-form" onSubmit={handleSubmit}>
-      <input
-        className="message-input"
-        placeholder="Send a message..."
-        value={value}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-      />
-      <label htmlFor="upload-button">
-        <span className="image-button">
-          <i className="ri-image-fill picture-icon"></i>
-        </span>
-      </label>
-      <input
-        type="file"
-        multiple={false}
-        id="upload-button"
-        style={{ display: 'none' }}
-        onChange={handleUpload.bind(this)}
-      />
-      <button type="submit" className="send-button">
-        <i className="ri-send-plane-line send-icon"></i>
-      </button>
-    </form>
+    <div className="bg-gray-200 fixed bottom-20 w-full py-6 shadow-lg ">
+      <form onSubmit={handleSendMessage} className="containerWrap px-2 flex flex-row h-10 ">
+          <input value={value} onChange={ e => setValue(e.target.value)} className=" focus:outline-none bg-gray-100 w-full px-4 rounded" type="text" />
+          <button type="submit" className=" bg-gray-500 text-white rounded-r px-5 text-sm">Send</button>
+      </form>
+    </div>
   );
 }
 

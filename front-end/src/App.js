@@ -18,8 +18,8 @@ import AllTopSong from './pages/AllTopSong';
 import RoomDetails from './pages/RoomDetails';
 function App() {
     const [user, setUser] = useState(null)
-   const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
-    useEffect(()=>{
+    const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
+    useEffect(()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
         const getUser = ()=>{
             fetch('http://localhost:8080/auth/success',
             {
@@ -36,12 +36,14 @@ function App() {
                 return respone.json();
             return {user: null, isAuthentication: false }
         }).then(resObject=>{
+            console.log('resObject', resObject);
+
             if(resObject.user!==null)
              {
                 setUser(resObject.user)
                 setAuthUser(resObject.user)
                 setIsLoggedIn(true)
-             }   
+             }
              else
              {
                 setUser(resObject.user)
@@ -63,6 +65,7 @@ function App() {
                 <Route path='/rooms' element={<Room user = {user}/>} />
                 <Route path='/upload' element={<Upload user = {user}/>} />
                 <Route path='/profile' element={<Profile user = {user} />} />
+                {/* khong can truyen user vaof trong element ntn, trong component, lay user data tu context */}
                 <Route path='/accountsetting' element={<Account user = {user} />} />
                 <Route path='/about' element={<About user = {user} />} />
                 <Route path='/report' element={<ReportIssues user = {user} />} />

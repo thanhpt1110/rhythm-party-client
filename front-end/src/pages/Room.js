@@ -7,6 +7,7 @@ import UserAvatar from '../components/UserAvatar';
 import LOGO from '../../src/assets/images/LOGO.png'
 
 const Room = ({user}) => {
+//lay user data tu trong context
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => {
     setShowModal(true); // Hiển thị modal khi người dùng nhấp vào nút mở modal
