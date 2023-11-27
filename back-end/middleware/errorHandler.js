@@ -29,7 +29,7 @@ const errorHandler = (error,req,res,next) =>{
              stackTrace: error.stack});
             break;  
         default:
-            console.log("No Error")
+            console.log(res.statusCode)
             break;
     }
 

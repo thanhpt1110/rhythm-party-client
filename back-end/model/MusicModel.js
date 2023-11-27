@@ -39,6 +39,10 @@ const musicSchema = mongoose.Schema({
         type: String,
         default: ''
     },
+    imgUrl:{
+        type: String,
+        default: ''
+    },
     releaseYear: {
         type: Number,
         required: [true, "Please add the release year of your music"]

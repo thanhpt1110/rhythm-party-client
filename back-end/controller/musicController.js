@@ -1,8 +1,10 @@
 const Music = require('../model/MusicModel')
+const MusicGenre = require('../model/GenreModel')
 const asyncHandler = require('express-async-handler')
 const MusicTable = require('../entity/MusicTable')
 const UserTable = require('../entity/UserTable')
 const getMusicByID = asyncHandler(async (req,res)=>{
+    console.log(req.params.id)
     const music = await Music.findById(req.params.id);
     if(music !== null && music !==undefined)
         res.status(200).json({message: "Success", data: music})
@@ -11,30 +13,70 @@ const getMusicByID = asyncHandler(async (req,res)=>{
 })
 const findMusicByNamePublic = asyncHandler(async (req,res)=>{
     // Lấy giá trị từ query parameter 'search'
-    const searchTerm = req.query.search;
+    const musicname = req.query.musicname;
+    console.log(searchTerm)
     // Sử dụng biểu thức chính quy để tạo điều kiện tìm kiếm
-    const searchRegex = new RegExp('^' + searchTerm);
-    await Music.find({ musicName: searchRegex,  
-        musicPrivacyType: MusicTable.MUSIC_PRIVACY_PUBLIC,
-        musicAuthorize: MusicTable.MUSIC_AUTHENTICATION_AUTHORIZE},
-        (err, results) => {
-        if (err) {
-          console.error(err);
-          res.status(500).send('Internal Server Error');
-        } else {
-          res.status(200).json({message: "Success",data: results});
-        }
-      });
+    try{
+        const musicnameRegex = new RegExp('^' + musicname,'i');
+        const music = await Music.find({ 
+            musicName: { $regex: musicnameRegex },  
+            musicPrivacyType: MusicTable.MUSIC_PRIVACY_PUBLIC,
+            musicAuthorize: MusicTable.MUSIC_AUTHENTICATION_AUTHORIZE}
+        );
+        res.status(200).json({message: "Success",data: music});
+    }
+    catch(e)
+    {
+        res.status(500).json({message: "Server error"})
+    }
+})
+const findMusicByNameWithUser = asyncHandler(async (req,res)=>{
+    // Lấy giá trị từ query parameter 'search'
+    const musicname = req.query.musicname;
+    const userid = req.params.user_id;
+    if(userid !== req.user._id)
+    {
+        res.status(401).json({message: "Unauthorize"})
+        return;
+    }
+    // Sử dụng biểu thức chính quy để tạo điều kiện tìm kiếm
+    try{
+        const musicNameRegex = new RegExp('^' + musicname,'i');
+        const music = await Music.find({ 
+            musicName: { $regex: musicNameRegex },  
+            musicPostOwnerID: userid}
+        );
+        res.status(200).json({message: "Success",data: music});
+    }
+    catch(e)
+    {
+        res.status(500).json({message: "Server error"})
+    }
 })
 const uploadMusic = asyncHandler(async (req, res)=>{
     if(req.isAuthenticated())
     {
+        try{
+        console.log("Create music")
+        const {musicName, genre, author, lyrics, duration, description, url, releaseYear} = req.body
+        console.log(req.body)
         if (!musicName || !genre || !author || !lyrics || !duration || !description || !url || !releaseYear) {
             res.status(400).json({ message: 'Missing required fields' });
             return;
         }
-        try{
-        const {musicName, genre, author, lyrics, duration, description, url, releaseYear} = req.body
+        for (let i = 0; i < genre.length; i++) {
+            try {
+              const existingGenre = await MusicGenre.findOne({ musicGenre: genre[i] });
+    
+              if (existingGenre) {
+                await MusicGenre.updateOne({ _id: existingGenre._id }, { $inc: { musicQuantity: 1 } });
+              } else {
+                await MusicGenre.create({ musicGenre: genre[i] });
+              }
+            } catch (error) {
+              return res.status(500).json({ message: "Internal Server Error" });
+            }
+          }
         const music = await Music.create({
             musicName: musicName,
             genre: genre,
@@ -47,6 +89,8 @@ const uploadMusic = asyncHandler(async (req, res)=>{
             musicPostOwnerID: req.user._id
         })
         res.status(200).json({message: "Success", data: music})
+        console.log("Create music success")
+
         }
         catch(ex)
         {
@@ -129,4 +173,4 @@ const getMusicCurrentUser = asyncHandler(async(req,res)=>{
         }
     }
 })
-module.exports = {getMusicByID,findMusicByNamePublic,uploadMusic,updateMusicPrivacyStatus,updateMusicAuthorization,getMusicUnauthentication,getMusicCurrentUser}
+module.exports = {getMusicByID,findMusicByNameWithUser,findMusicByNamePublic,uploadMusic,updateMusicPrivacyStatus,updateMusicAuthorization,getMusicUnauthentication,getMusicCurrentUser}

@@ -7,7 +7,7 @@ const musicGenreSchema = mongoose.Schema({
     },
     musicQuantity: {
         type: Number,
-        default: 0
+        default: 1
     }
 },  
 {

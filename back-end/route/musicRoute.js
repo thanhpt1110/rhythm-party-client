@@ -1,12 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const {getMusicByID,findMusicByNamePublic,uploadMusic
+const {getMusicByID,findMusicByNamePublic,findMusicByNameWithUser,uploadMusic
     ,updateMusicPrivacyStatus
     ,updateMusicAuthorization,getMusicUnauthentication
     ,getMusicCurrentUser} = require('../controller/musicController')
-router.route('/:id').get(getMusicByID)
-router.route('/').post(uploadMusic).get(getMusicCurrentUser)
-router.route('/updateMusicPrivacy').put(updateMusicPrivacyStatus)
-router.route('/updateMusicAuthentication').put(updateMusicAuthorization)
-router.route('/admin/getMusicUnauthentication').get(getMusicUnauthentication)
+router.route('/search').get(findMusicByNamePublic);
+router.route('/:id').get(getMusicByID);
+router.route('/user/:user_id').get(findMusicByNameWithUser);
+router.route('/').post(uploadMusic).get(getMusicCurrentUser);
+router.route('/update_music_privacy').put(updateMusicPrivacyStatus)
+router.route('/update_music_authentication').put(updateMusicAuthorization)
+router.route('/admin/get_music_unauthentication').get(getMusicUnauthentication)
 module.exports = router;
