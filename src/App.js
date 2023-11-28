@@ -1,6 +1,6 @@
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
-import '../../front-end/src/utils/Global.css';
+import './utils/Global.css';
 import { Route, Routes } from 'react-router-dom';
 import { Home } from './pages/Home';
 import SignIn from './pages/SignIn';
