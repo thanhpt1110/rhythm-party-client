@@ -16,6 +16,8 @@ import { useAuth } from './utils/AuthContext';
 import { AllPlaylist } from './pages/AllPlaylist';
 import AllTopSong from './pages/AllTopSong';
 import RoomDetails from './pages/RoomDetails';
+import { AllArtist } from './pages/AllArtist';
+import AlbumDetail from './pages/AlbumDetail';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
@@ -71,6 +73,8 @@ function App() {
                 <Route path='/report' element={<ReportIssues user = {user} />} />
                 <Route path='/AllPlaylists' element={<AllPlaylist user = {user} />} />
                 <Route path='/AllTopSongs' element={<AllTopSong user = {user} />} />
+                <Route path='/AllArtist' element={<AllArtist user = {user} />} />
+                <Route path='/playlist-detail/:playlistName' element={<AlbumDetail user = {user} />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails user = {user} />} />
             </Routes>
         </div>

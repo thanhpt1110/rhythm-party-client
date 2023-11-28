@@ -28,9 +28,9 @@ const Upload = ({user}) => {
   // axios.post('api/uploadfile', formData);
   // };
   return (
-    <div>
+    <div className='bg-black opacity-90 h-screen w-screen'>
       <Header user={user} type='upload' />
-      <div className='bg-black opacity-90 text-white'>
+      <div className=' text-white bg-black '>
          <main className=' container py-24  mx-auto px-4 md:px-0 md:w-[60%] '>
         {
         !show ? (
@@ -57,8 +57,8 @@ const Upload = ({user}) => {
 
           </form>
         ) : (
-          <form className=' flex flex-col border border-gray-800 rounded shadow bg-[#181818] '>
-            <div className='flex flex-row justify-between mt-8 md:px-16 gap-8'>
+          <form className=' flex flex-col border border-gray-800 rounded shadow bg-[#181818] my-20 '>
+            <div className='flex flex-row justify-between mt-14 md:px-16 gap-8'>
               <div className='flex items-end justify-center w-56 h-56 bg-gradient-to-r from-[#846170] to-[#70929c]'>
                 <button className='mb-4 bg-slate-600 flex rounded-lg items-center px-2 gap-2 py-1'>
                   <i class="ri-camera-line"></i>
@@ -124,14 +124,14 @@ const Upload = ({user}) => {
               <div className='flex gap-4 text-sm'>
                 <button className='hover:bg-slate-300 px-6 rounded py-2 hover:text-black'
                   onClick={handleCancelUpload}>Cancel</button>
-                <button className='bg-blue-400 px-6 rounded py-2 text-white hover:bg-blue-500'>Save</button>
+                <button className=' bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 px-6 rounded py-2 text-white'>Save</button>
               </div>
             </div>
           </form>
 
         )
       } </main>
-      <Footer/>
+      <Footer className='pt-40'/>
     </div>
       </div>
   );

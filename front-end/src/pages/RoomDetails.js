@@ -45,15 +45,18 @@ import ChatBox from '../components/ChatApp/ChatBox';
     window.history.back();
   };
   return (
-    <div className='w-full h-full bg-[#e5e7eb] flex'>
-      <div className="w-[70%] bg-gray-300">
+    <div className='w-full h-full flex'>
+      <div className="w-[70%] bg-black text-white ">
         <div className=' flex items-center text-3xl font-bold py-8 w-full justify-center'>
           <p className='border border-gray-700 py-4 px-10 text-white bg-gray-800 rounded'>{roomName}</p>
         </div>
-        <i className="ri-arrow-left-s-line cursor-pointer text-2xl text-white rounded-full bg-slate-700 px-2 py-2 hover:bg-slate-600 ml-8 "
+        <div className='flex flex-row items-center gap-8'>
+          <i className="ri-arrow-left-s-line cursor-pointer text-2xl text-white rounded-full bg-slate-700 px-3 py-2 hover:bg-slate-600 ml-8 "
             onClick={handleBackClick}>
         </i>
-        <div className='pt-8 pb-24'>
+        <p className='text-xl font-semibold'>Chat Box</p>
+        </div>
+        <div className='pt-8 pb-24 '>
           <ChatBox/>
           <MessageForm/>
         </div>

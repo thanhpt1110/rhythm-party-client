@@ -6,15 +6,18 @@ const ChatBox = () => {
   const messages =[
     {
       id: 1,
-      message : 'Hello world'
+      text : 'Hello world',
+      name : 'DungLe',
     },
     {
       id: 2,
-      message : 'Hi'
+      text : 'Hi',
+      name : 'BiBi',
     },
     {
       id: 3,
-      message : 'Nice to see you'
+      text : 'Nice to see you',
+      name : 'Lunaa',
     },
   ]
   return (

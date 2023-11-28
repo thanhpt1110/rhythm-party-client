@@ -95,7 +95,7 @@ const MainContent = () => {
                    </div>
                   <ArtistCard />
                    <div className='flex items-baseline mt-8 justify-between pt-12'>
-                    <p className='text-white font-bold text-2xl '>Trending</p>
+                    <p className='text-white font-bold text-2xl '>Trending Album</p>
                     <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
                   </div>
                   <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>

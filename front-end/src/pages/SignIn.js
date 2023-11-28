@@ -23,20 +23,17 @@ const SignIn = () => {
       <Header/>
       <div className=' bg-black opacity-90  min-h-screen flex items-center justify-center py-24 '>
       <div className='bg-[#181818] text-white p-5 flex rounded-2xl shadow-lg md:w-1/3'>
-        <div className='md:w-full px-5'>
-          <h2 className='text-3xl font-bold text-[#377dee] text-center'>Login</h2>
-          <p className='text-sm mt-6 text-[#377dee]'>
-            If you have an account, please login
-          </p>
+        <div className='md:w-full px-5 py-4'>
+          <h2 className='text-3xl font-bold text-[#377dee] text-center'>Sign In</h2>
           <form className='mt-6' action='#'>
             <div>
               <label className='block text-gray-200'>Email:</label>
-              <input type='email' name='' id='email' placeholder='Enter your Email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white ' autoFocus autoComplete='' required/>
+              <input type='email' name='' id='email' placeholder='Enter your email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white ' autoFocus autoComplete='' required/>
             </div>
 
             <div className='mt-4'>
               <label className='block text-gray-200'>Password:</label>
-              <input type='password' name='' id='pass' placeholder='Enter Password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
+              <input type='password' name='' id='pass' placeholder='Enter password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <div className='text-right mt-2'>
@@ -61,10 +58,10 @@ const SignIn = () => {
             <span className='ml-4 text-black font-semibold'>Login with Google</span>
           </button>
 
-          <div className='text-sm flex gap-4 items-center mt-6'>
-            <p>If you don't have an account ?</p>
+          <div className='text-sm flex gap-1 items-center mt-6'>
+            <p>If you don't have an account?</p>
             <div className='text-right '>
-              <Link to='/signup' className='text-sm font-bold hover:underline text-gray-400 hover:text-blue-700 focus:text-blue-700'>
+              <Link to='/signup' className='text-sm font-bold hover:underline text-blue-400 hover:text-blue-700 focus:text-blue-700'>
                 Create new account
               </Link>
             </div>

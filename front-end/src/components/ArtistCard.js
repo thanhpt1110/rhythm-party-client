@@ -2,6 +2,7 @@ import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
+import { Link } from 'react-router-dom';
  const data = [
     {
       title: "Song 1",
@@ -49,7 +50,7 @@ const ArtistCard = () => {
             <div className='flex gap-1'>
                <p className='text-white font-bold text-2xl py-4'>Top Artists</p>
             </div>
-            <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
+            <Link to='/AllArtist' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
           </div>
           <Swiper
           slidesPerView="auto"
@@ -63,7 +64,7 @@ const ArtistCard = () => {
           {topPlays?.slice(0, 8).map((artist) => (
             <SwiperSlide
               key={artist.title}
-              style={{ width: '19%', height: 'auto' }}
+              style={{ width: '21%', height: 'auto' }}
               className=" rounded-full animate-slideright"
             >
               <div className='flex flex-col items-center gap-4 cursor-pointer'>

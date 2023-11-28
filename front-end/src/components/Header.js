@@ -34,12 +34,12 @@ const Header = ({type}) => {
           </span>
         </a>
         <div className=' relative hidden md:block ml-8 focus:text-white '>
-          <button className=" absolute left top-1/2 -translate-y-1/2 px-4">
+          <button className=" absolute left top-1/2 -translate-y-1/2 px-4 mt-[2px]">
               <i className="ri-search-line text-gray-400 hover:text-white "></i>
           </button>
            <input
             type="search"
-            className=" pl-14 pr-6 py-2 rounded-md bg-[#222222] "
+            className=" pl-14 mt-[8px] pr-6 pt-2 pb-2 rounded-md bg-[#222222] "
             placeholder="Search"/>
         </div>
         <div className='flex md:order-2'>

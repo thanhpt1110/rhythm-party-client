@@ -24,7 +24,7 @@ const Player = () => {
                     <p className=' font-semibold text-xs truncate'>Song's Artist</p>
                 </div>
                 <i
-                    className={isLiked ? 'ri-heart-3-fill text-xs md:text-xl  cursor-pointer' : 'ri-heart-3-line text-xs md:text-xl cursor-pointer'}
+                    className={isLiked ? 'ri-heart-fill text-xs md:text-xl  cursor-pointer' : 'ri-heart-line text-xs md:text-xl cursor-pointer'}
                     onClick={handleIconLikeClick}
                     >
                     </i>

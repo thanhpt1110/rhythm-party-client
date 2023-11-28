@@ -15,7 +15,7 @@ export const SignUp = () => {
           <form className='mt-8' action='#'>
             <div>
               <label className='block text-gray-200'>Email:</label>
-              <input type='email' name='' id='email' placeholder='Enter your Email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' autoFocus autoComplete='' required/>
+              <input type='email' name='' id='email' placeholder='Enter your email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' autoFocus autoComplete='' required/>
             </div>
              <div className='mt-4'>
               <label className='block text-gray-200'>UserName:</label>
@@ -23,12 +23,12 @@ export const SignUp = () => {
             </div>
             <div className='mt-4'>
               <label className='block text-gray-200'>Password:</label>
-              <input type='password' name='' id='pass' placeholder='Enter Password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
+              <input type='password' name='' id='pass' placeholder='Enter password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <div className='mt-4'>
               <label className='block text-gray-200'>Confirm Password:</label>
-              <input type='password' name='' id='pass' placeholder='Confirm your Password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
+              <input type='password' name='' id='pass' placeholder='Confirm your password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <button type='submit' className='w-full block bg-blue-500 text-white font-semibold rounded-lg px-4 py-3 mt-6 hover:scale-105 duration-300'>
@@ -47,11 +47,11 @@ export const SignUp = () => {
             <span className='ml-4 text-black font-semibold text-[16px]'>SignIn with Google</span>
           </button>
 
-          <div className='text-sm flex gap-4 items-center mt-6'>
-            <p>If you had an account ?</p>
+          <div className='text-sm flex gap-1 items-center mt-6'>
+            <p>Already have an account?</p>
             <div className='text-right '>
-              <Link to='/signin' className='text-sm font-bold hover:underline text-gray-400 hover:text-blue-700 focus:text-blue-700'>
-                Log In
+              <Link to='/signin' className='text-sm font-bold hover:underline text-blue-400 hover:text-blue-700 '>
+                Sign In
               </Link>
             </div>
           </div>
