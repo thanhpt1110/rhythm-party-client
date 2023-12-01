@@ -2,7 +2,19 @@ import React from 'react';
 import Footer from '../components/Footer';
 import {useRef, useState} from 'react';
 import Header from '../components/Header';
+import Select from 'react-select'
 
+const options = [
+  { value: 'chocolate', label: 'Chocolate' },
+  { value: 'strawberry', label: 'Strawberry' },
+  { value: 'mint', label: 'Mint' },
+  { value: 'caramel', label: 'Caramel' },
+  { value: 'banana', label: 'Banana' },
+  { value: 'blueberry', label: 'Blueberry' },
+  { value: 'raspberry', label: 'Raspberry' },
+  { value: 'coffee', label: 'Coffee' },
+  { value: 'other', label: 'Other' }
+]
 const Upload = ({user}) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [show, setShow] = useState(false);
@@ -17,16 +29,62 @@ const Upload = ({user}) => {
   const handleFileSelection = (event) => {
     event.preventDefault();
     fileInputRef.current.click();
-
   };
-  // const onFileUpload = () => {
-  // const formData = new FormData();
-  // formData.append('myFile', selectedFile, selectedFile.name);
+  const colorStyles = {
+    control: (styles) => {
+      return {
+        ...styles,
+        backgroundColor: '#181818',
+        paddingTop: '4px',
+        paddingBottom: '4px',
+        border: '1px solid', // Set the default border style
+        borderColor: '#181818', // Set the default border color
+        ':hover': {
+          borderColor: 'white' // Set the border color to white on focus
+        },
+      };
+    },
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      return { ...styles, color: '#181818' };
+    },
+    multiValue: (styles) => {
+      return {
+        ...styles,
+        backgroundColor: '#555555',
+        color: "#fff",
+      };
+    },
+    multiValueLabel: (styles) => {
+      return {
+        ...styles,
+        color: "#fff",
+      };
+    },
+    multiValueRemove: (styles) => {
+      return {
+        ...styles,
+        color: "#fff",
+        cursor: "pointer",
+        ":hover": {
+          color: "gray",
+        },
+      };
+    },
+  };
 
-  // console.log(selectedFile);
+  const [showOtherInput, setShowOtherInput] = useState(false);
+  const handleInputGenreChange = (inputValue, actionMeta) => {
+    console.log("handleInputChange", inputValue, actionMeta);
+  };
+  const [selectedOptions, setSelectedOptions] = useState([]);
 
-  // axios.post('api/uploadfile', formData);
-  // };
+  const handleGenreChange = (selectedOption, actionMeta) => {
+    setShowOtherInput(selectedOption.some(option => option.value === 'other'));
+    if (selectedOption.length <= 3) {
+      setSelectedOptions(selectedOption);
+    }
+
+};
   return (
     <div className='bg-black opacity-90 h-screen w-screen'>
       <Header user={user} type='upload' />
@@ -52,9 +110,7 @@ const Upload = ({user}) => {
                 onClick={handleFileSelection}>
                 Choose File
               </button>
-
             </div>
-
           </form>
         ) : (
           <form className=' flex flex-col border border-gray-800 rounded shadow bg-[#181818] my-20 '>
@@ -75,28 +131,31 @@ const Upload = ({user}) => {
                     selectedFile.name
                   }
                   required/>
-                <div className='flex flex-row justify-between'>
                   <div className='my-2'>
                     <div className='flex flex-row gap-1 items-center '>
                       <p className='font-bold text-sm'>Artist</p>
                       <span className='text-red-600'>*</span>
                     </div>
-                    <input type="text" className='border bg-[#181818] px-2 rounded mt-1 py-2 md:w-60' required/>
+                    <input type="text" className='border bg-[#181818] px-2 rounded mt-1 py-2 w-full' required/>
                   </div>
                   <div className='my-2'>
                     <div className='flex flex-row gap-1 items-center '>
                       <p className='font-bold text-sm'>Genre</p>
                       <span className='text-red-600'>*</span>
                     </div>
-                    <select className="border bg-[#181818] px-2 rounded mt-1 py-[9px] md:w-60" required>
-                      <option value="">None</option>
-                      <option value="option1">R&B</option>
-                      <option value="option2">Rock</option>
-                      <option value="option3">Rap</option>
-                      <option value="option4">HipHop</option>
-                    </select>
+                      <div>
+                          <Select
+                            isMulti
+                            options={options}
+                            styles={colorStyles}
+                            placeholder="Pick your genre"
+                            onInputChange={handleInputGenreChange}
+                            onChange={handleGenreChange}
+                            value={selectedOptions} maxValues={3}
+                          />
+                          {showOtherInput && <input className=' mt-4 border bg-[#181818] px-2 rounded py-2 w-full' type="text" placeholder="Please fill your other genre" />}
+                        </div>
                   </div>
-                </div>
                 <p className='font-bold text-sm '>Description</p>
                 <textarea name="descriptionSong" id="descriptionSong" className=' resize-none h-28 border bg-[#181818] px-2 rounded mt-2 py-1' placeholder='Describe your track' cols="20" rows="10"></textarea>
                 <p className='font-bold text-sm my-2 '>Lyrics</p>
