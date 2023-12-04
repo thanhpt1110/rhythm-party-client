@@ -13,6 +13,8 @@ const Player = () => {
     const audioRef = useRef(null)
     const [isLiked, setIsLiked] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
+    const [seekValue, setSeekValue] = useState(0);
+
     const handleIconLikeClick = () => {
             setIsLiked(!isLiked);
     };
@@ -29,6 +31,13 @@ const Player = () => {
           }
           setIsPlaying(!isPlaying)
     };
+    const handleSeekChange = (e) => {
+        const newValue = e.target.value;
+        // Cập nhật thời gian hiện tại của bài hát dựa trên giá trị thanh trượt
+        setCurrentTime(newValue);
+        audioRef.current.currentTime = newValue;
+      };
+      
     return (
       <div className='z-[99] fixed w-full bottom-0'>
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
@@ -67,6 +76,7 @@ const Player = () => {
                         min={0}
                         max={audioRef.current ? audioRef.current.duration : 100}
                         value={currentTime}
+                        onChange={handleSeekChange}
                         className='md:block w-24 md:w-96 h-1 mx-4 md:mx-6 rounded-lg'
                     />
                     <p className='text-white text-xs'>
