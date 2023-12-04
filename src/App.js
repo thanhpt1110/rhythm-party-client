@@ -23,7 +23,7 @@ function App() {
     const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
     useEffect(()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
         const getUser = ()=>{
-            fetch('http://localhost:8080/auth/success',
+            fetch("http://localhost:8080/" + 'auth/success',
             {
                 method: 'GET',
                 credentials: 'include',
@@ -38,44 +38,42 @@ function App() {
                 return respone.json();
             return {user: null, isAuthentication: false }
         }).then(resObject=>{
-            console.log('resObject', resObject);
-
             if(resObject.user!==null)
-             {
-                setUser(resObject.user)
-                setAuthUser(resObject.user)
-                setIsLoggedIn(true)
-             }
-             else
-             {
-                setUser(resObject.user)
-                setAuthUser(resObject.user)
-                setIsLoggedIn(false)
-                console.log(authUser)
-
-             }
+            {
+                setAuthUser(resObject.user.user)
+                var jsonStringUser = JSON.stringify(resObject.user.user);
+                localStorage.setItem('user',jsonStringUser);
+                localStorage.setItem('accessToken',resObject.user.accessToken);
+            }
         })
         }
-        getUser();
+        if(localStorage.getItem('user')===null || localStorage.getItem('accessToken')===null)
+            getUser();
+        else
+        {
+            var storedJsonUser = localStorage.getItem('user');
+            var storedUser = JSON.parse(storedJsonUser);
+            setAuthUser(storedUser)  
+        }
     },[])
     return (
         <div>
             <Routes>
-                <Route path='/' element={<Home user = {user}/>} />
+                <Route path='/' element={<Home />} />
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/signup' element={<SignUp />} />
-                <Route path='/rooms' element={<Room user = {user}/>} />
-                <Route path='/upload' element={<Upload user = {user}/>} />
-                <Route path='/profile' element={<Profile user = {user} />} />
+                <Route path='/rooms' element={<Room />} />
+                <Route path='/upload' element={<Upload />} />
+                <Route path='/profile' element={<Profile />} />
                 {/* khong can truyen user vaof trong element ntn, trong component, lay user data tu context */}
-                <Route path='/accountsetting' element={<Account user = {user} />} />
-                <Route path='/about' element={<About user = {user} />} />
-                <Route path='/report' element={<ReportIssues user = {user} />} />
-                <Route path='/AllPlaylists' element={<AllPlaylist user = {user} />} />
-                <Route path='/AllTopSongs' element={<AllTopSong user = {user} />} />
-                <Route path='/AllArtist' element={<AllArtist user = {user} />} />
-                <Route path='/playlist-detail/:playlistName' element={<AlbumDetail user = {user} />} />
-                <Route path='/room-detail/:roomName' element={<RoomDetails user = {user} />} />
+                <Route path='/accountsetting' element={<Account/>} />
+                <Route path='/about' element={<About />} />
+                <Route path='/report' element={<ReportIssues />} />
+                <Route path='/AllPlaylists' element={<AllPlaylist />} />
+                <Route path='/AllTopSongs' element={<AllTopSong  />} />
+                <Route path='/AllArtist' element={<AllArtist />} />
+                <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
+                <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
             </Routes>
         </div>
     );

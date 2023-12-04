@@ -4,12 +4,14 @@ import Header from '../components/Header';
 import Player from '../components/Player';
 import Footer from '../components/Footer';
 import Error from '../components/Error'
+import { MusicContextProvider } from '../utils/MusicContext'
 
-export const Home = ({ user }) => {
+export const Home = () => {
     return (
         <div>
+            <MusicContextProvider>
             <header>
-                <Header user={user} type='home' />
+                <Header  type='home' />
             </header>
             <main className='bg-black opacity-90'>
                 <MainContent />
@@ -20,6 +22,7 @@ export const Home = ({ user }) => {
             <div>
                 <Player />
             </div>
+            </MusicContextProvider>
 
         </div>
     );

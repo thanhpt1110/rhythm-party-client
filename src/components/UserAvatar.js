@@ -8,6 +8,7 @@ const UserAvatar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const {authUser, setAuthUser} = useAuth()
+  console.log(authUser)
   const toggleMenu = () => {
   setIsOpen(!isOpen);
 };
@@ -24,7 +25,8 @@ const UserAvatar = () => {
 
         console.log('Logout thành công');
         setAuthUser(null)
-
+        localStorage.removeItem('user');
+        localStorage.removeItem('accessToken')
       } else {
         // Xử lý khi có lỗi trong quá trình logout
         console.error('Logout thất bại');
