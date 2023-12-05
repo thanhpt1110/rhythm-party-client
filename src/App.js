@@ -18,9 +18,12 @@ import AllTopSong from './pages/AllTopSong';
 import RoomDetails from './pages/RoomDetails';
 import { AllArtist } from './pages/AllArtist';
 import AlbumDetail from './pages/AlbumDetail';
+import Player from './components/Player';
+import { useMusicContext } from './utils/MusicContext';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
+    const {isActive} = useMusicContext();
     useEffect(()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
         const getUser = ()=>{
             fetch("http://localhost:8080/" + 'auth/success',
@@ -75,7 +78,11 @@ function App() {
                 <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
             </Routes>
+            <div>
+                {isActive && <Player />}
+            </div>
         </div>
+
     );
 }
 

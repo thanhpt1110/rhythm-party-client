@@ -1,7 +1,11 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Header from '../components/Header';
-
-const ReportIssues = ({user}) => {
+import { useMusicContext } from '../utils/MusicContext';
+const ReportIssues = () => {
+  const {setIsActive} = useMusicContext();
+  useEffect(()=>{
+    setIsActive(false)
+  })
   return (
     <div>
       <Header/>

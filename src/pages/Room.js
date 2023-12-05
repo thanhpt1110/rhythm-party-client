@@ -2,10 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import logoRoom from '../../src/assets/images/logoRoom.png';
 import PublicRoom from '../components/PublicRoom';
-import {useState} from 'react';
+import {useState,useEffect} from 'react';
 import UserAvatar from '../components/UserAvatar';
 import LOGO from '../../src/assets/images/LOGO.png'
-
+import { useMusicContext } from '../utils/MusicContext';
 const Room = ({user}) => {
 //lay user data tu trong context
   const [showModal, setShowModal] = useState(false);
@@ -15,7 +15,10 @@ const Room = ({user}) => {
   const handleCloseModal = () => {
     setShowModal(false); // Ẩn modal khi người dùng nhấp vào nút đóng modal
   };
-
+  const {setIsActive} = useMusicContext();
+  useEffect(()=>{
+    setIsActive(false)
+  })
   return (
     <div>
       <header>

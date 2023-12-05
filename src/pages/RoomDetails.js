@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useLocation } from 'react-router-dom';
 import Player from '../components/Player';
 import SonginQueue from '../components/SonginQueue';
 import MessageForm from '../components/ChatApp/MessageForm';
 import ChatBox from '../components/ChatApp/ChatBox';
-
+import { useMusicContext } from '../utils/MusicContext';
   const SonginQueueData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -44,6 +44,10 @@ import ChatBox from '../components/ChatApp/ChatBox';
   const handleBackClick = () => {
     window.history.back();
   };
+  const {setIsActive} = useMusicContext();
+  useEffect(()=>{
+    setIsActive(false)
+  })
   return (
     <div className='w-full h-full flex'>
       <div className="w-[70%] bg-black text-white ">

@@ -1,9 +1,9 @@
 import React from 'react';
 import Footer from '../components/Footer';
-import {useRef, useState} from 'react';
+import {useRef, useState,useEffect} from 'react';
 import Header from '../components/Header';
 import Select from 'react-select'
-
+import { useMusicContext } from '../utils/MusicContext';
 const options = [
   { value: 'chocolate', label: 'Chocolate' },
   { value: 'strawberry', label: 'Strawberry' },
@@ -85,6 +85,10 @@ const Upload = ({user}) => {
     }
 
 };
+const {setIsActive} = useMusicContext();
+useEffect(()=>{
+  setIsActive(false)
+})
   return (
     <div className='bg-black opacity-90 h-screen w-screen'>
       <Header user={user} type='upload' />

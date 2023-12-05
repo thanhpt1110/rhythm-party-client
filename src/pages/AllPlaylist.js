@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from '../components/Header';
 import Playlist from '../components/Playlist';
 import Player from '../components/Player';
-
+import { useMusicContext } from '../utils/MusicContext';
 const playlistsData = [
     {
         urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -66,6 +66,13 @@ export const AllPlaylist = () => {
    const handleBackClick = () => {
     window.history.back();
   };
+  const {music, setIsActive} = useMusicContext();
+  useEffect(()=>{
+    if(music!==null && music !==undefined)
+      setIsActive(true)
+    else
+      setIsActive(false)
+  },[music])
     return (
         <div>
             <Header />
@@ -86,7 +93,6 @@ export const AllPlaylist = () => {
                     </div>
                 </div>
             </div>
-            <Player/>
         </div>
     );
 };

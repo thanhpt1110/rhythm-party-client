@@ -1,8 +1,13 @@
 import React from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-
+import { useEffect } from 'react'
+import { useMusicContext } from '../utils/MusicContext'
 const About = () => {
+  const {setIsActive} = useMusicContext();
+  useEffect(()=>{
+    setIsActive(false)
+  })
   return (
     <div >
       <Header type='about'/>

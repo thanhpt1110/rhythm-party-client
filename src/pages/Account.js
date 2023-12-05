@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { useMusicContext } from '../utils/MusicContext'
 
 const Account = () => {
+  const {setIsActive} = useMusicContext();
+  useEffect(()=>{
+      setIsActive(false)
+  })
   return (
     <div>
       <Header/>

@@ -1,58 +1,59 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Header from '../components/Header';
 import Player from '../components/Player';
+import { useMusicContext } from '../utils/MusicContext';
 import SongCard from '../components/SongCard';
 
  const TopsongsData = [
     {
-      SongImg: 'https://photo-resize-zmp3.zmdcdn.me/w256_r1x1_jpeg/cover/2/f/a/7/2fa7217d7ba558e5f9ab43b267e7de5e.jpg',
-      SongName: 'Từng Quen',
-      SongArtist: 'Wren Evans'
+      imgUrl: 'https://photo-resize-zmp3.zmdcdn.me/w256_r1x1_jpeg/cover/2/f/a/7/2fa7217d7ba558e5f9ab43b267e7de5e.jpg',
+      musicName: 'Từng Quen',
+      author: 'Wren Evans'
     },
     {
-      SongImg: 'https://photo-resize-zmp3.zmdcdn.me/w600_r1x1_jpeg/cover/c/4/b/0/c4b0da67bae11731685f79432dc462b7.jpg',
-      SongName: 'Một Đêm Say',
-      SongArtist: 'Thịnh Suy'
+      imgUrl: 'https://photo-resize-zmp3.zmdcdn.me/w600_r1x1_jpeg/cover/c/4/b/0/c4b0da67bae11731685f79432dc462b7.jpg',
+      musicName: 'Một Đêm Say',
+      author: 'Thịnh Suy'
     },
     {
-      SongImg: 'https://i.ytimg.com/vi/tRFLs_-54gE/maxresdefault.jpg',
-      SongName: 'Love Story',
-      SongArtist: 'Taylor Swift'
+      imgUrl: 'https://i.ytimg.com/vi/tRFLs_-54gE/maxresdefault.jpg',
+      musicName: 'Love Story',
+      author: 'Taylor Swift'
     },
     {
-      SongImg: 'https://i1.sndcdn.com/artworks-0aDqhBAzd6pkEtIU-eJ1E1Q-t500x500.jpg',
-      SongName: 'Tự Sự',
-      SongArtist: 'Obito ft MCK'
+      imgUrl: 'https://i1.sndcdn.com/artworks-0aDqhBAzd6pkEtIU-eJ1E1Q-t500x500.jpg',
+      musicName: 'Tự Sự',
+      author: 'Obito ft MCK'
     },
     {
-      SongImg: 'https://avatar-ex-swe.nixcdn.com/song/2023/04/19/d/2/5/3/1681879735020_640.jpg',
-      SongName: 'Không Thể Say',
-      SongArtist: 'HieuThuHai'
+      imgUrl: 'https://avatar-ex-swe.nixcdn.com/song/2023/04/19/d/2/5/3/1681879735020_640.jpg',
+      musicName: 'Không Thể Say',
+      author: 'HieuThuHai'
     },
     {
-      SongImg: 'https://cafebiz.cafebizcdn.vn/2019/12/23/all-i-want-for-christmas-is-you-15770727420652046746371.jpg',
-      SongName: 'All I Want for Christmas Is You',
-      SongArtist: 'Mariah Carey'
+      imgUrl: 'https://cafebiz.cafebizcdn.vn/2019/12/23/all-i-want-for-christmas-is-you-15770727420652046746371.jpg',
+      musicName: 'All I Want for Christmas Is You',
+      author: 'Mariah Carey'
     },
     {
-      SongImg: 'https://vtv1.mediacdn.vn/zoom/640_400/2020/12/19/nkk2664-1608348105952437410015.jpg',
-      SongName: 'Đi Về Nhà',
-      SongArtist: 'Đen ft Justatee'
+      imgUrl: 'https://vtv1.mediacdn.vn/zoom/640_400/2020/12/19/nkk2664-1608348105952437410015.jpg',
+      musicName: 'Đi Về Nhà',
+      author: 'Đen ft Justatee'
     },
      {
-      SongImg: 'https://i.ytimg.com/vi/XWhdbZ9-uGA/maxresdefault.jpg',
-      SongName: 'Đi Để Trở Về 2',
-      SongArtist: 'Soobin Hoàng Sơn'
+      imgUrl: 'https://i.ytimg.com/vi/XWhdbZ9-uGA/maxresdefault.jpg',
+      musicName: 'Đi Để Trở Về 2',
+      author: 'Soobin Hoàng Sơn'
     },
     {
-      SongImg: 'https://avatar-ex-swe.nixcdn.com/song/2023/02/08/f/b/7/8/1675826886037_640.jpg',
-      SongName: 'Stream Đến Bao Giờ',
-      SongArtist: 'Độ Mixi'
+      imgUrl: 'https://avatar-ex-swe.nixcdn.com/song/2023/02/08/f/b/7/8/1675826886037_640.jpg',
+      musicName: 'Stream Đến Bao Giờ',
+      author: 'Độ Mixi'
     },
      {
-      SongImg: 'https://i.ytimg.com/vi/Jk38OqdAQxc/maxresdefault.jpg',
-      SongName: 'Độ Tộc 2',
-      SongArtist: 'Độ Mixi x Pháo x Phúc Du'
+      imgUrl: 'https://i.ytimg.com/vi/Jk38OqdAQxc/maxresdefault.jpg',
+      musicName: 'Độ Tộc 2',
+      author: 'Độ Mixi x Pháo x Phúc Du'
     },
   ];
 
@@ -60,6 +61,13 @@ const AllTopSong = () => {
    const handleBackClick = () => {
     window.history.back();
   };
+  const {music, setIsActive} = useMusicContext();
+  useEffect(()=>{
+    if(music!==null && music !==undefined)
+      setIsActive(true)
+    else
+      setIsActive(false)
+  },[music])
   return (
     <div>
             <Header />
@@ -72,15 +80,12 @@ const AllTopSong = () => {
                         {TopsongsData.map((topsong, index) => (
                             <SongCard
                                 key={index}
-                                SongImg={topsong.SongImg}
-                                SongName={topsong.SongName}
-                                SongArtist={topsong.SongArtist}
+                                song = {topsong}
                             />
                         ))}
                     </div>
                 </div>
             </div>
-            <Player/>
         </div>
   )
 }

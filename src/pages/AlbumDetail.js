@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import LOGO from '../assets/images/LOGO.png';
 import SongsOfAlbum from '../components/SongsOfAlbum';
+import { useMusicContext } from '../utils/MusicContext';
 import Player from '../components/Player';
 const SongsData = [
     {
@@ -57,6 +58,13 @@ const AlbumDetail = () => {
     const handleBackClick = () => {
         window.history.back();
     };
+    const {music, setIsActive} = useMusicContext();
+    useEffect(()=>{
+      if(music!==null && music !==undefined)
+        setIsActive(true)
+      else
+        setIsActive(false)
+    },[music])
     return (
         <div>
             <Header />
@@ -115,7 +123,6 @@ const AlbumDetail = () => {
                   ))}
                 </div>
             </div>
-            <Player/>
         </div>
     );
 };

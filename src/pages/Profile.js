@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Header from '../components/Header'
 import Player from '../components/Player'
 import Playlist from '../components/Playlist'
 import ArtistFav from '../components/ArtistFav'
+import { useMusicContext } from '../utils/MusicContext'
 import {useRef, useState} from 'react';
 import { Link } from 'react-router-dom'
 const playlistsData = [
@@ -84,6 +85,13 @@ const Profile = () => {
   const handleImageChange = (event) => {
     setImage(event.target.files[0]);
   };
+  const {music, setIsActive} = useMusicContext();
+  useEffect(()=>{
+    if(music!==null && music !==undefined)
+      setIsActive(true)
+    else
+      setIsActive(false)
+  },[music])
   return (
     <div className=''>
       <Header />
@@ -158,7 +166,6 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <Player/>
     </div>
   )
 }

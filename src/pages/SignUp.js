@@ -1,7 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
+import { useMusicContext } from '../utils/MusicContext'
 export const SignUp = () => {
+  const {setIsActive} = useMusicContext();
+  useEffect(()=>{
+    setIsActive(false)
+  })
   return (
     <div>
       <Header/>

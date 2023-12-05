@@ -37,7 +37,13 @@ const Player = () => {
         setCurrentTime(newValue);
         audioRef.current.currentTime = newValue;
       };
-      
+    useEffect(()=>{
+        if(music!==null && music!==undefined)
+        {
+            setIsPlaying(true);
+            audioRef.current.play();
+        }
+    },[music])
     return (
       <div className='z-[99] fixed w-full bottom-0'>
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>

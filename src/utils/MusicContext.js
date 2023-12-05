@@ -8,11 +8,15 @@ export function useMusicContext(){
 export const MusicContextProvider = (props) => {
     const [music, setMusic] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isActive, setIsActive] = useState(false)
+    const [listOfSong, setListOfSong] = useState([])
     const value = {
         music,
         setMusic,
         isPlaying,
-        setIsPlaying
+        setIsPlaying,
+        isActive,
+        setIsActive
     }
     return (
         <MusicContext.Provider value={value}>{props.children}</MusicContext.Provider>

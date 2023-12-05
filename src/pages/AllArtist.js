@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Header from '../components/Header';
 import ArtistFav from '../components/ArtistFav';
 import Player from '../components/Player';
-
+import { useMusicContext } from '../utils/MusicContext';
 const artistsData = [
   {
     urlImg: 'https://ss-images.saostar.vn/w800/pc/1680851009890/saostar-2ka5fti72hsf2wck.jpeg',
@@ -76,6 +76,13 @@ export const AllArtist = () => {
    const handleBackClick = () => {
     window.history.back();
   };
+  const {music, setIsActive} = useMusicContext();
+  useEffect(()=>{
+    if(music!==null && music !==undefined)
+      setIsActive(true)
+    else
+      setIsActive(false)
+  },[music])
   return (
     <div>
             <Header />
@@ -96,7 +103,6 @@ export const AllArtist = () => {
                     </div>
                 </div>
             </div>
-            <Player/>
         </div>
   )
 }

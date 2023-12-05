@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-
+import { useMusicContext } from '../utils/MusicContext';
 const SignIn = () => {
   // const [email, setEmail] = useState('');
   // const [password, setPassword] = useState('');
@@ -18,6 +18,10 @@ const SignIn = () => {
   const googleLogin = ()=>{
     window.open('http://localhost:8080/auth/google','self')
   };
+  const {setIsActive} = useMusicContext();
+  useEffect(()=>{
+    setIsActive(false)
+  })
   return (
     <div>
       <Header/>

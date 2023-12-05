@@ -1,15 +1,20 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import MainContent from '../components/MainContent';
 import Header from '../components/Header';
 import Player from '../components/Player';
 import Footer from '../components/Footer';
+import { useMusicContext } from '../utils/MusicContext';
 import Error from '../components/Error'
-import { MusicContextProvider } from '../utils/MusicContext'
-
 export const Home = () => {
+    const {music, setIsActive} = useMusicContext();
+    useEffect(()=>{
+      if(music!==null && music !==undefined)
+        setIsActive(true)
+      else
+        setIsActive(false)
+    },[music])
     return (
         <div>
-            <MusicContextProvider>
             <header>
                 <Header  type='home' />
             </header>
@@ -19,11 +24,6 @@ export const Home = () => {
             <footer className='bg-black opacity-90'>
                 <Footer />
             </footer>
-            <div>
-                <Player />
-            </div>
-            </MusicContextProvider>
-
         </div>
     );
 };
