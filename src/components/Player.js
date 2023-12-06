@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useMusicContext } from '../utils/MusicContext'; 
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useMusicContext } from '../utils/MusicContext';
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
-  
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(remainingSeconds).padStart(2, '0');
-  
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 const Player = () => {
@@ -14,7 +12,8 @@ const Player = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [seekValue, setSeekValue] = useState(0);
-
+    const [isLooping, setIsLooping] = useState(false);
+    const [volume, setVolume] = useState(50);
     const handleIconLikeClick = () => {
             setIsLiked(!isLiked);
     };
@@ -31,6 +30,19 @@ const Player = () => {
           }
           setIsPlaying(!isPlaying)
     };
+    const handleLoopIconClick = () => {
+        setIsLooping(!isLooping);
+    };
+    useEffect(() => {
+    if (isLooping) {
+        audioRef.current.loop = true;
+        audioRef.current.currentTime = 0;
+        audioRef.current.play();
+    }
+    else {
+        audioRef.current.loop = false;
+    }
+    }, [isLooping]);
     const handleSeekChange = (e) => {
         const newValue = e.target.value;
         // Cập nhật thời gian hiện tại của bài hát dựa trên giá trị thanh trượt
@@ -43,7 +55,15 @@ const Player = () => {
             setIsPlaying(true);
             audioRef.current.play();
         }
-    },[music])
+    },[music]);
+    useEffect(() => {
+        audioRef.current.volume = volume / 100;
+    }, [volume]);
+    const handleVolumeChange = (event) => {
+        const newVolume = event.target.value;
+        setVolume(newVolume);
+    };
+
     return (
       <div className='z-[99] fixed w-full bottom-0'>
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
@@ -83,7 +103,8 @@ const Player = () => {
                         max={audioRef.current ? audioRef.current.duration : 100}
                         value={currentTime}
                         onChange={handleSeekChange}
-                        className='md:block w-24 md:w-96 h-1 mx-4 md:mx-6 rounded-lg'
+                        className='md:block w-24 md:w-96 h-1 mx-4 md:mx-6 rounded-lg '
+
                     />
                     <p className='text-white text-xs'>
                         {formatTime(music ? music.duration : 0)}
@@ -102,21 +123,24 @@ const Player = () => {
                         onClick={handlePlayIconClick}
                     ></i>
                     <i className='ri-speed-fill button'></i>
-                    <i className='ri-loop-left-fill button'></i>
+                    <i
+                        className={`ri-loop-left-fill button ${isLooping ? 'text-gray-500' : ''}`}
+                        onClick={handleLoopIconClick}></i>
                 </div>
 
             </div>
             {/* Right */}
             <div className='flex flex-row items-center space-x-1 md:space-x-3 justify-end md:pl-0 md:pr-3 mt-3 md:mt-0'>
-                <i className='ri-volume-down-fill button '></i>
+                <i className='ri-volume-down-fill button' onClick={()=> volume > 0 && setVolume(volume - 10)}></i>
                 <input
                     className='w-14 md:w-24 mb-[6px] md:mt-3 h-1 rounded-full'
                     type='range'
-                    // value=''
+                    value={volume}
+                    onChange={handleVolumeChange}
                     min={0}
                     max={100}
                 />
-                <i className='ri-volume-up-fill button'></i>
+                <i className='ri-volume-up-fill button' onClick={()=> volume < 100 && setVolume(volume + 10)}></i>
             </div>
         </div>
       </div>
