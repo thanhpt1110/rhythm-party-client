@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../utils/AuthContext'
 import api from '../utils/Api'
 
- 
+
 const TrendingData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -43,7 +43,7 @@ const TrendingData = [
 ];
 
 const MainContent = () => {
-   
+
   const [topsongsData, setTopSongsData] = useState([]);
   useEffect(()=>{
     api.get('/api/music/top-music?quantity=20&index=0').then(respone=>{
@@ -66,7 +66,7 @@ const MainContent = () => {
                   </div>
                   <h6 className='text-gray-400 text-[14px] pb-4'>The most played tracks on RhythmParty this week</h6>
                    <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                      {topsongsData.map((song, index) => (
+                      {topsongsData.slice(0, 6).map((song, index) => (
                         <SongCard
                           key={index}
                           song = {song}

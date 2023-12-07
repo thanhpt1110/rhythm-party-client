@@ -13,7 +13,8 @@ const Player = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [seekValue, setSeekValue] = useState(0);
     const [isLooping, setIsLooping] = useState(false);
-    const [volume, setVolume] = useState(50);
+    const [volume, setVolume] = useState(0.5);
+
     const handleIconLikeClick = () => {
             setIsLiked(!isLiked);
     };
@@ -56,13 +57,35 @@ const Player = () => {
             audioRef.current.play();
         }
     },[music]);
-    useEffect(() => {
-        audioRef.current.volume = volume / 100;
-    }, [volume]);
-    const handleVolumeChange = (event) => {
-        const newVolume = event.target.value;
-        setVolume(newVolume);
+
+  useEffect(() => {
+    const debounceTimeout = setTimeout(() => {
+       audioRef.current.volume = volume;
+    }, 300); // Thời gian chờ debounce (300ms)
+    return () => {
+      clearTimeout(debounceTimeout);
     };
+  }, [volume]);
+
+  const handleVolumeChange = (event) => {
+    const newVolume = parseFloat(event.target.value / 100);
+    setVolume(newVolume);
+  };
+  const increaseVolume = () => {
+    if (volume <= 0.9) {
+      setVolume((prevVolume) => parseFloat((prevVolume + 0.1).toFixed(1)));
+    } else {
+      setVolume(1);
+    }
+  };
+
+  const decreaseVolume = () => {
+    if (volume >= 0.1) {
+      setVolume((prevVolume) => parseFloat((prevVolume - 0.1).toFixed(1)));
+    } else {
+      setVolume(0);
+    }
+  };
 
     return (
       <div className='z-[99] fixed w-full bottom-0'>
@@ -131,16 +154,23 @@ const Player = () => {
             </div>
             {/* Right */}
             <div className='flex flex-row items-center space-x-1 md:space-x-3 justify-end md:pl-0 md:pr-3 mt-3 md:mt-0'>
-                <i className='ri-volume-down-fill button' onClick={()=> volume > 0 && setVolume(volume - 10)}></i>
+               {volume === 0 ? (
+                        <i className='ri-volume-mute-fill button' ></i>
+                    ) : (
+                        <i
+                        className={`ri-volume-down-fill button`}
+                        onClick={decreaseVolume}
+                        ></i>
+                )}
                 <input
                     className='w-14 md:w-24 mb-[6px] md:mt-3 h-1 rounded-full'
                     type='range'
-                    value={volume}
+                    value={volume*100}
                     onChange={handleVolumeChange}
                     min={0}
                     max={100}
                 />
-                <i className='ri-volume-up-fill button' onClick={()=> volume < 100 && setVolume(volume + 10)}></i>
+                <i className='ri-volume-up-fill button' onClick={increaseVolume}></i>
             </div>
         </div>
       </div>
