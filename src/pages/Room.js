@@ -6,7 +6,7 @@ import {useState,useEffect} from 'react';
 import UserAvatar from '../components/UserAvatar';
 import LOGO from '../../src/assets/images/LOGO.png'
 import { useMusicContext } from '../utils/MusicContext';
-const Room = ({user}) => {
+const Room = () => {
 //lay user data tu trong context
   const [showModal, setShowModal] = useState(false);
   const handleOpenModal = () => {
@@ -40,7 +40,7 @@ const Room = ({user}) => {
                   Create a Room
                 </span>
               </button>
-              <UserAvatar user={user}/>
+              <UserAvatar/>
                <div className="relative inline-block">
           </div>
             </div>

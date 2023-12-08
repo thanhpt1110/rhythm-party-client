@@ -8,8 +8,8 @@ const UserAvatar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const {authUser, setAuthUser} = useAuth()
-  console.log(authUser)
-  const toggleMenu = () => {
+  const toggleMenu = (e) => {
+  e.preventDefault();
   setIsOpen(!isOpen);
 };
 
@@ -22,7 +22,6 @@ const UserAvatar = () => {
       console.log('logout response: ' + response.ok);
       if (response.ok) {
         // Xử lý khi logout thành công
-
         console.log('Logout thành công');
         setAuthUser(null)
         localStorage.removeItem('user');
@@ -38,7 +37,7 @@ const UserAvatar = () => {
   return (
     <div>
        <button className="ml-10 flex items-center cursor-pointer" onClick={toggleMenu}>
-        <img className="h-10 w-10 rounded-full" src={authUser ? authUser.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
+        <img className="h-10 w-10 rounded-full" src={authUser.avatar ? authUser.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
         <div>
           <i className="ri-arrow-drop-down-line text-2xl text-white"></i>
         </div>

@@ -6,6 +6,10 @@ import ArtistFav from '../components/ArtistFav'
 import { useMusicContext } from '../utils/MusicContext'
 import {useRef, useState} from 'react';
 import { Link } from 'react-router-dom'
+import { useAuth } from '../utils/AuthContext'
+import SongCard from '../components/SongCard'
+import { useNavigate } from "react-router-dom";
+import api from '../utils/Api'
 const playlistsData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -76,8 +80,11 @@ const artistsData = [
 
 const Profile = () => {
   const fileInputRef = useRef(null);
-  const [image, setImage] = useState(null);
-
+  const {authUser, setAuthUser} = useAuth();
+  const navigate = useNavigate();
+  const [yourListSong, setYourListSong] = useState([]) 
+  const [isLoadedSong, setIsLoadedSong] = useState(false)
+  const [image, setImage] = useState(authUser.avatar);
   const handleImageClick = (event) => {
     event.preventDefault();
     fileInputRef.current.click();
@@ -86,12 +93,33 @@ const Profile = () => {
     setImage(event.target.files[0]);
   };
   const {music, setIsActive} = useMusicContext();
+  const [topsongsData, setTopSongsData] = useState([]);
+  useEffect(()=>{
+    const getMusic = async() => await api.get('/api/music').then(respone=>{
+      if(respone.status===200)
+        {
+            const musics = respone.data.data;
+            setTopSongsData(musics)
+        }
+      else if(respone.status === 401)
+      {
+          setAuthUser(null);
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+    });
+    getMusic()
+  },[])
   useEffect(()=>{
     if(music!==null && music !==undefined)
       setIsActive(true)
     else
       setIsActive(false)
   },[music])
+  useEffect(()=>{
+    if(authUser===null)
+      navigate('/')
+  },[authUser])
   return (
     <div className=''>
       <Header />
@@ -104,12 +132,10 @@ const Profile = () => {
               <div className="relative ">
 
                 {
-                image ? <img src={URL.createObjectURL(image)} alt='' className="h-44 w-44 rounded-full"
+                authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-44 w-44 rounded-full"
                 />
-                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='' className='"h-44 w-44 rounded-full'/>
-
+                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar' className='"h-44 w-44 rounded-full'/>
                 }
-
                 <button className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-6 py-1 rounded text-white flex flex-row gap-2"
                         onClick={handleImageClick}
                 >
@@ -126,13 +152,16 @@ const Profile = () => {
               </div>
               <div className=' absolute  ml-56  w-40  py-2 text-white'>
                 <p>Profile</p>
-                <p className='font-bold text-3xl'>UserName</p>
+                <p className='font-bold text-3xl'>{authUser.displayName}</p>
               </div>
             </div>
           </div>
           <div className='max-w-screen-xl mx-auto p-4 h-full'>
               <div className='flex items-baseline mt-4 justify-between'>
-                 <p className='text-white font-bold text-2xl '>Recent Playlists</p>
+              <div className='flex flex-col gap-2'>
+                  <p className='text-white font-bold text-2xl '>Your playlist</p>
+                  <p className='text-gray-400 text-[12px]'>Only visible for you</p>
+              </div>
                  <Link to='/AllPlaylists' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
               </div>
               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
@@ -148,21 +177,19 @@ const Profile = () => {
               </div>
               <div className='flex items-baseline mt-8 justify-between'>
                 <div className='flex flex-col gap-2'>
-                  <p className='text-white font-bold text-2xl '>Top Artists</p>
+                  <p className='text-white font-bold text-2xl '>Your upload songs</p>
                   <p className='text-gray-400 text-[12px]'>Only visible for you</p>
                 </div>
                  <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
               </div>
               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                {artistsData.slice(0, 6).map((artist, index) => (
-                  <ArtistFav
+                {topsongsData.slice(0, 6).map((song, index) => (
+                  <SongCard
                     key={index}
-                    urlImg={artist.urlImg}
-                    ArtistName={artist.ArtistName}
-                    role={artist.role}
+                    song = {song}
                   />
                 ))}
-              </div>
+            </div>
           </div>
         </div>
       </div>
