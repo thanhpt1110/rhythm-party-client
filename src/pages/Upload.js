@@ -4,18 +4,10 @@ import {useRef, useState,useEffect} from 'react';
 import Header from '../components/Header';
 import Select from 'react-select'
 import { useMusicContext } from '../utils/MusicContext';
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'mint', label: 'Mint' },
-  { value: 'caramel', label: 'Caramel' },
-  { value: 'banana', label: 'Banana' },
-  { value: 'blueberry', label: 'Blueberry' },
-  { value: 'raspberry', label: 'Raspberry' },
-  { value: 'coffee', label: 'Coffee' },
-  { value: 'other', label: 'Other' }
-]
+import api from '../utils/Api';
+
 const Upload = ({user}) => {
+  const [options, setOptions] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
   const [show, setShow] = useState(false);
   const fileInputRef = useRef(null);
@@ -87,8 +79,18 @@ const Upload = ({user}) => {
 };
 const {setIsActive} = useMusicContext();
 useEffect(()=>{
-  setIsActive(false)
-})
+  setIsActive(false);
+  api.get('/api/genre').then(
+    response =>{
+      const data = []
+      response.data.data.map((gerne,index)=>{
+        data.push({label: gerne.musicGenre, value: gerne._id})   
+      })
+      data.push({value: 'other', label: 'Other'})
+      setOptions(data)
+    }
+  )
+},[])
   return (
     <div className='bg-black opacity-90 h-screen w-screen'>
       <Header user={user} type='upload' />
@@ -105,7 +107,7 @@ useEffect(()=>{
             <div>
               <input type='file'
                 onChange={onFileChange}
-                accept='*/*'
+                accept='audio/mp3'
                 style={
                   {display: 'none'}
                 }
