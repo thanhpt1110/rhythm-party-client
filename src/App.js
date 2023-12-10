@@ -1,7 +1,7 @@
 import './App.css';
 import 'remixicon/fonts/remixicon.css';
 import './utils/Global.css';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { Home } from './pages/Home';
 import SignIn from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
@@ -20,56 +20,39 @@ import { AllArtist } from './pages/AllArtist';
 import AlbumDetail from './pages/AlbumDetail';
 import Player from './components/Player';
 import { useMusicContext } from './utils/MusicContext';
+import api from './utils/Api';
 import SongDetail from './pages/SongDetail';
 function App() {
     const [user, setUser] = useState(null)
-    const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
+    const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth();
     const {isActive} = useMusicContext();
     useEffect(()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
         const getUser = ()=>{
-            fetch("http://localhost:8080/" + 'auth/success',
-            {
-                method: 'GET',
-                credentials: 'include',
-                header: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Credentials': true,
-                },
-            }
-        ).then(respone => {
+            api.get('/auth/success').then(respone => {
             if(respone.status === 200)
-                return respone.json();
+                return respone.data;
             return {user: null, isAuthentication: false }
         }).then(resObject=>{
             if(resObject.user!==null)
             {
                 setAuthUser(resObject.user.user)
-                var jsonStringUser = JSON.stringify(resObject.user.user);
-                localStorage.setItem('user',jsonStringUser);
                 localStorage.setItem('accessToken',resObject.user.accessToken);
             }
         })
         }
-        if(localStorage.getItem('user')===null || localStorage.getItem('accessToken')===null)
-            getUser();
-        else
-        {
-            var storedJsonUser = localStorage.getItem('user');
-            var storedUser = JSON.parse(storedJsonUser);
-            setAuthUser(storedUser)
-        }
+        getUser();
     },[])
     return (
         <div>
             <Routes>
                 <Route path='/' element={<Home />} />
-                <Route path='/signin' element={<SignIn />} />
-                <Route path='/signup' element={<SignUp />} />
-                <Route path='/rooms' element={<Room />} />
-                <Route path='/upload' element={<Upload />} />
-                <Route path='/profile' element={<Profile />} />
-                <Route path='/accountsetting' element={<Account/>} />
+                <Route path='/signin' element={authUser === null ?<SignIn />: <Navigate to='/profile'/>} />
+                <Route path='/signup' element={authUser === null ?<SignUp />: <Navigate to='/profile'/>} />
+                <Route path='/rooms' element={authUser !== null ? <Room />: <Navigate to= '/signin'/>} />
+                <Route path='/upload' element={authUser !== null ? <Upload /> : <Navigate to='/signin'/>} />
+                <Route path='/profile' element={authUser !== null ? <Profile />: <Navigate to='/signin'/>} />
+                {/* khong can truyen user vaof trong element ntn, trong component, lay user data tu context */}
+                <Route path='/accountsetting' element={authUser !== null ?<Account/>: <Navigate to='/signin'/>} />
                 <Route path='/about' element={<About />} />
                 <Route path='/report' element={<ReportIssues />} />
                 <Route path='/AllPlaylists' element={<AllPlaylist />} />

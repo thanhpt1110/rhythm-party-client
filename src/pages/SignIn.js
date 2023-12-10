@@ -1,20 +1,35 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { useMusicContext } from '../utils/MusicContext';
+import api from '../utils/Api';
 const SignIn = () => {
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-
-  // const handleSubmit = (e) => {
-  // e.preventDefault();
-  // // Perform sign-in logic here
-  // console.log(`Email: ${email}, Password: ${password}`);
-  // // Reset form fields
-  // setEmail('');
-  // setPassword('');
-  // };
-  // Google login fucntion
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoginFailed, setIsLoginFailed] = useState(false);
+  const handleEnterUserName = (e)=>{
+    setUsername(e.target.value);
+  }
+  const handleEnterPassword = (e)=>{
+    setPassword(e.target.value);
+  }
+  const handleLoginSubmit = (e) => {
+  e.preventDefault();
+    const account = {username: username, password: password}
+    api.post('/auth/user/login',account).then(respone=>{
+      console.log(respone.data)
+      if(respone.status===200)
+        {
+          window.open('http://localhost:3000','self')
+        }
+      else if (respone.status === 401)
+        {
+          setIsLoginFailed(true)
+        }
+    }
+    )
+  };
+  //Google login fucntion
   const googleLogin = ()=>{
     window.open('http://localhost:8080/auth/google','self')
   };
@@ -22,6 +37,9 @@ const SignIn = () => {
   useEffect(()=>{
     setIsActive(false)
   })
+  const loginLocalAccount = () =>{
+
+  }
   return (
     <div>
       <Header/>
@@ -32,12 +50,12 @@ const SignIn = () => {
           <form className='mt-6' action='#'>
             <div>
               <label className='block text-gray-200'>Email:</label>
-              <input type='email' name='' id='email' placeholder='Enter your email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white ' autoFocus autoComplete='' required/>
+              <input type='email' name='' id='email' value={username} onChange={handleEnterUserName} placeholder='Enter your email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white ' autoFocus autoComplete='' required/>
             </div>
 
             <div className='mt-4'>
               <label className='block text-gray-200'>Password:</label>
-              <input type='password' name='' id='pass' placeholder='Enter password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
+              <input type='password' name='' id='pass' value={password} onChange={handleEnterPassword} placeholder='Enter password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <div className='text-right mt-2'>
@@ -45,8 +63,11 @@ const SignIn = () => {
                 Forgot Password?
               </a>
             </div>
-
-            <button type='submit' className='w-full block bg-blue-500  text-white font-semibold rounded-lg px-4 py-3 mt-6 text-sm hover:scale-105 duration-300'>
+            { isLoginFailed && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
+                <strong className="font-bold">Thông báo!</strong>
+                <span className="block sm:inline"> Thông tin đăng nhập không đúng. Vui lòng kiểm tra lại.</span>
+            </div>}
+            <button type='submit' onClick={handleLoginSubmit} className='w-full block bg-blue-500  text-white font-semibold rounded-lg px-4 py-3 mt-6 text-sm hover:scale-105 duration-300'>
               Log In
             </button>
           </form>

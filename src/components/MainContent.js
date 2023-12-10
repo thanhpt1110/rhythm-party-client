@@ -47,13 +47,15 @@ const MainContent = () => {
   const [topsongsData, setTopSongsData] = useState([]);
   useEffect(()=>{
     api.get('/api/music/top-music?quantity=20&index=0').then(respone=>{
+      console.log(respone)
       if(respone.status===200)
         {
             const musics = respone.data.data;
-            console.log(musics)
             setTopSongsData(musics)
         }
-    })
+    }).catch(error => {
+    console.error('Error:', error);
+  });
   },[])
   const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
   return (

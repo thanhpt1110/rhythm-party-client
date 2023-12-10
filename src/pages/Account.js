@@ -2,9 +2,14 @@ import React, { useEffect } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useMusicContext } from '../utils/MusicContext'
+import { useAuth } from '../utils/AuthContext'
 
 const Account = () => {
   const {setIsActive} = useMusicContext();
+  const {authUser, setAuthUser} = useAuth();
+  const handleSaveNewAccount = ()=>{
+    
+  }
   useEffect(()=>{
       setIsActive(false)
   })
