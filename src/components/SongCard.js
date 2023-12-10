@@ -1,5 +1,6 @@
 import React from "react";
 import { useMusicContext } from "../utils/MusicContext";
+import { Link } from 'react-router-dom';
 const SongCard = ({song}) => {
   const {music,setMusic,isPlaying, setIsPlaying} = useMusicContext()
   const handleOnclick = async(e) =>{
@@ -11,7 +12,7 @@ const SongCard = ({song}) => {
           <div className="w-40 h-40">
             <img src={song.imgUrl} alt="SongImage" className="rounded object-cover h-40 w-40" />
           </div>
-          <p className="font-semibold text-base mt-2 truncate w-full">{song.musicName}</p>
+          <Link to='/songdetail' className="font-semibold text-base mt-2 truncate w-full hover:underline">{song.musicName}</Link>
           <p className="text-xs text-gray-400 truncate w-full">{song.author}</p>
         </div>
     </div>

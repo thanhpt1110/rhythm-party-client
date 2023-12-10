@@ -98,7 +98,7 @@ useEffect(()=>{
         !show ? (
           <form className='min-h-[400px] flex items-center justify-center flex-col gap-4 rounded-xl bg-[#181818] hover:bg-gray-800'
           >
-            <i className='ri-upload-cloud-line text-5xl text-blue-400 '></i>
+            <i className='ri-upload-cloud-line text-5xl text-indigo-600 '></i>
             <h1 className='text-2xl font-bold text-center'>
               Choose or drag and drop files to upload.
             </h1>
@@ -110,7 +110,7 @@ useEffect(()=>{
                   {display: 'none'}
                 }
                 ref={fileInputRef}/>
-              <button className='bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-6 rounded hover:scale-105 duration-300 mt-2'
+              <button className='bg-gradient-to-r from-indigo-600 to-purple-700  text-white py-2 px-6 rounded hover:scale-105 duration-300 mt-2'
                 onClick={handleFileSelection}>
                 Choose File
               </button>
