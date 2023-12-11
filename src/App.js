@@ -21,6 +21,7 @@ import AlbumDetail from './pages/AlbumDetail';
 import Player from './components/Player';
 import { useMusicContext } from './utils/MusicContext';
 import api from './utils/Api';
+import SongDetail from './pages/SongDetail';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth();
@@ -59,6 +60,7 @@ function App() {
                 <Route path='/AllArtist' element={<AllArtist />} />
                 <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
+                <Route path='/songdetail' element={<SongDetail/>} />
             </Routes>
             <div>
                 {isActive && <Player />}
