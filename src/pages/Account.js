@@ -8,7 +8,7 @@ const Account = () => {
   const {setIsActive} = useMusicContext();
   const {authUser, setAuthUser} = useAuth();
   const handleSaveNewAccount = ()=>{
-    
+
   }
   useEffect(()=>{
       setIsActive(false)
@@ -24,9 +24,9 @@ const Account = () => {
               <h2 className='font-bold text-4xl'>Account Setting</h2>
               <div className='mt-12 flex flex-col gap-4'>
                 <p>UserName :</p>
-                <input type="text" value='UserName_Google' className='w-2/3 bg-black border border-gray-400 rounded h-12 px-2' />
+                <input type="text" value={authUser.displayName} className='w-2/3 bg-black border border-gray-400 rounded h-12 px-2' />
                 <p>Email :</p>
-                <input type="text" value='Email of User' className='w-2/3 bg-black border border-gray-400  rounded h-12
+                <input type="text" value={authUser.role} className='w-2/3 bg-black border border-gray-400  rounded h-12
                 px-2' />
                 <p>Gender :</p>
                 <select name="genderUser" id="genderUser" className='w-2/3 bg-black border border-gray-400 rounded h-12
@@ -36,7 +36,7 @@ const Account = () => {
                   <option>Others</option>
                 </select>
                 <p>Password :</p>
-                <input type="password" value='123456' className='w-2/3 bg-black border border-gray-400  rounded h-12
+                <input type="password" value={authUser.password} className='w-2/3 bg-black border border-gray-400  rounded h-12
                 px-2 ' />
                 <div className='flex flex-row gap-2 items-center'>
                   <input type="checkbox" id="myCheckbox" className='h-4'/>
