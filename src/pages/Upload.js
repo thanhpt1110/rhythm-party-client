@@ -5,23 +5,124 @@ import Header from '../components/Header';
 import Select from 'react-select'
 import { useMusicContext } from '../utils/MusicContext';
 import api from '../utils/Api';
-
+import { storage } from '../utils/Firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 const Upload = ({user}) => {
+  const audioRef = useRef(null);
   const [options, setOptions] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedMusic, setSelectedMusic] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [musicName, setMusicName] = useState('');
+  const [description, setDesscription] = useState('');
+  const [selectedPrivacy, setSelectedPrivacy] = useState('Private');
+  const [musicGerne, setMusicGerne] = useState([]);
+  const [artist, setArtist] = useState('');
+  const [lyrics, setLyrics] = useState('');
+  const [duration, setDuration] = useState(0);
   const [show, setShow] = useState(false);
-  const fileInputRef = useRef(null);
-  const onFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-    setShow(!show);
+  const musicInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+  const onMusicChange = (event) => {
+    if(event.target.files.length>0 )
+    {
+      setSelectedMusic(event.target.files[0]);
+      setShow(!show);
+      console.log(selectedMusic)
+      if (selectedMusic) {
+        const audio = audioRef.current;
+        const objectURL = URL.createObjectURL(selectedMusic);
+        audio.src = objectURL;
+        audio.onloadedmetadata = () => {
+          // Thời lượng bài hát (trong giây)
+          setDuration(audio.duration);
+          // Cần giải phóng URL đối tượng khi không sử dụng nữa để tránh rò rỉ bộ nhớ
+          URL.revokeObjectURL(objectURL);
+        };
+      }
+    }
+  };
+  const handleRadioChange = (event) => {
+    setSelectedPrivacy(event.target.id);
   };
   const handleCancelUpload = () => {
     setShow(false);
   }
-  const handleFileSelection = (event) => {
+  const handleMusicSelection = (event) => {
     event.preventDefault();
-    fileInputRef.current.click();
+    musicInputRef.current.click();
   };
+  const handleImageSelection = (event)=>{
+    event.preventDefault();
+    imageInputRef.current.click();
+  }
+  const onImageChange = (event) => {
+    if(event.target.files.length>0 )
+      setSelectedImage(event.target.files[0]);
+  };
+  const uploadFile = (folder, file, id) => {
+    return new Promise((resolve, reject) => {
+      if (file) {
+        const storageRef = ref(storage, `${folder}/${`${id}.mp3`}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          },
+          (error) => {
+            alert(error);
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              console.log(`URL: ${downloadURL}`);
+              resolve(downloadURL);
+            });
+          }
+        );
+      }
+    });
+  };
+  
+  const handleUploadMusic = async () => {
+    if(!selectedImage || !selectedMusic)
+    {
+      alert("Please add your music Image")
+    }
+    console.log(musicGerne.label)
+    const gerne = [];
+    musicGerne.map((music,index)=>{
+      gerne.push(music.label);
+    })
+    const music = {
+      musicName: musicName,
+      genre: gerne,
+      author: artist,
+      lyrics: lyrics,
+      duration: Math.floor(duration),
+      description: description,
+      releaseYear: (new Date()).getFullYear(),
+      musicPrivacyType: selectedPrivacy
+    }
+    console.log(music)
+    api.post('/api/music',music).then(
+      async respone=>{
+        const data = respone.data.data;
+        const musicURL =  await uploadFile("music", selectedMusic, data._id);
+        const imageURL = await uploadFile('music_avatar',selectedImage,data._id);
+        data.imgUrl = imageURL;
+        data.url = musicURL;
+        console.log(data)
+        api.put(`/api/music/${data._id}`,data).then(respone=>{
+          alert("Upload Music Success")
+        }).catch(e=>alert("Upload music failed"))
+      }
+    ).catch(e=>alert("Upload music failed"))
+    // console.log(`Music URL: ${musicURL}`);
+    // console.log(`Image URL: ${imageURL}`);
+  };
+  
   const colorStyles = {
     control: (styles) => {
       return {
@@ -66,16 +167,14 @@ const Upload = ({user}) => {
 
   const [showOtherInput, setShowOtherInput] = useState(false);
   const handleInputGenreChange = (inputValue, actionMeta) => {
-    console.log("handleInputChange", inputValue, actionMeta);
+    // Handle trc khi đưa vô
   };
-  const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleGenreChange = (selectedOption, actionMeta) => {
-    setShowOtherInput(selectedOption.some(option => option.value === 'other'));
-    if (selectedOption.length <= 3) {
-      setSelectedOptions(selectedOption);
+    if (selectedOption.length <= 3 ) {
+      setMusicGerne(selectedOption);
     }
-
+    setShowOtherInput(selectedOption.some(option => option.value === 'other'));
 };
 const {setIsActive} = useMusicContext();
 useEffect(()=>{
@@ -94,6 +193,7 @@ useEffect(()=>{
   return (
     <div className='bg-black opacity-90 h-screen w-screen'>
       <Header user={user} type='upload' />
+      <audio ref={audioRef} controls />
       <div className=' text-white bg-black '>
          <main className=' container py-24  mx-auto px-4 md:px-0 md:w-[60%] '>
         {
@@ -106,14 +206,14 @@ useEffect(()=>{
             </h1>
             <div>
               <input type='file'
-                onChange={onFileChange}
+                onChange={onMusicChange}
                 accept='audio/mp3'
                 style={
                   {display: 'none'}
                 }
-                ref={fileInputRef}/>
+                ref={musicInputRef}/>
               <button className='bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-6 rounded hover:scale-105 duration-300 mt-2'
-                onClick={handleFileSelection}>
+                onClick={handleMusicSelection}>
                 Choose File
               </button>
             </div>
@@ -121,12 +221,31 @@ useEffect(()=>{
         ) : (
           <form className=' flex flex-col border border-gray-800 rounded shadow bg-[#181818] my-20 '>
             <div className='flex flex-row justify-between mt-14 md:px-16 gap-8'>
-              <div className='flex items-end justify-center w-56 h-56 bg-gradient-to-r from-[#846170] to-[#70929c]'>
-                <button className='mb-4 bg-slate-600 flex rounded-lg items-center px-2 gap-2 py-1'>
+            <input type='file'
+                onChange={onImageChange}
+                accept='image/*'
+                style={
+                  {display: 'none'}
+                }
+                ref={imageInputRef}/>
+            {!selectedImage ? <div className='flex items-end justify-center w-56 h-56 bg-gradient-to-r from-[#846170] to-[#70929c]'>
+                <button className='mb-4 bg-slate-600 flex rounded-lg items-center px-2 gap-2 py-1' 
+                type='button'
+                onClick={handleImageSelection}>
                   <i class="ri-camera-line"></i>
                   <p className='text-[14px]'>Upload image</p>
                 </button>
-              </div>
+              </div>:
+              <div className='flex items-end justify-center w-56 h-56'>
+                <img src={URL.createObjectURL(selectedImage)} alt="SongImage" className="rounded object-cover h-40 w-40" />
+                <button className='mb-4 bg-slate-600 flex rounded-lg items-center px-2 gap-2 py-1' 
+                onClick={handleImageSelection}
+                type = 'button'>
+                  <i class="ri-camera-line"></i>
+                  <p className='text-[14px]'>Upload image</p>
+                </button>
+              </div>}
+
               <div className='w-3/4 flex flex-col'>
                 <div className='flex flex-row gap-1 items-center '>
                   <p className='font-bold text-sm'>Title</p>
@@ -134,15 +253,20 @@ useEffect(()=>{
                 </div>
                 <input className='w-full border bg-[#181818] mt-2 px-2 rounded py-2 focus:border-slate-400'
                   placeholder={
-                    selectedFile.name
+                    selectedMusic.name
                   }
+                  value={musicName}
+                  onChange={e=>{setMusicName(e.target.value)}}
                   required/>
                   <div className='my-2'>
                     <div className='flex flex-row gap-1 items-center '>
                       <p className='font-bold text-sm'>Artist</p>
                       <span className='text-red-600'>*</span>
                     </div>
-                    <input type="text" className='border bg-[#181818] px-2 rounded mt-1 py-2 w-full' required/>
+                    <input type="text" className='border bg-[#181818] px-2 rounded mt-1 py-2 w-full' 
+                    value={artist}
+                    onChange={e=>{setArtist(e.target.value)}}
+                    required/>
                   </div>
                   <div className='my-2'>
                     <div className='flex flex-row gap-1 items-center '>
@@ -157,23 +281,33 @@ useEffect(()=>{
                             placeholder="Pick your genre"
                             onInputChange={handleInputGenreChange}
                             onChange={handleGenreChange}
-                            value={selectedOptions} maxValues={3}
+                            value={musicGerne} maxValues={3}
                           />
                           {showOtherInput && <input className=' mt-4 border bg-[#181818] px-2 rounded py-2 w-full' type="text" placeholder="Please fill your other genre" />}
                         </div>
                   </div>
                 <p className='font-bold text-sm '>Description</p>
-                <textarea name="descriptionSong" id="descriptionSong" className=' resize-none h-28 border bg-[#181818] px-2 rounded mt-2 py-1' placeholder='Describe your track' cols="20" rows="10"></textarea>
+                <textarea 
+                value={description}
+                onChange={e=>setDesscription(e.target.value)}
+                name="descriptionSong" id="descriptionSong" className=' resize-none h-28 border bg-[#181818] px-2 rounded mt-2 py-1' placeholder='Describe your track' cols="20" rows="10"></textarea>
                 <p className='font-bold text-sm my-2 '>Lyrics</p>
-                <textarea name="lyricSong" id="lyricSong" className=' h-60 border bg-[#181818] px-2 rounded py-2' cols="30" rows="10"></textarea>
+                <textarea 
+                value={lyrics}
+                onChange={e=>setLyrics(e.target.value)}
+                name="lyricSong" id="lyricSong" className=' h-60 border bg-[#181818] px-2 rounded py-2' cols="30" rows="10"></textarea>
                 <p className='font-bold mt-2'>Privacy</p>
                 <div className="flex mt-4 flex-col gap-1">
                   <div>
-                    <input type="radio" name="visibility" id="Public"/>
+                    <input type="radio" name="visibility" id="Public"
+                           checked={selectedPrivacy === 'Public'}
+                           onChange={handleRadioChange}/>
                     <label htmlFor="Public" className="cursor-pointer py-2 px-4 rounded ">Public</label>
                   </div>
                   <div>
-                    <input type="radio" name="visibility" id="Private"/>
+                  <input type="radio" name="visibility" id="Private"
+                           checked={selectedPrivacy === 'Private'}
+                           onChange={handleRadioChange}/>
                     <label htmlFor="Private" className="cursor-pointer py-2 px-4 rounded">Private</label>
                   </div>
                   <p className='ml-7 text-xs text-gray-400'>Only you and people share a secret link with will be able to listen to this track</p>
@@ -189,11 +323,11 @@ useEffect(()=>{
               <div className='flex gap-4 text-sm'>
                 <button className='hover:bg-slate-300 px-6 rounded py-2 hover:text-black'
                   onClick={handleCancelUpload}>Cancel</button>
-                <button className=' bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 px-6 rounded py-2 text-white'>Save</button>
+                <button onClick={handleUploadMusic} type='button'
+                 className=' bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 px-6 rounded py-2 text-white'>Save</button>
               </div>
             </div>
           </form>
-
         )
       } </main>
       <Footer className='pt-40'/>
