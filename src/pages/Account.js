@@ -1,15 +1,30 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useMusicContext } from '../utils/MusicContext'
 import { useAuth } from '../utils/AuthContext'
+import api from '../utils/Api'
 
 const Account = () => {
   const {setIsActive} = useMusicContext();
   const {authUser, setAuthUser} = useAuth();
+  const [displayName, setDisplayName] = useState(authUser.displayName);
+  const [selectedGender, setSelectedGender] = useState(authUser.gender ? authUser.gender : "None");
+  const {email, setEmail} = useState(authUser.email)
   const handleSaveNewAccount = ()=>{
-
+    const user = {displayName: displayName, gender: selectedGender};
+    api.put(`/api/user/${authUser._id}`,user).then(response => {
+      setAuthUser(response.data.data)
+    }).catch(e=>{
+      alert("Update user failed");
+    })
   }
+  const handleNameOnchange = (e)=>{
+    setDisplayName(e.target.value)
+  }
+  const handleGenderChange = (event) => {
+    setSelectedGender(event.target.value);
+  };
   useEffect(()=>{
       setIsActive(false)
   })
@@ -24,19 +39,25 @@ const Account = () => {
               <h2 className='font-bold text-4xl'>Account Setting</h2>
               <div className='mt-12 flex flex-col gap-4'>
                 <p>UserName :</p>
-                <input type="text" value={authUser.displayName} className='w-2/3 bg-black border border-gray-400 rounded h-12 px-2' />
+                <input type="text" 
+                value={authUser.displayName}
+                onChange={handleNameOnchange}
+                className='w-2/3 bg-black border border-gray-400 rounded h-12 px-2' />
                 <p>Email :</p>
-                <input type="text" value={authUser.role} className='w-2/3 bg-black border border-gray-400  rounded h-12
+                <input type="text" value={authUser.email} className='w-2/3 bg-black border border-gray-400  rounded h-12
                 px-2' />
                 <p>Gender :</p>
-                <select name="genderUser" id="genderUser" className='w-2/3 bg-black border border-gray-400 rounded h-12
-                px-2'>
-                  <option>Male</option>
-                  <option>Female</option>
-                  <option>Others</option>
+                <select name="genderUser" id="genderUser" 
+                className='w-2/3 bg-black border border-gray-400 rounded h-12 px-2'
+                value={selectedGender}
+                onChange={handleGenderChange}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+                <option value="None">None</option>
                 </select>
                 <p>Password :</p>
-                <input type="password" value={authUser.password} className='w-2/3 bg-black border border-gray-400  rounded h-12
+                <input type="password" value={`Hello ne`} className='w-2/3 bg-black border border-gray-400  rounded h-12
                 px-2 ' />
                 <div className='flex flex-row gap-2 items-center'>
                   <input type="checkbox" id="myCheckbox" className='h-4'/>

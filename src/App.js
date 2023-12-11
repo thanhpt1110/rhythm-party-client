@@ -25,25 +25,31 @@ import SongDetail from './pages/SongDetail';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth();
+    const [loading, setLoading] = useState(true);
     const {isActive} = useMusicContext();
-    useEffect(()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
-        const getUser = ()=>{
-            api.get('/auth/success').then(respone => {
+    useEffect( ()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
+        
+        const getUser = async ()=>{
+            await api.get('/auth/success').then(respone => {
             if(respone.status === 200)
                 return respone.data;
             return {user: null, isAuthentication: false }
-        }).then(resObject=>{
+        }).then( (resObject)=>{
             if(resObject.user!==null)
             {
                 setAuthUser(resObject.user.user)
                 localStorage.setItem('accessToken',resObject.user.accessToken);
             }
+                setLoading(false)
         })
         }
         getUser();
     },[])
     return (
+        loading ? (
         <div>
+            <span class="loader"></span>
+        </div>) :(<div>
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/signin' element={authUser === null ?<SignIn />: <Navigate to='/profile'/>} />
@@ -65,8 +71,7 @@ function App() {
             <div>
                 {isActive && <Player />}
             </div>
-        </div>
-
+        </div>)
     );
 }
 
