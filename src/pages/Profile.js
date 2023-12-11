@@ -82,7 +82,7 @@ const Profile = () => {
   const fileInputRef = useRef(null);
   const {authUser, setAuthUser} = useAuth();
   const navigate = useNavigate();
-  const [yourListSong, setYourListSong] = useState([]) 
+  const [yourListSong, setYourListSong] = useState([])
   const [isLoadedSong, setIsLoadedSong] = useState(false)
   const [image, setImage] = useState(authUser.avatar);
   const handleImageClick = (event) => {
@@ -150,7 +150,7 @@ const Profile = () => {
                 }
                 ref={fileInputRef}/>
               </div>
-              <div className=' absolute  ml-56  w-40  py-2 text-white'>
+              <div className=' absolute  ml-56  w-96  py-2 text-white'>
                 <p>Profile</p>
                 <p className='font-bold text-3xl'>{authUser.displayName}</p>
               </div>

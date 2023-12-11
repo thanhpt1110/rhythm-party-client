@@ -60,7 +60,7 @@ function App() {
                 <Route path='/AllArtist' element={<AllArtist />} />
                 <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
-                <Route path='/songdetail' element={<SongDetail/>} />
+                <Route path='/song-detail/:id' element={<SongDetail/>} />
             </Routes>
             <div>
                 {isActive && <Player />}

@@ -14,7 +14,7 @@ const SongCard = ({song}) => {
           <div className="w-40 h-40">
             <img src={song.imgUrl} alt="SongImage" className="rounded object-cover h-40 w-40" />
           </div>
-          <Link to='/songdetail' className="font-semibold text-base mt-2 truncate w-full hover:underline">{song.musicName}</Link>
+          <Link to={`/song-detail/${song._id}`} className="font-semibold text-base mt-2 truncate w-full hover:underline">{song.musicName}</Link>
           <p className="text-xs text-gray-400 truncate w-full">{song.author}</p>
         </div>
     </div>
