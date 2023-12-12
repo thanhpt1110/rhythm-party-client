@@ -3,8 +3,6 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useEffect } from 'react'
 import { useMusicContext } from '../utils/MusicContext'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const About = () => {
   const {setIsActive} = useMusicContext();

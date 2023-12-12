@@ -5,6 +5,7 @@ import { useMusicContext } from '../utils/MusicContext'
 import { useAuth } from '../utils/AuthContext'
 import api from '../utils/Api'
 import { ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';
 
 const Account = () => {
@@ -22,6 +23,14 @@ const Account = () => {
     }).catch(e=>{
       toast.error('Update User Failed!');
     })
+      setTimeout(() => {
+      window.location.href = '/profile';
+    }, 3000);
+  }
+  const handleClick = (e)=>{
+    e.preventDefault();
+    handleSaveNewAccount();
+
   }
   const handleNameOnchange = (e)=>{
     setDisplayName(e.target.value)
@@ -80,7 +89,7 @@ const Account = () => {
                 </div>
                 <div className='flex flex-row justify-end gap-8 w-2/3 items-center'>
                   <a href='/' className='hover:scale-110 duration-300'>Cancel</a>
-                  <a href='/profile' className='px-8 py-2 rounded bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' onClick={handleSaveNewAccount}>Save</a>
+                  <Link to='/profile' onClick={handleClick} className='px-8 py-2 rounded bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' >Save</Link>
                 </div>
               </div>
           </div>
