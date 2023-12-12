@@ -7,6 +7,10 @@ import { useMusicContext } from '../utils/MusicContext';
 import api from '../utils/Api';
 import { storage } from '../utils/Firebase';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const Upload = ({user}) => {
   const audioRef = useRef(null);
   const [options, setOptions] = useState([]);
@@ -84,11 +88,11 @@ const Upload = ({user}) => {
       }
     });
   };
-  
+
   const handleUploadMusic = async () => {
     if(!selectedImage || !selectedMusic)
     {
-      alert("Please add your music Image")
+      toast.warn('Please add your music Image !');
     }
     console.log(musicGerne.label)
     const gerne = [];
@@ -115,14 +119,14 @@ const Upload = ({user}) => {
         data.url = musicURL;
         console.log(data)
         api.put(`/api/music/${data._id}`,data).then(respone=>{
-          alert("Upload Music Success")
-        }).catch(e=>alert("Upload music failed"))
+          toast.success('Upload Success !');
+        }).catch(e=>toast.error('Upload Failed.'))
       }
-    ).catch(e=>alert("Upload music failed"))
+    ).catch(e=>toast.error('Upload Failed.'))
     // console.log(`Music URL: ${musicURL}`);
     // console.log(`Image URL: ${imageURL}`);
   };
-  
+
   const colorStyles = {
     control: (styles) => {
       return {
@@ -183,7 +187,7 @@ useEffect(()=>{
     response =>{
       const data = []
       response.data.data.map((gerne,index)=>{
-        data.push({label: gerne.musicGenre, value: gerne._id})   
+        data.push({label: gerne.musicGenre, value: gerne._id})
       })
       data.push({value: 'other', label: 'Other'})
       setOptions(data)
@@ -191,7 +195,18 @@ useEffect(()=>{
   )
 },[])
   return (
-    <div className='bg-black opacity-90 h-screen w-screen'>
+    <div className='bg-black opacity-90 h-full w-full'>
+      <ToastContainer position="bottom-right"
+                              autoClose={2000}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              className=''
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
+                              theme="dark" />
       <Header user={user} type='upload' />
       <audio ref={audioRef} controls />
       <div className=' text-white bg-black '>
@@ -229,16 +244,16 @@ useEffect(()=>{
                 }
                 ref={imageInputRef}/>
             {!selectedImage ? <div className='flex items-end justify-center w-56 h-56 bg-gradient-to-r from-[#846170] to-[#70929c]'>
-                <button className='mb-4 bg-slate-600 flex rounded-lg items-center px-2 gap-2 py-1' 
+                <button className='mb-4 bg-slate-600 flex rounded-lg items-center px-2 gap-2 py-1 '
                 type='button'
                 onClick={handleImageSelection}>
                   <i class="ri-camera-line"></i>
                   <p className='text-[14px]'>Upload image</p>
                 </button>
               </div>:
-              <div className='flex items-end justify-center w-56 h-56'>
-                <img src={URL.createObjectURL(selectedImage)} alt="SongImage" className="rounded object-cover h-40 w-40" />
-                <button className='mb-4 bg-slate-600 flex rounded-lg items-center px-2 gap-2 py-1' 
+              <div className='relative w-56 h-56'>
+                <img src={URL.createObjectURL(selectedImage)} alt="SongImage" className="rounded object-cover h-56 w-56" />
+                <button className=' opacity-0 hover:opacity-100 absolute bottom-0 mb-4 bg-slate-600 ml-10 flex rounded-lg items-center px-2 gap-2 py-1'
                 onClick={handleImageSelection}
                 type = 'button'>
                   <i class="ri-camera-line"></i>
@@ -263,7 +278,7 @@ useEffect(()=>{
                       <p className='font-bold text-sm'>Artist</p>
                       <span className='text-red-600'>*</span>
                     </div>
-                    <input type="text" className='border bg-[#181818] px-2 rounded mt-1 py-2 w-full' 
+                    <input type="text" className='border bg-[#181818] px-2 rounded mt-1 py-2 w-full'
                     value={artist}
                     onChange={e=>{setArtist(e.target.value)}}
                     required/>
@@ -287,12 +302,12 @@ useEffect(()=>{
                         </div>
                   </div>
                 <p className='font-bold text-sm '>Description</p>
-                <textarea 
+                <textarea
                 value={description}
                 onChange={e=>setDesscription(e.target.value)}
                 name="descriptionSong" id="descriptionSong" className=' resize-none h-28 border bg-[#181818] px-2 rounded mt-2 py-1' placeholder='Describe your track' cols="20" rows="10"></textarea>
                 <p className='font-bold text-sm my-2 '>Lyrics</p>
-                <textarea 
+                <textarea
                 value={lyrics}
                 onChange={e=>setLyrics(e.target.value)}
                 name="lyricSong" id="lyricSong" className=' h-60 border bg-[#181818] px-2 rounded py-2' cols="30" rows="10"></textarea>
