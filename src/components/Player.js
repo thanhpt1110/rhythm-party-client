@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useMusicContext } from '../utils/MusicContext';
+import ToolTip from './ToolTip';
+
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -86,6 +88,10 @@ const Player = () => {
       setVolume(0);
     }
   };
+  const [showSubMenu, setShowSubMenu] = useState(false);
+  const handleIconAddPlaylistClick = () => {
+    setShowSubMenu(!showSubMenu);
+  };
 
     return (
       <div className='z-[99] fixed w-full bottom-0'>
@@ -95,19 +101,44 @@ const Player = () => {
 
             <div className='flex items-center gap-2 md:gap-0'>
                 <img
-                    className='hidden md:inline h-10 w-10'
+                    className='hidden md:inline h-12 w-12 rounded object-cover'
                     src={music !==null ? music.imgUrl : 'https://media.pitchfork.com/photos/650de105eacc5b460e151343/master/w_1280%2Cc_limit/Taylor-Swift-1989-Taylors-Version.jpg'}
                     alt='playerImg'
                 />
-                <div className='md:w-36 md:ml-4 '>
-                    <h3 className=' font-bold text-base truncate'>{music && music.musicName}</h3>
-                    <p className=' font-semibold text-xs truncate'>{music && music.author}</p>
+                <div className='md:w-36 w-20 md:ml-4 flex flex-col gap-[2px] '>
+                    <h3 className=' font-bold text-[12px] md:text-base truncate'>{music && music.musicName}</h3>
+                    <p className=' font-semibold text-[10px] md:text-xs text-gray-300 truncate'>{music && music.author}</p>
                 </div>
-                <i
-                    className={isLiked ? 'ri-heart-fill text-xs md:text-xl  cursor-pointer' : 'ri-heart-line text-xs md:text-xl cursor-pointer'}
-                    onClick={handleIconLikeClick}
-                    >
-                    </i>
+               <div className='ml-4 md:ml-20 w-full'>
+                 <ToolTip text="Add to Favorite">
+                  <i  className={isLiked ? 'ri-heart-fill text-xs md:text-xl  cursor-pointer' : 'ri-heart-line text-xs md:text-xl cursor-pointer'}
+                    onClick={handleIconLikeClick}></i>
+                  </ToolTip>
+               </div>
+                <div className='w-full'>
+                  <ToolTip text="Add to Playlist">
+                    <i onClick={handleIconAddPlaylistClick} className="ri-play-list-fill text-xs md:text-xl cursor-pointer "></i>
+                  </ToolTip>
+                  {showSubMenu && (
+                    <div className='absolute bottom-20 left-96 mt-12 px-2 pt-2 pb-10 text-sm bg-gray-700 rounded shadow'>
+                      <ul className='text-white '>
+                        <li className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' >
+                          <i className="ri-add-fill"></i>
+                          <p>Create new Playlist</p>
+                        </li>
+                        <li className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' >
+                          <i className="ri-play-list-2-fill"></i>
+                          <p>Playlist 1</p>
+                        </li>
+                        <li className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' >
+                          <i className="ri-play-list-2-fill"></i>
+                          <p>Playlist 2</p>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
             </div>
             {/* Center */}
             <div className='items-center flex md:flex-col justify-evenly '>
