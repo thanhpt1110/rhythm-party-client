@@ -24,6 +24,7 @@ const Upload = ({user}) => {
   const [lyrics, setLyrics] = useState('');
   const [duration, setDuration] = useState(0);
   const [show, setShow] = useState(false);
+  const [isEnableUpload, SetIsEnableUpload] = useState(true);
   const musicInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const onMusicChange = (event) => {
@@ -90,10 +91,16 @@ const Upload = ({user}) => {
   };
 
   const handleUploadMusic = async () => {
+    if(!isEnableUpload)
+    {
+      console.log("Block");
+      return;
+    }
     if(!selectedImage || !selectedMusic)
     {
       toast.warn('Please add your music Image !');
     }
+    SetIsEnableUpload(false);
     console.log(musicGerne.label)
     const gerne = [];
     musicGerne.map((music,index)=>{
@@ -110,7 +117,7 @@ const Upload = ({user}) => {
       musicPrivacyType: selectedPrivacy
     }
     console.log(music)
-    api.post('/api/music',music).then(
+    await api.post('/api/music',music).then(
       async respone=>{
         const data = respone.data.data;
         const musicURL =  await uploadFile("music", selectedMusic, data._id);
@@ -120,9 +127,13 @@ const Upload = ({user}) => {
         console.log(data)
         api.put(`/api/music/${data._id}`,data).then(respone=>{
           toast.success('Upload Success !');
-        }).catch(e=>toast.error('Upload Failed.'))
+        }).catch(e=>{toast.error('Upload Failed.');
+      SetIsEnableUpload(true)})
       }
-    ).catch(e=>toast.error('Upload Failed.'))
+    ).catch(e=>{
+      toast.error('Upload Failed.')
+      SetIsEnableUpload(true);})
+    SetIsEnableUpload(true);
     // console.log(`Music URL: ${musicURL}`);
     // console.log(`Image URL: ${imageURL}`);
   };
@@ -338,7 +349,7 @@ useEffect(()=>{
               <div className='flex gap-4 text-sm'>
                 <button className='hover:bg-slate-300 px-6 rounded py-2 hover:text-black'
                   onClick={handleCancelUpload}>Cancel</button>
-                <button onClick={handleUploadMusic} type='button'
+                <button  onClick={handleUploadMusic} type='button'
                  className=' bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 px-6 rounded py-2 text-white'>Save</button>
               </div>
             </div>
