@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useMusicContext } from '../utils/MusicContext'
 import { useAuth } from '../utils/AuthContext'
-import api from '../utils/Api'
+import api from '../api/Api'
 import { ToastContainer, toast } from 'react-toastify';
 import { Link } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';

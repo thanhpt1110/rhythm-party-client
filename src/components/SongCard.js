@@ -1,9 +1,10 @@
 import React from "react";
 import { useMusicContext } from "../utils/MusicContext";
-import api from "../utils/Api";
+import api from "../api/Api";
 import { Link } from 'react-router-dom';
 const SongCard = ({song}) => {
   const {music,setMusic,isPlaying, setIsPlaying} = useMusicContext()
+  console.log(song._id)
   const handleOnclick = async(e) =>{
     api.get(`/api/music/listen/${song._id}`);
     await setMusic(song)

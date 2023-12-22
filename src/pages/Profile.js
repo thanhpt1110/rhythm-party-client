@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../utils/AuthContext'
 import SongCard from '../components/SongCard'
 import { useNavigate } from "react-router-dom";
-import api from '../utils/Api'
+import api from '../api/Api'
 const playlistsData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',

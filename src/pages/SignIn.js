@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { useMusicContext } from '../utils/MusicContext';
-import api from '../utils/Api';
+import api from '../api/Api';
 const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

@@ -4,7 +4,7 @@ import {useRef, useState,useEffect} from 'react';
 import Header from '../components/Header';
 import Select from 'react-select'
 import { useMusicContext } from '../utils/MusicContext';
-import api from '../utils/Api';
+import api from '../api/Api';
 import { storage } from '../utils/Firebase';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { ToastContainer, toast } from 'react-toastify';
@@ -28,7 +28,7 @@ const Upload = ({user}) => {
   const musicInputRef = useRef(null);
   const imageInputRef = useRef(null);
   const onMusicChange = (event) => {
-    if(event.target.files.length>0 )
+    if(event.target.files.length>0)
     {
       setSelectedMusic(event.target.files[0]);
       setShow(!show);
@@ -127,6 +127,12 @@ const Upload = ({user}) => {
         console.log(data)
         api.put(`/api/music/${data._id}`,data).then(respone=>{
           toast.success('Upload Success !');
+          setShow(false);
+          setDesscription('');  
+          setMusicName('');
+          setArtist('');
+          setSelectedPrivacy('Private');
+          setMusicGerne([]);
         }).catch(e=>{toast.error('Upload Failed.');
       SetIsEnableUpload(true)})
       }

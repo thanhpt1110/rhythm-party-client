@@ -7,7 +7,7 @@ import SignIn from './pages/SignIn';
 import { SignUp } from './pages/SignUp';
 import Room from './pages/Room';
 import Upload from './pages/Upload';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Profile from './pages/Profile';
 import Account from './pages/Account';
 import About from './pages/About';
@@ -20,30 +20,49 @@ import { AllArtist } from './pages/AllArtist';
 import AlbumDetail from './pages/AlbumDetail';
 import Player from './components/Player';
 import { useMusicContext } from './utils/MusicContext';
-import api from './utils/Api';
+import api from './api/Api';
 import SongDetail from './pages/SongDetail';
+import io from 'socket.io-client'
 function App() {
     const [user, setUser] = useState(null)
-    const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth();
+    const {authUser, setAuthUser, socket, setSocket} = useAuth();
     const [loading, setLoading] = useState(true);
+    const [isLoadFirst, setIsLoadFirst] = useState(true);
     const {isActive} = useMusicContext();
+    const socketRef = useRef();
     useEffect( ()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
-        
         const getUser = async ()=>{
+            console.log("Hello")
+            setIsLoadFirst(false);
             await api.get('/auth/success').then(respone => {
             if(respone.status === 200)
                 return respone.data;
             return {user: null, isAuthentication: false }
-        }).then( (resObject)=>{
+        }).then( async (resObject)=>{
             if(resObject.user!==null)
             {
-                setAuthUser(resObject.user.user)
+
+                //newSocket.emit('join_music',"Hello");
+                setAuthUser(resObject.user.user);
                 localStorage.setItem('accessToken',resObject.user.accessToken);
             }
                 setLoading(false)
+                setIsLoadFirst(true);
         })
         }
-        getUser();
+        if(isLoadFirst)
+        {
+            if (!socketRef.current) {
+                socketRef.current = io.connect("http://localhost:8080");
+                setSocket(socketRef.current);
+            }
+            getUser();
+        }
+        return () => {
+            if (socket) {
+                socket.disconnect();
+            }
+        }
     },[])
     return (
         loading ? (

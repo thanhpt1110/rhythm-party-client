@@ -5,7 +5,7 @@ import Playlist from './Playlist'
 import FavSongs from './FavSongs'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../utils/AuthContext'
-import api from '../utils/Api'
+import api from '../api/Api'
 
 
 const TrendingData = [

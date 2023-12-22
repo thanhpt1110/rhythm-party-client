@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const UserAvatar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const {authUser, setAuthUser} = useAuth()
+  const {authUser, setAuthUser,socket,setSocket} = useAuth()
   const toggleMenu = (e) => {
   e.preventDefault();
   setIsOpen(!isOpen);
@@ -26,6 +26,10 @@ const UserAvatar = () => {
         setAuthUser(null)
         localStorage.removeItem('user');
         localStorage.removeItem('accessToken')
+        if (socket) {
+          socket.disconnect();
+          setSocket(null);
+      }
       } else {
         // Xử lý khi có lỗi trong quá trình logout
         console.error('Logout thất bại');

@@ -1,9 +1,10 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState , useEffect,useRef } from 'react';
 import Header from '../components/Header';
 import Comments from '../components/Comments';
 import { useParams } from 'react-router';
-import api from '../utils/Api';
-
+import api from '../api/Api';
+import { useAuth } from '../utils/AuthContext';
+import { sendMessage ,getMusicByID } from '../api/MusicApi';
 const commentsData = [
     {
         username: 'Perter Parker',
@@ -24,15 +25,61 @@ const commentsData = [
 ];
 
 const SongDetail = () => {
+    const {authUser,socket} = useAuth();
     const  {id} = useParams();
     const [song, setSong] = useState(null);
+    const [commentText, setCommentText] = useState('');
+    const [listComment, setListComment] = useState([]);
+    const socketRef = useRef();
 
     useEffect(() =>{
-         api.get(`/api/music/${id}`).then(async (response) =>{
-            await setSong (response.data.data);
-         });
-    },[])
+        const getMusic = async() =>{
+            const respone = await getMusicByID(id);
+            setSong(respone.data.data)
+            setListComment(respone.data.data.messages);
+        }
+        if(!song)
+        {
+            getMusic();
+        }
 
+    },[])
+    useEffect(() => {
+        if (socket) {
+            socket.emit('join_music', id);
+        }
+    
+        return () => {
+            if (socket) {
+                socket.emit('leave_music', id);
+            }
+        };
+    }, [socket, id]);
+    useEffect(() => {
+        const handleReceiveMessage = (comment) => {
+            console.log(comment.data.data);
+            setListComment((list) => [comment.data.data, ...list]);
+        };
+    
+        if (socket) {
+            socket.on('receive_message_music', handleReceiveMessage);
+        }
+    
+        return () => {
+            if (socket) {
+                socket.off('receive_message_music', handleReceiveMessage);
+            }
+        };
+    }, [socket, setListComment]);
+    const handleSendClick = async ()=>{
+        const message = {message: commentText}
+        const comment = await sendMessage(message,id);
+        comment.musicId = id;
+        console.log(comment);
+        await socket.emit('send_message_music',comment);
+        setListComment((list) => [comment.data.data, ...list]);
+        setCommentText('')
+    }
 
     const handleBackClick = () => {
         window.history.back();
@@ -45,9 +92,11 @@ const SongDetail = () => {
     const displayedLyrics = (showAllLyric ? song && song.lyrics: song && song.lyrics.substring(0, halfLength) + '...');
 
     const [isTextareaFocused, setTextareaFocused] = useState(false);
-    const handleTextareaFocus = (event) => {
+    const handleTextareaFocus = async(event) => {
         const textareaValue = event.target.value.trim();
         setTextareaFocused(textareaValue !== '');
+        setCommentText(event.target.value)
+
     };
 
     return (
@@ -106,15 +155,15 @@ const SongDetail = () => {
                       )}
                   </div>
                     <p className='font-bold pb-8 text-xl '>
-                        Comments ( {commentsData.length} )
+                        Comments ( {listComment && listComment.length} )
                     </p>
                     <div>
-                        {commentsData.map((comment, index) => (
+                        {listComment && listComment.map((comment, index) => (
                             <Comments
                                 key={index}
-                                username={comment.username}
-                                comment={comment.comment}
-                                avatar={comment.avatar}
+                                username={comment.userId.displayName}
+                                comment={comment.message}
+                                avatar={comment.userId.avatar? comment.userId.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"}
                             />
                         ))}
                         <div className='flex flex-col bg-[#222222] rounded justify-between px-4 py-4  '>
@@ -126,6 +175,7 @@ const SongDetail = () => {
                                 rows='2'
                                 placeholder='Comment here'
                                 onChange={handleTextareaFocus}
+                                value={commentText}
                             ></textarea>
 
                             <div className='flex gap-4 bg-[#444444] py-2 px-4 rounded-b-xl justify-between'>
@@ -134,7 +184,7 @@ const SongDetail = () => {
                                     <i className='ri-camera-fill cursor-pointer text-xl '></i>
                                     <i className='ri-file-gif-line cursor-pointer text-xl'></i>
                                 </div>
-                                <i
+                                <i onClick={handleSendClick}
                                     className={`ri-send-plane-2-fill text-xl cursor-pointer ${
                                         isTextareaFocused
                                             ? ' text-indigo-600 pointer-events-auto'

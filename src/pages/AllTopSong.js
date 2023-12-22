@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import Player from '../components/Player';
 import { useMusicContext } from '../utils/MusicContext';
 import SongCard from '../components/SongCard';
-import api from '../utils/Api'
+import api from '../api/Api'
 
 
 const AllTopSong = () => {
