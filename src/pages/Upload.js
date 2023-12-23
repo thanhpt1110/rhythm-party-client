@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const Upload = ({user}) => {
+  const [loading, setLoading] = useState(false);
   const audioRef = useRef(null);
   const [options, setOptions] = useState([]);
   const [selectedMusic, setSelectedMusic] = useState(null);
@@ -40,7 +41,7 @@ const Upload = ({user}) => {
         audio.onloadedmetadata = () => {
           // Thời lượng bài hát (trong giây)
           setDuration(audio.duration);
-          // Cần giải phóng URL đối tượng khi không sử dụng nữa để tránh rò rỉ bộ nhớ
+
           URL.revokeObjectURL(objectURL);
         };
       }
@@ -91,59 +92,57 @@ const Upload = ({user}) => {
   };
 
   const handleUploadMusic = async () => {
-    if(!isEnableUpload)
-    {
-      console.log("Block");
-      return;
-    }
-    if(!selectedImage || !selectedMusic)
-    {
-      toast.warn('Please add your music Image !');
-    }
-    SetIsEnableUpload(false);
-    console.log(musicGerne.label)
-    const gerne = [];
-    musicGerne.map((music,index)=>{
-      gerne.push(music.label);
-    })
-    const music = {
-      musicName: musicName,
-      genre: gerne,
-      author: artist,
-      lyrics: lyrics,
-      duration: Math.floor(duration),
-      description: description,
-      releaseYear: (new Date()).getFullYear(),
-      musicPrivacyType: selectedPrivacy
-    }
-    console.log(music)
-    await api.post('/api/music',music).then(
-      async respone=>{
-        const data = respone.data.data;
-        const musicURL =  await uploadFile("music", selectedMusic, data._id);
-        const imageURL = await uploadFile('music_avatar',selectedImage,data._id);
-        data.imgUrl = imageURL;
-        data.url = musicURL;
-        console.log(data)
-        api.put(`/api/music/${data._id}`,data).then(respone=>{
-          toast.success('Upload Success !');
-          setShow(false);
-          setDesscription('');  
-          setMusicName('');
-          setArtist('');
-          setSelectedPrivacy('Private');
-          setMusicGerne([]);
-        }).catch(e=>{toast.error('Upload Failed.');
-      SetIsEnableUpload(true)})
-      }
-    ).catch(e=>{
-      toast.error('Upload Failed.')
-      SetIsEnableUpload(true);})
-    SetIsEnableUpload(true);
-    // console.log(`Music URL: ${musicURL}`);
-    // console.log(`Image URL: ${imageURL}`);
+  if (!isEnableUpload) {
+    console.log("Block");
+    return;
+  }
+  if (!selectedImage || !selectedMusic) {
+    toast.warn("Please add your music Image!");
+    return;
+  }
+  SetIsEnableUpload(false);
+  console.log(musicGerne.label);
+  const gerne = [];
+  musicGerne.map((music, index) => {
+    gerne.push(music.label);
+  });
+  const music = {
+    musicName: musicName,
+    genre: gerne,
+    author: artist,
+    lyrics: lyrics,
+    duration: Math.floor(duration),
+    description: description,
+    releaseYear: new Date().getFullYear(),
+    musicPrivacyType: selectedPrivacy,
   };
+  console.log(music);
 
+  setLoading(true); // Set loading to true when starting the upload process
+
+  try {
+    const response = await api.post("/api/music", music);
+    const data = response.data.data;
+    const musicURL = await uploadFile("music", selectedMusic, data._id);
+    const imageURL = await uploadFile("music_avatar", selectedImage, data._id);
+    data.imgUrl = imageURL;
+    data.url = musicURL;
+    console.log(data);
+    await api.put(`/api/music/${data._id}`, data);
+    setLoading(false);
+    toast.success("Upload Success!");
+    setShow(false);
+    setDesscription("");
+    setMusicName("");
+    setArtist("");
+    setSelectedPrivacy("Private");
+    setMusicGerne([]);
+  } catch (error) {
+    toast.error("Upload Failed.");
+  }
+
+  SetIsEnableUpload(true);
+};
   const colorStyles = {
     control: (styles) => {
       return {
@@ -212,6 +211,7 @@ useEffect(()=>{
   )
 },[])
   return (
+
     <div className='bg-black opacity-90 h-full w-full'>
       <ToastContainer position="bottom-right"
                               autoClose={2000}
@@ -227,7 +227,10 @@ useEffect(()=>{
       <Header user={user} type='upload' />
       <audio ref={audioRef} controls />
       <div className=' text-white bg-black '>
-         <main className=' container py-24  mx-auto px-4 md:px-0 md:w-[60%] '>
+        {loading ?
+          <div className='text-center w-screen h-screen py-60'>
+            <span className="loader h-20 w-20 "></span>
+          </div> :<main className=' container py-24  mx-auto px-4 md:px-0 md:w-[60%] '>
         {
         !show ? (
           <form className='min-h-[400px] flex items-center justify-center flex-col gap-4 rounded-xl bg-[#181818] hover:bg-gray-800'
@@ -362,9 +365,11 @@ useEffect(()=>{
           </form>
         )
       } </main>
+        }
+
       <Footer className='pt-40'/>
     </div>
-      </div>
+    </div>
   );
 };
 
