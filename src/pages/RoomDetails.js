@@ -5,6 +5,8 @@ import SonginQueue from '../components/SonginQueue';
 import MessageForm from '../components/ChatApp/MessageForm';
 import ChatBox from '../components/ChatApp/ChatBox';
 import { useMusicContext } from '../utils/MusicContext';
+import { useParams } from 'react-router';
+
   const SonginQueueData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -39,8 +41,8 @@ import { useMusicContext } from '../utils/MusicContext';
   // Thêm các playlist khác vào đây
   ];
   const RoomDetails = () => {
-  const location = useLocation();
-  const roomName = decodeURIComponent(location.pathname.replace('/room-detail/', ''));
+  const {roomName} = useParams();
+  console.log(roomName);
   const handleBackClick = () => {
     window.history.back();
   };

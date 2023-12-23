@@ -72,6 +72,7 @@ const MainContent = () => {
                         <SongCard
                           key={index}
                           song = {song}
+                          listOfSong={topsongsData}
                         />
                       ))}
                    </div>
