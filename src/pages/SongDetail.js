@@ -5,24 +5,7 @@ import { useParams } from 'react-router';
 import api from '../api/Api';
 import { useAuth } from '../utils/AuthContext';
 import { sendMessage ,getMusicByID } from '../api/MusicApi';
-const commentsData = [
-    {
-        username: 'Perter Parker',
-        comment: 'Cool',
-        avatar: 'https://www.usatoday.com/gcdn/-mm-/cc053686530ce446f0a27dc352961fac33dd12ac/c=1144-81-2630-920/local/-/media/2017/06/26/USATODAY/USATODAY/636340759929048028-XXX-SPIDER-MAN-HOMECOMING-87249008.JPG',
-    },
-    {
-        username: 'David Beckham',
-        comment: 'I have replied in 2 hours ',
-        avatar: 'https://icdn.dantri.com.vn/thumb_w/640/2018/6/1/david5-15278233009671407992892.jpg',
-    },
-    {
-        username: 'Diana',
-        comment: "It's a nice songs. I luv it !",
-        avatar: 'https://d3vhc53cl8e8km.cloudfront.net/hello-staging/wp-content/uploads/2020/06/04014638/706b54b2-1a6a-11ec-954e-0ecc81f4ee58-972x597.jpg',
-    },
-    // Add more comment objects as needed
-];
+
 
 const SongDetail = () => {
     const {authUser,socket} = useAuth();
@@ -48,7 +31,6 @@ const SongDetail = () => {
         if (socket) {
             socket.emit('join_music', id);
         }
-    
         return () => {
             if (socket) {
                 socket.emit('leave_music', id);
@@ -60,11 +42,11 @@ const SongDetail = () => {
             console.log(comment.data.data);
             setListComment((list) => [comment.data.data, ...list]);
         };
-    
+
         if (socket) {
             socket.on('receive_message_music', handleReceiveMessage);
         }
-    
+
         return () => {
             if (socket) {
                 socket.off('receive_message_music', handleReceiveMessage);
@@ -72,13 +54,19 @@ const SongDetail = () => {
         };
     }, [socket, setListComment]);
     const handleSendClick = async ()=>{
-        const message = {message: commentText}
-        const comment = await sendMessage(message,id);
-        comment.musicId = id;
-        console.log(comment);
-        await socket.emit('send_message_music',comment);
-        setListComment((list) => [comment.data.data, ...list]);
-        setCommentText('')
+        if(authUser){
+             const message = {message: commentText}
+            const comment = await sendMessage(message,id);
+            comment.musicId = id;
+            console.log(comment);
+            await socket.emit('send_message_music',comment);
+            setListComment((list) => [comment.data.data, ...list]);
+            setCommentText('')
+        }
+        else{
+            window.location.href = '/signin';
+        }
+
     }
 
     const handleBackClick = () => {

@@ -3,15 +3,37 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { useEffect } from 'react'
 import { useMusicContext } from '../utils/MusicContext'
+import { useAuth } from '../utils/AuthContext'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const About = () => {
+  const {authUser} = useAuth();
   const {setIsActive} = useMusicContext();
   useEffect(()=>{
     setIsActive(false)
   })
-
+  const handleCreateAccount =( ) =>{
+    if(authUser){
+      toast.success("Account already exists");
+    }
+    else{
+      window.location.href = '/signin';
+    }
+  }
   return (
     <div >
+       <ToastContainer position="bottom-right"
+                              autoClose={2000}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              className=''
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
+                              theme="dark" />
       <Header type='about'/>
        <div className='py-16 bg-black opacity-90 text-white'>
          <div className='max-w-screen-xl mx-auto pt-16 md:px-56 h-full px-4'>
@@ -24,7 +46,7 @@ const About = () => {
               Boasting an extensive library featuring a diverse range of tracks, Rhythm Party brings together over 50 million songs from a community of 10 million artists. With its commitment to empowering both artists and fans alike, Rhythm Party envisions a future where the joy of music is celebrated and shared collaboratively.</p>
               <p className='mt-16 text-[14px]'>Don't have a free account yet?</p>
 
-              <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' >Create your Account</button>
+              <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' onClick={handleCreateAccount} > Create your Account</button>
 
               {/* Nếu User đã có SignIn, khi ấn vào nút này thì sẽ điều hướng đến pageProfile, còn nếu kh thì điều hướng đến page Sign Up */}
               <p className='font-bold text-2xl my-8'>Follow us</p>
