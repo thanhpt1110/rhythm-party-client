@@ -19,7 +19,6 @@ const EditUploadSong = () => {
 
   const [song, setSong] = useState(null);
   const [options, setOptions] = useState([]);
-  const [selectedMusic, setSelectedMusic] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [musicName, setMusicName] = useState('');
   const [description, setDesscription] = useState('');

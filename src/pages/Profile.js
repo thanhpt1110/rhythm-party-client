@@ -4,12 +4,16 @@ import Player from '../components/Player'
 import Playlist from '../components/Playlist'
 import ArtistFav from '../components/ArtistFav'
 import { useMusicContext } from '../utils/MusicContext'
+import { storage } from '../utils/Firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import {useRef, useState} from 'react';
 import { Link } from 'react-router-dom'
 import { useAuth } from '../utils/AuthContext'
 import SongCard from '../components/SongCard'
 import { useNavigate } from "react-router-dom";
 import api from '../api/Api'
+import { updateUserInfromation } from '../api/UserApi'
+import Swal from 'sweetalert2';
 const playlistsData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -55,8 +59,48 @@ const Profile = () => {
     event.preventDefault();
     fileInputRef.current.click();
   };
-  const handleImageChange = (event) => {
-    setImage(event.target.files[0]);
+  const uploadFile = (folder, file, id) => {
+    return new Promise((resolve, reject) => {
+      if (file) {
+        const storageRef = ref(storage, `${folder}/${`${id}.mp3`}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          },
+          (error) => {
+            alert(error);
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              console.log(`URL: ${downloadURL}`);
+              resolve(downloadURL);
+            });
+          }
+        );
+      }
+    });
+  };
+  const handleImageChange = async (event) => {
+    try{
+      const newAvatar = await uploadFile("user_avatar",event.target.files[0],authUser._id);
+      const updateUser = {avatar: newAvatar};
+      const newUser = await updateUserInfromation(updateUser,authUser._id);
+      setAuthUser(newUser.data.data);
+      setImage(event.target.files[0]);
+      Swal.fire({
+        title: "Updated!",
+        text: "Your avatar has been updated.",
+        icon: "success"
+        });  
+    }
+    catch(e)
+    {
+
+    }
   };
   const {music, setIsActive} = useMusicContext();
   const [uploadSongs, setUploadSongs] = useState([]);
