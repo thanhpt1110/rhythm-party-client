@@ -12,6 +12,7 @@ import { useParams } from 'react-router';
 import { getMusicByID } from '../api/MusicApi';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 const EditUploadSong = () => {
   const  {id} = useParams();
   const navigate = useNavigate();
@@ -144,43 +145,57 @@ const EditUploadSong = () => {
   };
 
   const handleUploadMusic = async () => {
-  alert("hello")
-  console.log(song)
+    if (!selectedImage && !song) {
+      toast.warn("Please add your music Image!");
+      return;
+    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Please check your song information !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!"
+      }).then(async (result) => {
+      if (result.isConfirmed) {
+        SetIsEnableUpload(false);
+        const gerne = [];
+        musicGerne.map((music, index) => {
+          gerne.push(music.label);
+        });
+      
+        try {
+          let imageURL = song.imgUrl;
+          song.imgUrl = imageURL 
+          song.description = description;
+          song.author = artist;
+          song.genre = gerne;
+          song.musicPrivacyType = selectedPrivacy;
+          song.musicName = musicName;
+          if(isImageChange)
+           imageURL = await uploadFile("music_avatar", selectedImage, song._id);
+          await api.put(`/api/music/${song._id}`, song);
+          Swal.fire({
+            title: "Updated!",
+            text: "Your song has been updated.",
+            icon: "success"
+            });  
+          window.history.back();
+
+        } catch (error) {
+          toast.error("Upload Failed.");
+        }
+        SetIsEnableUpload(true);
+      }
+      });
+
   // if (!isEnableUpload) {
   //   console.log("Block");
   //   return;
   // }
-  if (!selectedImage && !song) {
-    toast.warn("Please add your music Image!");
-    return;
-  }
-  SetIsEnableUpload(false);
-  const gerne = [];
-  musicGerne.map((music, index) => {
-    gerne.push(music.label);
-  });
 
-  try {
-    let imageURL = song.imgUrl;
-    song.imgUrl = imageURL 
-    song.description = description;
-    song.author = artist;
-    song.genre = gerne;
-    song.musicPrivacyType = selectedPrivacy;
-    song.musicName = musicName;
-    if(isImageChange)
-     imageURL = await uploadFile("music_avatar", selectedImage, song._id);
-    await api.put(`/api/music/${song._id}`, song);
-    toast.success("Upload Success!");
-    setDesscription("");
-    setMusicName("");
-    setArtist("");
-    setSelectedPrivacy("Private");
-    setMusicGerne([]);
-  } catch (error) {
-    toast.error("Upload Failed.");
-  }
-  SetIsEnableUpload(true);
+
 };
   const colorStyles = {
     control: (styles) => {
