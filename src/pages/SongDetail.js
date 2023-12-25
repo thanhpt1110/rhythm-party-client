@@ -106,7 +106,7 @@ const SongDetail = () => {
                                 alt='AlbumImg'
                                 className='" h-48 w-48 rounded shadow-2xl shadow-black object-cover'
                             />
-                            <div className='flex flex-col justify-center gap-4'>
+                            <div className='flex flex-col gap-4'>
                                 <p className='font-bold text-[40px]'>
                                     {song ? song.musicName : ''}
                                 </p>
@@ -117,11 +117,24 @@ const SongDetail = () => {
                                     { song &&
                                     song.genre.map((genre,index) =>(<p key={index} className='text-sm text-gray-300'> {genre} </p>))
                                     }
-                                    <p className='text-xs text-gray-300'>
+                                    <div className='flex flex-row justify-between gap-96 items-center '>
+                                        <p className='text-xs text-gray-300'>
                                         Release in {song && song.releaseYear} - {song && song.view} View
-                                    </p>
+                                        </p>
+                                        <div className='btnEditDelete flex flex-row gap-2'>
+                                            <button className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 '>
+                                                <i className="ri-pencil-fill"></i>
+                                                <p className='text-xs font-semibold '>Edit</p>
+                                            </button>
+                                            <button className='flex flex-row gap-2 items-center border px-2 py-[3px] border-gray-400 rounded hover:border-gray-300 '>
+                                                <i className="ri-delete-bin-6-line"></i>
+                                                <p className='text-xs font-semibold '>Delete</p>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>

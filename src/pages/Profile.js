@@ -43,40 +43,6 @@ const playlistsData = [
   },
   // Thêm các playlist khác vào đây
 ];
-const artistsData = [
-  {
-    urlImg: 'https://ss-images.saostar.vn/w800/pc/1680851009890/saostar-2ka5fti72hsf2wck.jpeg',
-    ArtistName: 'IU',
-    role: 'Artist'
-  },
-  {
-    urlImg: 'https://cdn.tuoitre.vn/thumb_w/640/471584752817336320/2023/2/13/tieu-su-ca-si-rose-blackpink-12-167628252304049682913.jpg',
-    ArtistName: 'Rose',
-    role: 'Artist'
-  },
-  {
-    urlImg: 'https://www.rappler.com/tachyon/2021/12/Screen-Shot-2021-12-17-at-2.23.27-PM.png',
-    ArtistName: 'Charlie Puth',
-    role: 'Artist'
-  },
-  {
-    urlImg: 'https://vcdn1-giaitri.vnecdn.net/2020/12/22/EdSheeran-1608608466-4639-1608608573.jpg?w=500&h=300&q=100&dpr=2&fit=crop&s=yXB5BHHa0ts49EPE0f-WrQ',
-    ArtistName: 'Ed Sheeran',
-    role: 'Artist'
-  },
-  {
-    urlImg: 'https://tieusu.com/wp-content/uploads/2023/06/tieu-su-ca-si-Phuong-Ly-4.jpg',
-    ArtistName: 'Phuong Ly',
-    role: 'Artist'
-  },
-  {
-    urlImg: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/9/11/1240204/Lyly3.jpg',
-    ArtistName: 'LyLy',
-    role: 'Artist'
-  },
-  // Thêm các nghệ sĩ khác vào đây
-];
-
 
 const Profile = () => {
   const fileInputRef = useRef(null);
@@ -93,13 +59,13 @@ const Profile = () => {
     setImage(event.target.files[0]);
   };
   const {music, setIsActive} = useMusicContext();
-  const [topsongsData, setTopSongsData] = useState([]);
+  const [uploadSongs, setUploadSongs] = useState([]);
   useEffect(()=>{
     const getMusic = async() => await api.get('/api/music').then(respone=>{
       if(respone.status===200)
         {
             const musics = respone.data.data;
-            setTopSongsData(musics)
+            setUploadSongs(musics)
         }
       else if(respone.status === 401)
       {
@@ -158,12 +124,14 @@ const Profile = () => {
           </div>
           <div className='max-w-screen-xl mx-auto p-4 h-full'>
               <div className='flex items-baseline mt-4 justify-between'>
-              <div className='flex flex-col gap-2'>
+              <div className='flex flex-row items-end gap-4'>
                   <p className='text-white font-bold text-2xl '>Your playlist</p>
-                  <p className='text-gray-400 text-[12px]'>Only visible for you</p>
+                  <i className="ri-add-circle-fill text-white text-2xl cursor-pointer" onClick={()=>document.getElementById('my_modal_3').showModal()}></i>
+
               </div>
                  <Link to='/AllPlaylists' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
               </div>
+              <p className='text-gray-400 text-[12px] mt-2'>Only visible for you</p>
               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
                 {playlistsData.slice(0, 6).map((playlist, index) => (
                   <Playlist
@@ -180,18 +148,49 @@ const Profile = () => {
                   <p className='text-white font-bold text-2xl '>Your upload songs</p>
                   <p className='text-gray-400 text-[12px]'>Only visible for you</p>
                 </div>
-                 <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
+                 <Link to='/AllUploadSongs' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
               </div>
               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                {topsongsData.slice(0, 6).map((song, index) => (
+                {uploadSongs.slice(0, 6).map((song, index) => (
                   <SongCard
                     key={index}
                     song = {song}
+                    
                   />
                 ))}
             </div>
           </div>
         </div>
+        <dialog id="my_modal_3" className="modal text-white">
+                <div className="modal-box bg-[#1f2937]">
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button className="btn btn-sm btn-circle btn-ghost hover:bg-slate-600 absolute right-2 top-2">✕</button>
+                  </form>
+                  <h3 className="font-bold text-xl text-center pt-2">Create new PlayList!</h3>
+                  <div className='flex flex-row gap-2 items-center '>
+                    <p className='py-4 font-semibold'>Playlist Title</p>
+                    <span className='text-red-600'>*</span>
+                  </div>
+                  <input type="text" className='w-full rounded py-[6px] bg-[#1f2937] border border-gray-400 px-4' required />
+                  <div className='flex flex-row gap-2 items-center '>
+                    <p className='py-4 font-semibold'>Privacy</p>
+                    <span className='text-red-600'>*</span>
+                  </div>
+                  <div className="flex flex-col gap-1 ">
+                    <div >
+                      <input type="radio" name="visibility" id="Public"/>
+                      <label htmlFor="Public" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300 ">Public</label>
+                    </div>
+                    <div>
+                    <input type="radio" name="visibility" id="Private"/>
+                      <label htmlFor="Private" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300">Private</label>
+                    </div>
+                    <p className='ml-7 text-[10px] text-gray-400'>Only you and people share a secret link with will be able to listen to this track</p>
+                  </div>
+                  <button className='w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 rounded-xl mt-10 mb-2'>Create</button>
+                </div>
+        </dialog>
       </div>
     </div>
   )

@@ -41,7 +41,7 @@ const FavSongs = () => {
     <div>
        <div className='flex items-baseline justify-between '>
           <div className='flex flex-row gap-2 items-baseline'>
-            <p className='text-white font-bold text-2xl mb-4 '>Favourite Songs</p>
+            <p className='text-white font-bold text-2xl my-4 '>Favourite Songs</p>
             <i class="ri-heart-3-fill"></i>
           </div>
           <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>

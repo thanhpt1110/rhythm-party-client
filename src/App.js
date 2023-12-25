@@ -23,6 +23,9 @@ import { useMusicContext } from './utils/MusicContext';
 import api from './api/Api';
 import SongDetail from './pages/SongDetail';
 import io from 'socket.io-client'
+import Search from './pages/Search';
+import NotFoundResult from './components/NotFoundResult';
+import AllUploadSongs from './pages/AllUploadSongs';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, socket, setSocket} = useAuth();
@@ -83,9 +86,12 @@ function App() {
                 <Route path='/AllPlaylists' element={<AllPlaylist />} />
                 <Route path='/AllTopSongs' element={<AllTopSong  />} />
                 <Route path='/AllArtist' element={<AllArtist />} />
+                <Route path='/AllUploadSongs' element={<AllUploadSongs />} />
                 <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
                 <Route path='/song-detail/:id' element={<SongDetail/>} />
+                <Route path='/search' element={<Search  />} />
+                <Route path='/search/notfound' element={<NotFoundResult  />} />
             </Routes>
             <div>
                 {isActive && <Player />}

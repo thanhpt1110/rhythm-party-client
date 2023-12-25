@@ -122,7 +122,7 @@ const Player = () => {
                   {showSubMenu && (
                     <div className='absolute bottom-20 left-96 mt-12 px-2 pt-2 pb-10 text-sm bg-gray-700 rounded shadow'>
                       <ul className='text-white '>
-                        <li className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' >
+                        <li className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' onClick={()=>document.getElementById('my_modal_3').showModal()} >
                           <i className="ri-add-fill"></i>
                           <p>Create new Playlist</p>
                         </li>
@@ -204,6 +204,36 @@ const Player = () => {
                 <i className='ri-volume-up-fill button' onClick={increaseVolume}></i>
             </div>
         </div>
+          <dialog id="my_modal_3" className="modal text-white">
+                <div className="modal-box bg-[#1f2937] ">
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button className="btn btn-sm btn-circle btn-ghost hover:bg-slate-600 absolute right-2 top-2">✕</button>
+                  </form>
+                  <h3 className="font-bold text-xl text-center pt-2">Create new PlayList!</h3>
+                  <div className='flex flex-row gap-2 items-center '>
+                    <p className='py-4 font-semibold'>Playlist Title</p>
+                    <span className='text-red-600'>*</span>
+                  </div>
+                  <input type="text" className='w-full rounded py-[6px] bg-[#1f2937] border border-gray-400 px-4' required />
+                  <div className='flex flex-row gap-2 items-center '>
+                    <p className='py-4 font-semibold'>Privacy</p>
+                    <span className='text-red-600'>*</span>
+                  </div>
+                  <div className="flex flex-col gap-1 ">
+                    <div >
+                      <input type="radio" name="visibility" id="Public"/>
+                      <label htmlFor="Public" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300 ">Public</label>
+                    </div>
+                    <div>
+                    <input type="radio" name="visibility" id="Private"/>
+                      <label htmlFor="Private" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300">Private</label>
+                    </div>
+                    <p className='ml-7 text-[10px] text-gray-400'>Only you and people share a secret link with will be able to listen to this track</p>
+                  </div>
+                  <button className='w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 rounded-xl mt-10 mb-2'>Create</button>
+                </div>
+          </dialog>
       </div>
 
     );

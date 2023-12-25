@@ -28,16 +28,20 @@ const Upload = ({user}) => {
   const [isEnableUpload, SetIsEnableUpload] = useState(true);
   const musicInputRef = useRef(null);
   const imageInputRef = useRef(null);
-  const onMusicChange = (event) => {
+  const onMusicChange = async(event) => {
     if(event.target.files.length>0)
     {
       setSelectedMusic(event.target.files[0]);
       setShow(!show);
+    }
+  };
+  useEffect(()=>{
+    if (selectedMusic) {
       console.log(selectedMusic)
-      if (selectedMusic) {
         const audio = audioRef.current;
         const objectURL = URL.createObjectURL(selectedMusic);
         audio.src = objectURL;
+
         audio.onloadedmetadata = () => {
           // Thời lượng bài hát (trong giây)
           setDuration(audio.duration);
@@ -45,8 +49,7 @@ const Upload = ({user}) => {
           URL.revokeObjectURL(objectURL);
         };
       }
-    }
-  };
+    },[selectedMusic]);
   const handleRadioChange = (event) => {
     setSelectedPrivacy(event.target.id);
   };
@@ -111,13 +114,12 @@ const Upload = ({user}) => {
     genre: gerne,
     author: artist,
     lyrics: lyrics,
-    duration: Math.floor(duration),
+    duration: duration,
     description: description,
     releaseYear: new Date().getFullYear(),
     musicPrivacyType: selectedPrivacy,
   };
   console.log(music);
-
   setLoading(true); // Set loading to true when starting the upload process
 
   try {
@@ -140,7 +142,6 @@ const Upload = ({user}) => {
   } catch (error) {
     toast.error("Upload Failed.");
   }
-
   SetIsEnableUpload(true);
 };
   const colorStyles = {

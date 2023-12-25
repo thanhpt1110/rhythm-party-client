@@ -47,8 +47,6 @@ const About = () => {
               <p className='mt-16 text-[14px]'>Don't have a free account yet?</p>
 
               <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' onClick={handleCreateAccount} > Create your Account</button>
-
-              {/* Nếu User đã có SignIn, khi ấn vào nút này thì sẽ điều hướng đến pageProfile, còn nếu kh thì điều hướng đến page Sign Up */}
               <p className='font-bold text-2xl my-8'>Follow us</p>
               <div className='flex flex-col gap-6'>
                 <div className='flex flex-row gap-4 items-center cursor-pointer'>
