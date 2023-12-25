@@ -5,6 +5,10 @@ import { useParams } from 'react-router';
 import api from '../api/Api';
 import { useAuth } from '../utils/AuthContext';
 import { sendMessage ,getMusicByID } from '../api/MusicApi';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
+import Error from '../components/Error';
+
 
 
 const SongDetail = () => {
@@ -13,13 +17,20 @@ const SongDetail = () => {
     const [song, setSong] = useState(null);
     const [commentText, setCommentText] = useState('');
     const [listComment, setListComment] = useState([]);
+    const [isError, setIsError] = useState(false);
+
     const socketRef = useRef();
 
     useEffect(() =>{
         const getMusic = async() =>{
+            try{
             const respone = await getMusicByID(id);
             setSong(respone.data.data)
             setListComment(respone.data.data.messages);
+            }
+            catch(err){
+                setIsError(true);
+            }
         }
         if(!song)
         {
@@ -72,6 +83,25 @@ const SongDetail = () => {
     const handleBackClick = () => {
         window.history.back();
     };
+    const handleDeleteUploadSong = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this song !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                title: "Deleted!",
+                text: "Your song has been deleted.",
+                icon: "success"
+                });
+            }
+            });
+    };
     const [showAllLyric, setShowAllLyric] = useState(false);
     const toggleLyrics  = () => {
         setShowAllLyric(!showAllLyric);
@@ -88,7 +118,7 @@ const SongDetail = () => {
     };
 
     return (
-        <div>
+        isError ? (<Error/>) : ( <div>
             <Header />
             <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
                 <div className='relative bg-[#9890A0] '>
@@ -122,11 +152,11 @@ const SongDetail = () => {
                                         Release in {song && song.releaseYear} - {song && song.view} View
                                         </p>
                                         <div className='btnEditDelete flex flex-row gap-2'>
-                                            <button className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 '>
+                                            <Link to={`/song-detail/edit/${song && song._id}`} className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' >
                                                 <i className="ri-pencil-fill"></i>
                                                 <p className='text-xs font-semibold '>Edit</p>
-                                            </button>
-                                            <button className='flex flex-row gap-2 items-center border px-2 py-[3px] border-gray-400 rounded hover:border-gray-300 '>
+                                            </Link>
+                                            <button className='flex flex-row gap-2 items-center border px-2 py-[3px] border-gray-400 rounded hover:border-gray-300 '  onClick={handleDeleteUploadSong}>
                                                 <i className="ri-delete-bin-6-line"></i>
                                                 <p className='text-xs font-semibold '>Delete</p>
                                             </button>
@@ -197,7 +227,8 @@ const SongDetail = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>)
+
     );
 };
 

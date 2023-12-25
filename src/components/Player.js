@@ -221,7 +221,7 @@ const Player = () => {
                     </button>
                 </div>
                 <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
-                    <i className='ri-arrow-left-right-fill button'></i>
+                    <i className="ri-shuffle-fill button"></i>
                     <i className='ri-rewind-fill button' onClick={playBackSong}></i>
                      <i
                         className={`ri-${isPlaying ? 'pause-circle-fill' : 'play-circle-fill'} h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center`}

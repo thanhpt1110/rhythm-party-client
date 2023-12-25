@@ -26,6 +26,7 @@ import io from 'socket.io-client'
 import Search from './pages/Search';
 import NotFoundResult from './components/NotFoundResult';
 import AllUploadSongs from './pages/AllUploadSongs';
+import EditUploadSong from './pages/EditUploadSong';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, socket, setSocket} = useAuth();
@@ -89,6 +90,7 @@ function App() {
                 <Route path='/AllUploadSongs' element={<AllUploadSongs />} />
                 <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
+                <Route path='/song-detail/edit/:id' element={<EditUploadSong/>} />
                 <Route path='/song-detail/:id' element={<SongDetail/>} />
                 <Route path='/search' element={<Search  />} />
                 <Route path='/search/notfound' element={<NotFoundResult  />} />
