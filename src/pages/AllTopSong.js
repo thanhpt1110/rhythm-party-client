@@ -1,6 +1,5 @@
 import React,{ useEffect , useState } from 'react'
 import Header from '../components/Header';
-import Player from '../components/Player';
 import { useMusicContext } from '../utils/MusicContext';
 import SongCard from '../components/SongCard';
 import api from '../api/Api'

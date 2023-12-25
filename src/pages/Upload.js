@@ -213,7 +213,7 @@ useEffect(()=>{
 },[])
   return (
 
-    <div className='bg-black opacity-90 h-full w-full'>
+    <div className='h-full w-full'>
       <ToastContainer position="bottom-right"
                               autoClose={2000}
                               hideProgressBar={false}
@@ -227,7 +227,7 @@ useEffect(()=>{
                               theme="dark" />
       <Header user={user} type='upload' />
       <audio ref={audioRef} controls />
-      <div className=' text-white bg-black '>
+      <div className=' text-white bg-black opacity-90 '>
         {loading ?
           <div className='text-center w-screen h-screen py-60'>
             <span className="loader h-20 w-20 "></span>
@@ -248,7 +248,7 @@ useEffect(()=>{
                   {display: 'none'}
                 }
                 ref={musicInputRef}/>
-              <button className='bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-6 rounded hover:scale-105 duration-300 mt-2'
+              <button className='bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-2 px-6 rounded hover:scale-105 duration-300 mt-2'
                 onClick={handleMusicSelection}>
                 Choose File
               </button>

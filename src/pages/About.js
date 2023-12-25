@@ -12,7 +12,7 @@ const About = () => {
   const {setIsActive} = useMusicContext();
   useEffect(()=>{
     setIsActive(false)
-  })
+  },[])
   const handleCreateAccount =( ) =>{
     if(authUser){
       toast.success("Account already exists");

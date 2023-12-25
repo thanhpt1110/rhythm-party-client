@@ -27,6 +27,8 @@ import Search from './pages/Search';
 import NotFoundResult from './components/NotFoundResult';
 import AllUploadSongs from './pages/AllUploadSongs';
 import EditUploadSong from './pages/EditUploadSong';
+import AllAlbum from './pages/AllAlbum';
+import AllFavSong from './pages/AllFavSong';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, socket, setSocket} = useAuth();
@@ -34,7 +36,7 @@ function App() {
     const [isLoadFirst, setIsLoadFirst] = useState(true);
     const {isActive} = useMusicContext();
     const socketRef = useRef();
-    useEffect( ()=>{//khong can fetchh user data o cho nay, luc login xong đã co user data set vao trong context
+    useEffect( ()=>{
         const getUser = async ()=>{
             console.log("Hello")
             setIsLoadFirst(false);
@@ -80,13 +82,14 @@ function App() {
                 <Route path='/rooms' element={authUser !== null ? <Room />: <Navigate to= '/signin'/>} />
                 <Route path='/upload' element={authUser !== null ? <Upload /> : <Navigate to='/signin'/>} />
                 <Route path='/profile' element={authUser !== null ? <Profile />: <Navigate to='/signin'/>} />
-                {/* khong can truyen user vaof trong element ntn, trong component, lay user data tu context */}
                 <Route path='/accountsetting' element={authUser !== null ?<Account/>: <Navigate to='/signin'/>} />
                 <Route path='/about' element={<About />} />
                 <Route path='/report' element={<ReportIssues />} />
                 <Route path='/AllPlaylists' element={<AllPlaylist />} />
                 <Route path='/AllTopSongs' element={<AllTopSong  />} />
                 <Route path='/AllArtist' element={<AllArtist />} />
+                <Route path='/AllAlbum' element={<AllAlbum />} />
+                <Route path='/AllFavSong' element={<AllFavSong />} />
                 <Route path='/AllUploadSongs' element={<AllUploadSongs />} />
                 <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />

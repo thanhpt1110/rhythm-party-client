@@ -1,6 +1,7 @@
 import React from 'react'
 import Playlist from './Playlist'
 import SongCard from './SongCard';
+import { Link } from 'react-router-dom';
 
 const FavSongsData = [
   {
@@ -40,11 +41,11 @@ const FavSongs = () => {
   return (
     <div>
        <div className='flex items-baseline justify-between '>
-          <div className='flex flex-row gap-2 items-baseline'>
+          <div className='flex flex-row gap-3 items-baseline'>
             <p className='text-white font-bold text-2xl my-4 '>Favourite Songs</p>
-            <i class="ri-heart-3-fill"></i>
+            <i class="ri-heart-fill text-xl"></i>
           </div>
-          <span className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</span>
+          <Link to='/AllFavSong' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
         </div>
        <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
         {FavSongsData.slice(0, 6).map((song, index) => (
