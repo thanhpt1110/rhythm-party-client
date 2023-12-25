@@ -155,7 +155,7 @@ const Profile = () => {
                   <SongCard
                     key={index}
                     song = {song}
-                    
+                    listOfSong={uploadSongs}
                   />
                 ))}
             </div>

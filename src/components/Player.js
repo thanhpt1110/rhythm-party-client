@@ -24,7 +24,42 @@ const Player = () => {
         setCurrentTime(audioRef.current.currentTime);
       };
     const [audioData, setAudioData] = useState(null);
-    const {music,setMusic,isPlaying, setIsPlaying} = useMusicContext()
+    const [enableChangeSong, setEnableChangeSong] = useState(true);
+    const {music,setMusic,isPlaying, setIsPlaying,listOfSong, setListOfSong} = useMusicContext()
+    if(!listOfSong)
+      setListOfSong([music])
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
+    const debounceTimeoutChangeSongButton =()=> setTimeout(() => {
+       setEnableChangeSong(true); //
+      clearTimeout(debounceTimeoutChangeSongButton);
+    }, 800);
+    const playNextSong = () => {
+      if(enableChangeSong) {
+      // Increment the index to get the next song
+      const nextIndex = (currentSongIndex + 1) % listOfSong.length;
+      setCurrentSongIndex(nextIndex);
+      // Update the music context to the next song
+      if(listOfSong.length === 1)
+      {
+        setIsPlaying(!isPlaying)
+        return;
+      }
+      setMusic(listOfSong[nextIndex]);
+      setEnableChangeSong(false);
+      debounceTimeoutChangeSongButton();
+
+    }};
+    const playBackSong = () => {
+      if(enableChangeSong) {
+      // Increment the index to get the next song
+      const backIndex = (currentSongIndex - 1+ listOfSong.length) % listOfSong.length;
+      setCurrentSongIndex(backIndex);
+      // Update the music context to the next song
+      setMusic(listOfSong[backIndex]);
+      setEnableChangeSong(false);
+      debounceTimeoutChangeSongButton();
+      // Play the next song
+      }};
     const handlePlayIconClick = () => {
         if (isPlaying) {
             audioRef.current.pause();
@@ -36,16 +71,32 @@ const Player = () => {
     const handleLoopIconClick = () => {
         setIsLooping(!isLooping);
     };
-    useEffect(() => {
-    if (isLooping) {
-        audioRef.current.loop = true;
+    const handleSongEnd = useCallback(() => {
+      // If looping is enabled, play the same song again
+      if (isLooping) {
         audioRef.current.currentTime = 0;
         audioRef.current.play();
-    }
-    else {
-        audioRef.current.loop = false;
-    }
-    }, [isLooping]);
+      } else {
+        // Otherwise, play the next song
+        const nextIndex = (currentSongIndex + 1) % listOfSong.length;
+        if(nextIndex===currentSongIndex)
+        {
+          setIsPlaying(!isPlaying)
+          return;
+        }
+        playNextSong();
+      }
+    }, [isLooping, currentSongIndex, listOfSong]);
+
+    useEffect(() => {
+      // Set up event listener for the ended event
+      audioRef.current.addEventListener('ended', handleSongEnd);
+
+      // Clean up the event listener on component unmount
+      return () => {
+        audioRef.current.removeEventListener('ended', handleSongEnd);
+      };
+    }, [handleSongEnd]);
     const handleSeekChange = (e) => {
         const newValue = e.target.value;
         // Cập nhật thời gian hiện tại của bài hát dựa trên giá trị thanh trượt
@@ -171,12 +222,12 @@ const Player = () => {
                 </div>
                 <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
                     <i className='ri-arrow-left-right-fill button'></i>
-                    <i className='ri-rewind-fill button'></i>
+                    <i className='ri-rewind-fill button' onClick={playBackSong}></i>
                      <i
                         className={`ri-${isPlaying ? 'pause-circle-fill' : 'play-circle-fill'} h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center`}
                         onClick={handlePlayIconClick}
                     ></i>
-                    <i className='ri-speed-fill button'></i>
+                    <i className='ri-speed-fill button' onClick={playNextSong}></i>
                     <i
                         className={`ri-loop-left-fill button ${isLooping ? 'text-gray-500' : ''}`}
                         onClick={handleLoopIconClick}></i>

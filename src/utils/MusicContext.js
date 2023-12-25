@@ -16,7 +16,9 @@ export const MusicContextProvider = (props) => {
         isPlaying,
         setIsPlaying,
         isActive,
-        setIsActive
+        setIsActive,
+        listOfSong,
+        setListOfSong
     }
     return (
         <MusicContext.Provider value={value}>{props.children}</MusicContext.Provider>

@@ -54,6 +54,7 @@ const AllUploadSongs = () => {
                             <SongCard
                                   key={index}
                                   song = {song}
+                                  listOfSong={uploadSongs}
                             />
                         ))}
                     </div>
