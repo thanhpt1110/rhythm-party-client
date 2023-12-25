@@ -10,9 +10,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router';
 import { getMusicByID } from '../api/MusicApi';
-
+import { useAuth } from '../utils/AuthContext';
+import { useNavigate } from "react-router-dom";
 const EditUploadSong = () => {
   const  {id} = useParams();
+  const navigate = useNavigate();
+
   const [song, setSong] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedMusic, setSelectedMusic] = useState(null);
@@ -25,13 +28,30 @@ const EditUploadSong = () => {
   const [lyrics, setLyrics] = useState('');
   const [isEnableUpload, SetIsEnableUpload] = useState(true);
   const [isError, setIsError] = useState(false);
-
+  const [isImageChange, setIsImageChange] = useState(false);
   const imageInputRef = useRef(null);
+  const {setIsActive} = useMusicContext();
+  const {authUser} = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
+  setIsActive(false);
   useEffect(() =>{
-        const getMusic = async() =>{
+        if(!authUser)
+        {
+          navigate('/')
+          return;
+        }
+        const getGerne = async() =>{
             try{
-            const respone = await getMusicByID(id);
-            setSong(respone.data.data)
+            await api.get('/api/genre').then(
+                response =>{
+                  const data = []
+                  response.data.data.map((gerne,index)=>{
+                    data.push({label: gerne.musicGenre, value: gerne._id})
+                  })
+                  data.push({value: 'other', label: 'Other'})
+                  setOptions(data)
+                }
+              )
             }
             catch(err){
                 setIsError(true);
@@ -39,11 +59,42 @@ const EditUploadSong = () => {
         }
         if(!song)
         {
-            getMusic();
+          getGerne();
         }
-
     },[])
-
+    useEffect(()=>{
+      const getMusic = async()=>
+      {
+        try{
+      const respone = await getMusicByID(id);
+      setSong(respone.data.data)
+      if(authUser._id !==respone.data.data.musicPostOwnerID)
+      {
+        navigate('/')
+        return;
+      }
+      const data = []
+      respone.data.data.genre.map((genre,index)=>{
+        const foundItem = options.find(item => item.label === genre);
+        data.push({label: foundItem.label, value: foundItem.value})
+      })
+      setSelectedPrivacy(respone.data.data.musicPrivacyType);
+      data.push({value: 'other', label: 'Other'})
+      setMusicName(respone.data.data.musicName);
+      setMusicGerne(data);
+      setArtist(respone.data.data.author);
+      setDesscription(respone.data.data.description);
+      setLyrics(respone.data.data.lyrics);
+      setIsLoading(false);
+      }
+      catch(e)
+      {
+        setIsError(true);
+      }
+    }
+    if(options.length!==0 && !song)
+      getMusic()
+    },[options])
   const handleRadioChange = (event) => {
     setSelectedPrivacy(event.target.id);
   };
@@ -61,7 +112,10 @@ const EditUploadSong = () => {
   }
   const onImageChange = (event) => {
     if(event.target.files.length>0 )
+     {
       setSelectedImage(event.target.files[0]);
+      setIsImageChange(true);
+     }
   };
   const uploadFile = (folder, file, id) => {
     return new Promise((resolve, reject) => {
@@ -90,39 +144,33 @@ const EditUploadSong = () => {
   };
 
   const handleUploadMusic = async () => {
-  if (!isEnableUpload) {
-    console.log("Block");
-    return;
-  }
-  if (!selectedImage || !selectedMusic) {
+  alert("hello")
+  console.log(song)
+  // if (!isEnableUpload) {
+  //   console.log("Block");
+  //   return;
+  // }
+  if (!selectedImage && !song) {
     toast.warn("Please add your music Image!");
     return;
   }
   SetIsEnableUpload(false);
-  console.log(musicGerne.label);
   const gerne = [];
   musicGerne.map((music, index) => {
     gerne.push(music.label);
   });
-  const music = {
-    musicName: musicName,
-    genre: gerne,
-    author: artist,
-    lyrics: lyrics,
-    description: description,
-    releaseYear: new Date().getFullYear(),
-    musicPrivacyType: selectedPrivacy,
-  };
 
   try {
-    const response = await api.post("/api/music", music);
-    const data = response.data.data;
-    const musicURL = await uploadFile("music", selectedMusic, data._id);
-    const imageURL = await uploadFile("music_avatar", selectedImage, data._id);
-    data.imgUrl = imageURL;
-    data.url = musicURL;
-    console.log(data);
-    await api.put(`/api/music/${data._id}`, data);
+    let imageURL = song.imgUrl;
+    song.imgUrl = imageURL 
+    song.description = description;
+    song.author = artist;
+    song.genre = gerne;
+    song.musicPrivacyType = selectedPrivacy;
+    song.musicName = musicName;
+    if(isImageChange)
+     imageURL = await uploadFile("music_avatar", selectedImage, song._id);
+    await api.put(`/api/music/${song._id}`, song);
     toast.success("Upload Success!");
     setDesscription("");
     setMusicName("");
@@ -187,23 +235,14 @@ const EditUploadSong = () => {
     }
     setShowOtherInput(selectedOption.some(option => option.value === 'other'));
 };
-const {setIsActive} = useMusicContext();
-useEffect(()=>{
-  setIsActive(false);
-  api.get('/api/genre').then(
-    response =>{
-      const data = []
-      response.data.data.map((gerne,index)=>{
-        data.push({label: gerne.musicGenre, value: gerne._id})
-      })
-      data.push({value: 'other', label: 'Other'})
-      setOptions(data)
-    }
-  )
-},[])
+
 
 
   return (
+    isLoading ? (
+      <div>
+          <span class="loader"></span>
+      </div>):(
     <div className='py-16 bg-black opacity-90 text-white w-full h-full '>
        <Header />
        <div className='container py-24  mx-auto px-4 md:px-0 md:w-[60%]'>
@@ -225,7 +264,7 @@ useEffect(()=>{
                 </button>
               </div>:
               <div className='relative w-56 h-56'>
-                <img src={song && song.imgUrl} alt="SongImage" className="rounded object-cover h-56 w-56" />
+                <img src={selectedImage? URL.createObjectURL(selectedImage) : song && song.imgUrl} alt="SongImage" className="rounded object-cover h-56 w-56" />
                 <button className=' opacity-0 hover:opacity-100 absolute bottom-0 mb-4 bg-slate-600 ml-10 flex rounded-lg items-center px-2 gap-2 py-1'
                 onClick={handleImageSelection}
                 type = 'button'>
@@ -240,7 +279,7 @@ useEffect(()=>{
                   <span className='text-red-600'>*</span>
                 </div>
                 <input className='w-full border bg-[#181818] mt-2 px-2 rounded py-2 focus:border-slate-400'
-                  value={song && song.musicName}
+                  value={musicName}
                   onChange={e=>{setMusicName(e.target.value)}}
                   required/>
                   <div className='my-2'>
@@ -249,7 +288,7 @@ useEffect(()=>{
                       <span className='text-red-600'>*</span>
                     </div>
                     <input type="text" className='border bg-[#181818] px-2 rounded mt-1 py-2 w-full'
-                    value={song && song.author}
+                    value={artist}
                     onChange={e=>{setArtist(e.target.value)}}
                     required/>
                   </div>
@@ -266,19 +305,19 @@ useEffect(()=>{
 
                             onInputChange={handleInputGenreChange}
                             onChange={handleGenreChange}
-                            value={song && song.genre} maxValues={3}
+                            value={musicGerne} maxValues={3}
                           />
                           {showOtherInput && <input className=' mt-4 border bg-[#181818] px-2 rounded py-2 w-full' type="text" placeholder="Please fill your other genre" />}
                         </div>
                   </div>
                 <p className='font-bold text-sm '>Description</p>
                 <textarea
-                value={song && song.description}
+                value={description}
                 onChange={e=>setDesscription(e.target.value)}
                 name="descriptionSong" id="descriptionSong" className=' resize-none h-28 border bg-[#181818] px-2 rounded mt-2 py-1' placeholder='Describe your track' cols="20" rows="10"></textarea>
                 <p className='font-bold text-sm my-2 '>Lyrics</p>
                 <textarea
-                value={song && song.lyrics}
+                value={lyrics}
                 onChange={e=>setLyrics(e.target.value)}
                 name="lyricSong" id="lyricSong" className=' h-60 border bg-[#181818] px-2 rounded py-2' cols="30" rows="10"></textarea>
                 <p className='font-bold mt-2'>Privacy</p>
@@ -316,7 +355,7 @@ useEffect(()=>{
        </div>
 
     </div>
-  )
+  ))
 }
 
 export default EditUploadSong

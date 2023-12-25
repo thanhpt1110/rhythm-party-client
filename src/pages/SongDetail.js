@@ -18,7 +18,8 @@ const SongDetail = () => {
     const [commentText, setCommentText] = useState('');
     const [listComment, setListComment] = useState([]);
     const [isError, setIsError] = useState(false);
-
+    const [isLoading,setIsLoading] = useState(true);
+    const [isGuest,setIsGuest] = useState(false);
     const socketRef = useRef();
 
     useEffect(() =>{
@@ -27,8 +28,19 @@ const SongDetail = () => {
             const respone = await getMusicByID(id);
             setSong(respone.data.data)
             setListComment(respone.data.data.messages);
+            setIsLoading(false);
+            if(!authUser)
+            {
+                setIsGuest(true);
+                return;
+            }
+            if(authUser._id!==respone.data.data.musicPostOwnerID)
+            {
+                setIsGuest(true);
+            }
             }
             catch(err){
+                console.log(err)
                 setIsError(true);
             }
         }
@@ -118,6 +130,11 @@ const SongDetail = () => {
     };
 
     return (
+        isLoading ? (
+            <div>
+            <span class="loader"></span>
+            </div> 
+        ):
         isError ? (<Error/>) : ( <div>
             <Header />
             <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
@@ -151,7 +168,7 @@ const SongDetail = () => {
                                         <p className='text-xs text-gray-300'>
                                         Release in {song && song.releaseYear} - {song && song.view} View
                                         </p>
-                                        <div className='btnEditDelete flex flex-row gap-2'>
+                                        {!isGuest && (<div className='btnEditDelete flex flex-row gap-2'>
                                             <Link to={`/song-detail/edit/${song && song._id}`} className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' >
                                                 <i className="ri-pencil-fill"></i>
                                                 <p className='text-xs font-semibold '>Edit</p>
@@ -160,7 +177,7 @@ const SongDetail = () => {
                                                 <i className="ri-delete-bin-6-line"></i>
                                                 <p className='text-xs font-semibold '>Delete</p>
                                             </button>
-                                        </div>
+                                        </div>)}
                                     </div>
                                 </div>
                             </div>

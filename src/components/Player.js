@@ -94,7 +94,7 @@ const Player = () => {
 
       // Clean up the event listener on component unmount
       return () => {
-        audioRef.current.removeEventListener('ended', handleSongEnd);
+        audioRef.current && audioRef.current.removeEventListener('ended', handleSongEnd);
       };
     }, [handleSongEnd]);
     const handleSeekChange = (e) => {
