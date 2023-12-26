@@ -1,15 +1,20 @@
 import React, {useState, useContext, useEffect} from "react";
-
+import { updateViewMusic } from "../api/MusicApi";
 const MusicContext = React.createContext();
 
 export function useMusicContext(){
     return useContext(MusicContext)
 }
 export const MusicContextProvider = (props) => {
-    const [music, setMusic] = useState(null)
+    const [music, setMusicCurrent] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const [isActive, setIsActive] = useState(false)
     const [listOfSong, setListOfSong] = useState([])
+    const [updatePlaylist, setUpdatePlaylist] = useState(false);
+    const setMusic = async (song) =>{
+        setMusicCurrent(song);
+       await updateViewMusic(song._id);
+    }
     const value = {
         music,
         setMusic,
@@ -18,7 +23,7 @@ export const MusicContextProvider = (props) => {
         isActive,
         setIsActive,
         listOfSong,
-        setListOfSong
+        setListOfSong,updatePlaylist,setUpdatePlaylist
     }
     return (
         <MusicContext.Provider value={value}>{props.children}</MusicContext.Provider>
