@@ -133,7 +133,7 @@ const SongDetail = () => {
         isLoading ? (
             <div>
             <span class="loader"></span>
-            </div> 
+            </div>
         ):
         isError ? (<Error/>) : ( <div>
             <Header />

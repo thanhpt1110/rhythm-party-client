@@ -41,7 +41,7 @@ const UserAvatar = () => {
   return (
     <div>
        <button className="ml-10 flex items-center cursor-pointer" onClick={toggleMenu}>
-        <img className="h-10 w-10 rounded-full" src={authUser.avatar ? authUser.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
+        <img className="h-10 w-10 rounded-full object-cover" src={authUser.avatar ? authUser.avatar: "https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg"} alt="avatar" />
         <div>
           <i className="ri-arrow-drop-down-line text-2xl text-white"></i>
         </div>
