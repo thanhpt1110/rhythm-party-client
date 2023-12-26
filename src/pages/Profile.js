@@ -13,6 +13,8 @@ import SongCard from '../components/SongCard'
 import { useNavigate } from "react-router-dom";
 import api from '../api/Api'
 import { updateUserInfromation } from '../api/UserApi'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 import {createPlaylist,addMusicToPlaylist,removeMusicFromPlaylist,getPlaylistCurrentUser} from '../api/PlaylistApi'
 const playlistsData = [
@@ -96,15 +98,10 @@ const Profile = () => {
       const newUser = await updateUserInfromation(updateUser,authUser._id);
       setAuthUser(newUser.data.data);
       setImage(event.target.files[0]);
-      Swal.fire({
-        title: "Avatar Updated!",
-        text: "Your avatar has been updated.",
-        icon: "success"
-        });  
+      toast.success("Avatar update successful!");
     }
     catch(e)
     {
-
     }
   };
   const handleCloseModal = () => {
@@ -201,17 +198,27 @@ const Profile = () => {
     <div className=''>
       <Header />
       <div className='py-16 bg-black opacity-90'>
+         <ToastContainer position="bottom-right"
+                              autoClose={2000}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              className=''
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
+                              theme="dark" />
         <div >
           <div className="relative bg-slate-400">
             <div className=" h-72 w-full bg-cover bg-center bg-gradient-to-b from-transparent to-[#181818]">
             </div>
             <div className="absolute top-1/2 ml-32 transform -translate-y-1/2 items-center flex flex-row ">
               <div className="relative ">
-
                 {
-                authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-44 w-44 rounded-full"
+                authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-44 w-44 rounded-full object-cover"
                 />
-                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar' className='"h-44 w-44 rounded-full'/>
+                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar' className='"h-44 w-44 rounded-full object-cover'/>
                 }
                 <button className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-6 py-1 rounded text-white flex flex-row gap-2"
                        onClick={handleImageClick}
