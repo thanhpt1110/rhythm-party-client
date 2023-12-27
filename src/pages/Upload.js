@@ -68,10 +68,10 @@ const Upload = ({user}) => {
     if(event.target.files.length>0 )
       setSelectedImage(event.target.files[0]);
   };
-  const uploadFile = (folder, file, id) => {
+  const uploadFile = (folder, file, id,type) => {
     return new Promise((resolve, reject) => {
       if (file) {
-        const storageRef = ref(storage, `${folder}/${`${id}.mp3`}`);
+        const storageRef = ref(storage, `${folder}/${`${id}.${type}`}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         uploadTask.on(
           "state_changed",
@@ -125,8 +125,8 @@ const Upload = ({user}) => {
   try {
     const response = await api.post("/api/music", music);
     const data = response.data.data;
-    const musicURL = await uploadFile("music", selectedMusic, data._id);
-    const imageURL = await uploadFile("music_avatar", selectedImage, data._id);
+    const musicURL = await uploadFile("music", selectedMusic, data._id,"mp3");
+    const imageURL = await uploadFile("music_avatar", selectedImage, data._id,"png");
     data.imgUrl = imageURL;
     data.url = musicURL;
     console.log(data);

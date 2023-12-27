@@ -72,9 +72,9 @@ function App() {
     },[])
     return (
         loading ? (
-        <div>
-            <span class="loader"></span>
-        </div>) :(<div>
+        <div className='text-center w-screen h-screen py-60'>
+            <span className="loader h-20 w-20 "></span>
+        </div> ) :(<div>
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/signin' element={authUser === null ?<SignIn />: <Navigate to='/profile'/>} />

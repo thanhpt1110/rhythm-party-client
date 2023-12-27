@@ -8,7 +8,7 @@ function formatTime(seconds) {
   const formattedSeconds = String(remainingSeconds).padStart(2, '0');
   return `${formattedMinutes}:${formattedSeconds}`;
 }
-const SongsOfAlbum = ({ order, song,listOfSong}) => {
+const SongsOfAlbum = ({ order, song,listOfSong, isOwner, onDeleteMusic}) => {
    const [isLiked, setIsLiked] = useState(false);
     const handleIconLikeClick = () => {
             setIsLiked(!isLiked);
@@ -37,11 +37,7 @@ const SongsOfAlbum = ({ order, song,listOfSong}) => {
             confirmButtonText: "Yes, Remove it!"
             }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                title: "Deleted!",
-                text: "Your song has been deleted.",
-                icon: "success"
-                });
+              onDeleteMusic();
             }
             });
     };
@@ -64,8 +60,7 @@ const SongsOfAlbum = ({ order, song,listOfSong}) => {
               className={`ri-${isCurrentPlaying ? 'pause-circle-fill text-4xl ml-20' : 'play-circle-fill text-4xl  ml-20'}`}
               onClick={handlePlayIconClick}>
             </i>
-            <i className="ri-delete-bin-6-line  text-gray-400" onClick={handleDeleteFromPlaylist}></i>
-
+            {isOwner && (<i className="ri-delete-bin-6-line  text-gray-400" onClick={handleDeleteFromPlaylist}></i>)}
         </div>
     );
 };

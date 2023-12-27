@@ -22,5 +22,8 @@ const getPlaylistById = async(id)=>{
 const updatePlaylistById = async(updatePlaylist,id)=>{
     return await api.put(`/api/playlist/${id}`,updatePlaylist)
 }
+const deletePlaylistByID = async(id)=>{
+    return await api.delete(`/api/playlist/${id}`)
+ }
 export {createPlaylist,addMusicToPlaylist,removeMusicFromPlaylist,getPlaylistCurrentUser
-    ,getTop20Playlist,getPlaylistById, updatePlaylistById};
+    ,getTop20Playlist,getPlaylistById, updatePlaylistById,deletePlaylistByID};

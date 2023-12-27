@@ -11,4 +11,7 @@ const updateViewMusic = async(id)=>{
 const getTop20Music = async()=>{
    return await api.get('/api/music/top-music?quantity=20&index=0')
 }
-export {sendMessage,getMusicByID,updateViewMusic,getTop20Music};
+const deleteMusicByID = async(id)=>{
+    return await api.delete(`/api/music/${id}`)
+ }
+export {sendMessage,getMusicByID,updateViewMusic,getTop20Music,deleteMusicByID};

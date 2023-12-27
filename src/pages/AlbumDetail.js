@@ -5,16 +5,17 @@ import LOGO from '../assets/images/LOGO.png';
 import SongsOfAlbum from '../components/SongsOfAlbum';
 import { useMusicContext } from '../utils/MusicContext';
 import { storage } from '../utils/Firebase';
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytesResumable,deleteObject } from "firebase/storage";
 import Swal from 'sweetalert2';
 import Error from '../components/Error';
 import ErrorNotFound from '../components/ErrorNotFound';
-import { getPlaylistById, updatePlaylistById } from '../api/PlaylistApi';
+import { getPlaylistById, updatePlaylistById , removeMusicFromPlaylist} from '../api/PlaylistApi';
 import { useParams } from 'react-router';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../utils/AuthContext';
-
+import { deletePlaylistByID } from '../api/PlaylistApi';
+import { useNavigate } from 'react-router-dom';
 const AlbumDetail = () => {
     const fileInputRef = useRef(null);
     const location = useLocation();
@@ -24,6 +25,15 @@ const AlbumDetail = () => {
     const [isError,setIsError] = useState(false);
     const  {id} = useParams();
     const [isOwner, setIsOwner] = useState(false) 
+    const [listMusic, setListMusic] = useState([]) 
+    const [playlistName, setPlaylistName] = useState('');
+    const [selectedPlaylistPrivacy, setSelectedPlaylistPrivacy] = useState("");
+    const [isEnableUpdatePlaylist, setIsEnableUpdatePlaylist] = useState(true);
+    const navigate =useNavigate();
+    const handleChangePlaylistName = (e)=>{
+      e.preventDefault()
+      setPlaylistName(e.target.value)
+    }
     const {authUser} = useAuth();
     const handleBackClick = () => {
         window.history.back();
@@ -57,6 +67,11 @@ const AlbumDetail = () => {
       }
     });
   };
+  const deletefile = async(filePath, fileType) =>{
+    const path = `${filePath}/${id}.${fileType}`;
+    const objectRef = ref(storage, path);
+    return await deleteObject(objectRef);
+    }
   useEffect(()=>{
     const getPlaylist = async()=>{
       const respone = await getPlaylistById(id);
@@ -91,6 +106,9 @@ const AlbumDetail = () => {
       if(authUser && playlistRes.ownerPlaylistID._id === authUser._id)
         setIsOwner(true)
       setPlaylist(playlistRes);
+      setListMusic(playlistRes.listMusic);
+      setPlaylistName(playlistRes.playlistName);
+      setSelectedPlaylistPrivacy(playlistRes.privacyStatus);
       setIsLoadingPlaylist(false);
     }
     if(isLoadingPlaylist)
@@ -105,16 +123,30 @@ const AlbumDetail = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
+            }).then(async (result) => {
             if (result.isConfirmed) {
+               await deletePlaylistByID(playlist._id)
+               await deletefile("playlist_avatar","png")
                 Swal.fire({
                 title: "Deleted!",
                 text: "Your album has been deleted.",
                 icon: "success"
                 });
+               navigate('/profile')
+
             }
             });
     };
+    const handleDeleteMusic = async(song) =>{
+      await removeMusicFromPlaylist(song._id,playlist._id);
+      playlist.listMusic = playlist.listMusic.filter(musicSingle => musicSingle._id !== song._id);
+      setListMusic(playlist.listMusic)
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your song has been deleted.",
+        icon: "success"
+        });
+    }
     const handleImageChange = async (event) => {
       try{
         const newImg = await uploadFile("playlist_avatar",event.target.files[0],playlist._id);
@@ -122,7 +154,7 @@ const AlbumDetail = () => {
         const newPlaylist = await updatePlaylistById(updatePlaylist,playlist._id);
         setPlaylist(newPlaylist.data.data);
         // setImage(event.target.files[0]);
-        toast.success("Avatar update successful!");
+        toast.success("Music image update successful!");
       }
       catch(e)
       {
@@ -137,11 +169,44 @@ const AlbumDetail = () => {
       else
         setIsActive(false)
     },[music])
+    const handleRadioChange = (event) => {
+      setSelectedPlaylistPrivacy(event.target.id);
+    };
+    const handleCloseModal = () => {
+      const modal = document.getElementById('my_modal_3');
+      if (modal) {
+        modal.close();
+      }
+    };
+    const handlePlaylistOnclick = async (e)=>{
+      e.preventDefault()
+      try{
+        if(isEnableUpdatePlaylist)
+        {
+          setIsEnableUpdatePlaylist(false)
+          const playlistUpdate = {
+            playlistName: playlistName,
+            privacyStatus: selectedPlaylistPrivacy
+        }
+          const respone = await updatePlaylistById(playlistUpdate,playlist._id);
+          setPlaylist(respone.data.data);
+          setIsEnableUpdatePlaylist(true);
+          handleCloseModal();
+          toast.success("Update music successfully");
+
+        }
+      }
+      catch(e)
+      {
+        console.log(e)
+      }
+  
+    }
     return ( 
       isLoadingPlaylist? (
-        <div>
-            <span class="loader"></span>
-        </div>) : isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>):
+        <div className='text-center w-screen h-screen py-60'>
+          <span className="loader h-20 w-20 "></span>
+        </div> ) : isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>):
         (<div>
             <Header />
             
@@ -195,7 +260,7 @@ const AlbumDetail = () => {
                                 </p>
                                 <div className='flex flex-col gap-1'>
                                     <p className='text-sm font-semibold'>
-                                        Artist Name in this Album
+                                        {playlist.ownerPlaylistID.displayName}
                                     </p>
                                     <div className='flex flex-row gap-96 items-center justify-between '>
                                         <div className='flex flex-row gap-1 items-center'>
@@ -205,8 +270,7 @@ const AlbumDetail = () => {
                                             className='h-8 w-8'
                                           />
                                           <p className='text-xs'>
-                                              <b>Rhythm Party - 50 songs,</b> in 3
-                                              hours
+                                              <b>Rhythm Party - {listMusic.length} songs</b>
                                           </p>
                                         </div>
                                         {isOwner &&(<div className='btnEditDelete flex flex-row gap-2'>
@@ -227,43 +291,47 @@ const AlbumDetail = () => {
                     </div>
                 </div>
                 <div className='flex flex-col space-y-1 pb-28 text-white bg-black mt-10'>
-                  {playlist.listMusic && playlist.listMusic.map((music,i) =>(
+                  {listMusic.map((music,i) =>(
                     <SongsOfAlbum key={music._id}
                     song = {music} 
                     listOfSong = {playlist.listMusic}
-                    order={i}/>
+                    order={i}
+                    isOwner = {isOwner}
+                    onDeleteMusic = {()=>{handleDeleteMusic(music)}}/>
                   ))}
                 </div>
-                 <dialog id="my_modal_3" className="modal text-white">
-                <div className="modal-box bg-[#1f2937] ">
+                <dialog id="my_modal_3" className="modal text-white">
+                <div className="modal-box bg-[#1f2937]">
                   <form method="dialog">
                     {/* if there is a button in form, it will close the modal */}
                     <button className="btn btn-sm btn-circle btn-ghost hover:bg-slate-600 absolute right-2 top-2">✕</button>
                   </form>
-                  <h3 className="font-bold text-xl text-center pt-2">Update PlayList</h3>
+                  <h3 className="font-bold text-xl text-center pt-2">Update PlayList!</h3>
                   <div className='flex flex-row gap-2 items-center '>
                     <p className='py-4 font-semibold'>Playlist Title</p>
                     <span className='text-red-600'>*</span>
                   </div>
-                  <input type="text" className='w-full rounded py-[6px] bg-[#1f2937] border border-gray-400 px-4' required />
+                  <input type="text" value={playlistName} onChange={handleChangePlaylistName} className='w-full rounded py-[6px] bg-[#1f2937] border border-gray-400 px-4' required />
                   <div className='flex flex-row gap-2 items-center '>
                     <p className='py-4 font-semibold'>Privacy</p>
                     <span className='text-red-600'>*</span>
                   </div>
                   <div className="flex flex-col gap-1 ">
                     <div >
-                      <input type="radio" name="visibility" id="Public"/>
-                      <label htmlFor="Public" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300 ">Public</label>
+                      <input type="radio" name="visibility" id="Public" checked={selectedPlaylistPrivacy === "Public"} onChange={handleRadioChange}/>
+                      <label htmlFor="Public" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300 "
+                      >Public</label>
                     </div>
                     <div>
-                    <input type="radio" name="visibility" id="Private"/>
+                    <input type="radio" name="visibility" id="Private" checked={selectedPlaylistPrivacy === "Private"} onChange={handleRadioChange}/>
                       <label htmlFor="Private" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300">Private</label>
                     </div>
                     <p className='ml-7 text-[10px] text-gray-400'>Only you and people share a secret link with will be able to listen to this track</p>
                   </div>
-                  <button className='w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 rounded-xl mt-10 mb-2'>Save</button>
+                  <button className='w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 rounded-xl mt-10 mb-2'
+                  onClick={handlePlaylistOnclick}>Update</button>
                 </div>
-                  </dialog>
+        </dialog>
             </div>
         </div>
     ));

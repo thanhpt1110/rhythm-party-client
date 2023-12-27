@@ -254,9 +254,9 @@ const EditUploadSong = () => {
 
   return (
     isLoading ? (
-      <div>
-          <span class="loader"></span>
-      </div>):(
+      <div className='text-center w-screen h-screen py-60'>
+        <span className="loader h-20 w-20 "></span>
+      </div> ):(
     <div className='py-16 bg-black opacity-90 text-white w-full h-full '>
        <Header />
        <div className='container py-24  mx-auto px-4 md:px-0 md:w-[60%]'>

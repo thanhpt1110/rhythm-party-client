@@ -9,10 +9,12 @@ import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import Error from '../components/Error';
 import ErrorNotFound from '../components/ErrorNotFound';
-
-
+import { deleteMusicByID } from '../api/MusicApi';
+import { useNavigate } from 'react-router-dom';
+import { storage } from '../utils/Firebase';
+import {  ref, deleteObject } from 'firebase/storage';
 const SongDetail = () => {
-    const {authUser,socket} = useAuth();
+    const {authUser,socket, music,setMusic} = useAuth();
     const  {id} = useParams();
     const [song, setSong] = useState(null);
     const [commentText, setCommentText] = useState('');
@@ -21,8 +23,12 @@ const SongDetail = () => {
     const [isLoading,setIsLoading] = useState(true);
     const [isGuest,setIsGuest] = useState(false);
     const [isNotFound,setIsNotFound] = useState(false);
-    const socketRef = useRef();
-
+    const navigate = useNavigate();
+    const deletefile = async(filePath, fileType) =>{
+    const path = `${filePath}/${id}.${fileType}`;
+    const objectRef = ref(storage, path);
+    return await deleteObject(objectRef);
+    }
     useEffect(() =>{
         const getMusic = async() =>{
             try{
@@ -118,8 +124,9 @@ const SongDetail = () => {
     const handleBackClick = () => {
         window.history.back();
     };
-    const handleDeleteUploadSong = () => {
-        Swal.fire({
+    const handleDeleteUploadSong = async () => {
+        try{
+            Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this song !",
             icon: "warning",
@@ -127,15 +134,34 @@ const SongDetail = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
+            }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                title: "Deleted!",
-                text: "Your song has been deleted.",
-                icon: "success"
-                });
+                try{
+                    const respone = await deleteMusicByID(song._id);
+                    if(music && music._id === song._id)
+                    {
+                        setMusic(null);
+                    }
+                    await deletefile("music_avatar","png");
+                    await deletefile("music","mp3");
+                    Swal.fire({
+                    title: "Deleted!",
+                    text: "Your song has been deleted.",
+                    icon: "success"
+                    });
+                    navigate('/profile')
+                }
+                catch(ex)
+                {
+                    console.log(ex)
+                }
             }
             });
+        }
+        catch(e)
+        {
+            console.log(e)
+        }
     };
     const [showAllLyric, setShowAllLyric] = useState(false);
     const toggleLyrics  = () => {
@@ -154,9 +180,9 @@ const SongDetail = () => {
 
     return (
         isLoading ? (
-            <div>
-            <span class="loader"></span>
-            </div>
+        <div className='text-center w-screen h-screen py-60'>
+            <span className="loader h-20 w-20 "></span>
+        </div> 
         ):
         isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>) : ( <div>
             <Header />
