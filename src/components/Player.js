@@ -26,6 +26,8 @@ const Player = () => {
     const [selectedPlaylistPrivacy, setSelectedPlaylistPrivacy] = useState("Private");
     const [isEnableCreatePlaylist, setIsEnableCreatePlaylist] = useState(true);
     const [playlistName, setPlaylistName] = useState('');
+    const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
+
     const handleChangePlaylistName = (e)=>{
       setPlaylistName(e.target.value)
     }
@@ -54,7 +56,9 @@ const Player = () => {
           console.log(respone)
           setYourListPlaylist(respone.data.data);
         }
-        getPlaylist()
+        if(authUser){
+          getPlaylist()
+        }
       }
       catch(e)
       {
@@ -62,21 +66,27 @@ const Player = () => {
       }
     },[updatePlaylist])
     const playNextSong = () => {
-      if(enableChangeSong) {
-      // Increment the index to get the next song
-      const nextIndex = (currentSongIndex + 1) % listOfSong.length;
+        if (enableChangeSong) {
+      let nextIndex;
+      if (isShuffleEnabled) {
+        // Lấy một chỉ mục ngẫu nhiên khác với `currentSongIndex`
+        nextIndex = Math.floor(Math.random() * listOfSong.length);
+        while (nextIndex === currentSongIndex) {
+          nextIndex = Math.floor(Math.random() * listOfSong.length);
+        }
+      } else {
+        nextIndex = (currentSongIndex + 1) % listOfSong.length;
+      }
       setCurrentSongIndex(nextIndex);
       // Update the music context to the next song
-      if(listOfSong.length === 1)
-      {
-        setIsPlaying(!isPlaying)
-        return;
-      }
       setMusic(listOfSong[nextIndex]);
       setEnableChangeSong(false);
       debounceTimeoutChangeSongButton();
-
-    }};
+    }
+  };
+  const toggleShuffle = () => {
+  setIsShuffleEnabled(!isShuffleEnabled);
+};
     const playBackSong = () => {
       if(enableChangeSong) {
       // Increment the index to get the next song
@@ -141,7 +151,7 @@ const Player = () => {
       {
         console.log(e)
       }
-  
+
     }
     useEffect(() => {
       // Set up event listener for the ended event
@@ -186,14 +196,14 @@ const Player = () => {
       setVolume(1);
     }
   };
-  
+
   const putMusicToPlaylist = async (playlist)=>{
     if(!playlist.listMusic.includes(music._id))
     {
       console.log("hello")
       const respone = await addMusicToPlaylist(music._id,playlist._id);
       setYourListPlaylist(prevPlaylists => (
-        prevPlaylists.map(playlist => 
+        prevPlaylists.map(playlist =>
           playlist._id === respone.data.data._id ? { ...playlist, ...respone.data.data } : playlist
         )
       ));
@@ -202,7 +212,7 @@ const Player = () => {
       title: "Added Music to Playlist!",
       text: "Your Music has been added to playlist",
       icon: "success"
-      });  
+      });
   }
   const decreaseVolume = () => {
     if (volume >= 0.1) {
@@ -256,7 +266,7 @@ const Player = () => {
                             (
                               <li key={index} value={playlist._id} onClick={async (e)=>{
                               e.preventDefault();
-                              await putMusicToPlaylist(playlist)}} 
+                              await putMusicToPlaylist(playlist)}}
                               className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' >
                               <i className="ri-play-list-2-fill"></i>
                                 <p>{playlist.playlistName}</p>
@@ -301,7 +311,7 @@ const Player = () => {
                     </button>
                 </div>
                 <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
-                    <i className="ri-shuffle-fill button"></i>
+                    <i className={`ri-shuffle-fill button ${isShuffleEnabled ? 'text-gray-500' : ''}`} onClick={toggleShuffle}></i>
                     <i className='ri-rewind-fill button' onClick={playBackSong}></i>
                      <i
                         className={`ri-${isPlaying ? 'pause-circle-fill' : 'play-circle-fill'} h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center`}
