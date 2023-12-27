@@ -8,4 +8,7 @@ const getMusicByID = async(id)=>{
 const updateViewMusic = async(id)=>{
     return await api.get(`/api/music/listen/${id}`)
 }
-export {sendMessage,getMusicByID,updateViewMusic};
+const getTop20Music = async()=>{
+   return await api.get('/api/music/top-music?quantity=20&index=0')
+}
+export {sendMessage,getMusicByID,updateViewMusic,getTop20Music};

@@ -4,6 +4,8 @@ import ToolTip from './ToolTip';
 import updateViewMusic from '../api/MusicApi'
 import { useAuth } from '../utils/AuthContext';
 import { getPlaylistCurrentUser, createPlaylist, addMusicToPlaylist } from '../api/PlaylistApi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -54,7 +56,8 @@ const Player = () => {
           console.log(respone)
           setYourListPlaylist(respone.data.data);
         }
-        getPlaylist()
+        if(authUser)
+          getPlaylist()
       }
       catch(e)
       {
@@ -198,11 +201,7 @@ const Player = () => {
         )
       ));
     }
-    Swal.fire({
-      title: "Added Music to Playlist!",
-      text: "Your Music has been added to playlist",
-      icon: "success"
-      });  
+    toast.success("Music added to playlist");
   }
   const decreaseVolume = () => {
     if (volume >= 0.1) {
@@ -215,9 +214,37 @@ const Player = () => {
   const handleIconAddPlaylistClick = () => {
     setShowSubMenu(!showSubMenu);
   };
-
+  const onClickNextSong = ()=>{
+    if(listOfSong.length === 1)
+    {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      return;
+    }
+    playNextSong();
+  }
+  const onClickBackSong = ()=>{
+    if(listOfSong.length === 1)
+    {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+      return;
+    }
+    playBackSong();
+  }
     return (
       <div className='z-[99] fixed w-full bottom-0'>
+                 <ToastContainer position="bottom-right"
+                              autoClose={2000}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              className=''
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
+                              theme="dark" />
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
             {/* Left */}
             {music && <audio ref={audioRef} src={music.url}  onTimeUpdate={handleTimeUpdate} />}
@@ -302,12 +329,12 @@ const Player = () => {
                 </div>
                 <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
                     <i className="ri-shuffle-fill button"></i>
-                    <i className='ri-rewind-fill button' onClick={playBackSong}></i>
+                    <i className='ri-rewind-fill button' onClick={onClickBackSong}></i>
                      <i
                         className={`ri-${isPlaying ? 'pause-circle-fill' : 'play-circle-fill'} h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center`}
                         onClick={handlePlayIconClick}
                     ></i>
-                    <i className='ri-speed-fill button' onClick={playNextSong}></i>
+                    <i className='ri-speed-fill button' onClick={onClickNextSong}></i>
                     <i
                         className={`ri-loop-left-fill button ${isLooping ? 'text-gray-500' : ''}`}
                         onClick={handleLoopIconClick}></i>

@@ -91,7 +91,7 @@ function App() {
                 <Route path='/AllAlbum' element={<AllAlbum />} />
                 <Route path='/AllFavSong' element={<AllFavSong />} />
                 <Route path='/AllUploadSongs' element={<AllUploadSongs />} />
-                <Route path='/playlist-detail/:playlistName' element={<AlbumDetail />} />
+                <Route path='/playlist-detail/:id' element={<AlbumDetail />} />
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
                 <Route path='/song-detail/edit/:id' element={<EditUploadSong/>} />
                 <Route path='/song-detail/:id' element={<SongDetail/>} />

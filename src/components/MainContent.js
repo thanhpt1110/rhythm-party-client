@@ -6,7 +6,8 @@ import FavSongs from './FavSongs'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../utils/AuthContext'
 import api from '../api/Api'
-
+import { getTop20Music } from '../api/MusicApi'
+import { getTop20Playlist } from '../api/PlaylistApi'
 
 const TrendingData = [
   {
@@ -43,23 +44,43 @@ const TrendingData = [
 ];
 
 const MainContent = () => {
-
+  const [topPlaylistData, setTopPlaylistData] = useState([]);
+  const [isLoadingTopPlaylist, setIsLoadingTopPlaylist] = useState(true);
+  const [isLoadingTopSong, setIsLoadingTopSong] = useState(true);
   const [topsongsData, setTopSongsData] = useState([]);
   useEffect(()=>{
-    api.get('/api/music/top-music?quantity=20&index=0').then(respone=>{
+    const getMusic = async()=>{
+      try{
+      const respone = await getTop20Music();
+      const musics = respone.data.data;
+      setTopSongsData(musics);
+      setIsLoadingTopSong(false);
+      }
+      catch(e)
+      {
+        console.log(e);
+      }
+    }
+    const getPlaylist = async()=>{
+      const respone = await getTop20Playlist();
+      const playlists = respone.data.data;
       console.log(respone)
-      if(respone.status===200)
-        {
-            const musics = respone.data.data;
-            setTopSongsData(musics)
-        }
-    }).catch(error => {
-    console.error('Error:', error);
-  });
+      setTopPlaylistData(playlists);
+      setIsLoadingTopPlaylist(false);
+    }
+    if(isLoadingTopPlaylist)
+      getPlaylist();
+    if(isLoadingTopSong)
+      getMusic();
   },[])
-  const {authUser, setAuthUser, isLoggedIn, setIsLoggedIn} = useAuth()
-  return (
-          <div className=' py-20 max-w-screen-xl md:flex flex-wrap justify-between mx-auto p-4 text-white'>
+  const {authUser} = useAuth()
+  return ( 
+    (isLoadingTopSong || isLoadingTopPlaylist) ?
+    (
+      <div>
+          <span class="loader"></span>
+      </div>):
+          (<div className=' py-20 max-w-screen-xl md:flex flex-wrap justify-between mx-auto p-4 text-white'>
                 <div>
                 {authUser && <FavSongs />}
                   <div className='flex items-baseline justify-between pt-12'>
@@ -82,17 +103,15 @@ const MainContent = () => {
                     <Link to='/AllAlbum' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
                   </div>
                   <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                    {TrendingData.slice(0, 6).map((playlist, index) => (
+                    {topPlaylistData.slice(0, 6).map((playlist, index) => (
                       <Playlist
                         key={index}
-                        urlImg={playlist.urlImg}
-                        playlistName={playlist.playlistName}
-                        author={playlist.author}
+                        playlist={playlist}
                       />
                     ))}
                   </div>
                 </div>
-     </div>
+     </div>)
   )
 }
 

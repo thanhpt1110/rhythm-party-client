@@ -16,7 +16,7 @@ import { updateUserInfromation } from '../api/UserApi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
-import {createPlaylist,addMusicToPlaylist,removeMusicFromPlaylist,getPlaylistCurrentUser} from '../api/PlaylistApi'
+import {getPlaylistCurrentUser, createPlaylist} from '../api/PlaylistApi'
 const playlistsData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -69,7 +69,7 @@ const Profile = () => {
   const uploadFile = (folder, file, id) => {
     return new Promise((resolve, reject) => {
       if (file) {
-        const storageRef = ref(storage, `${folder}/${`${id}.mp3`}`);
+        const storageRef = ref(storage, `${folder}/${`${id}.png`}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         uploadTask.on(
           "state_changed",
@@ -111,6 +111,7 @@ const Profile = () => {
     }
   };
   const handleChangePlaylistName = (e)=>{
+    e.preventDefault()
     setPlaylistName(e.target.value)
   }
   const {music, setIsActive,updatePlaylist,setUpdatePlaylist} = useMusicContext();
@@ -119,6 +120,7 @@ const Profile = () => {
     setSelectedPlaylistPrivacy(event.target.id);
   };
   const handlePlaylistOnclick = async (e)=>{
+    e.preventDefault()
     try{
       if(isEnableCreatePlaylist)
       {
@@ -126,9 +128,8 @@ const Profile = () => {
         const playlist = {
           playlistName: playlistName,
           privacyStatus: selectedPlaylistPrivacy
-        }
+      }
         const respone = await createPlaylist(playlist);
-        console.log(respone)
         setListPlaylist([respone.data.data, ...listPlaylist]);
         setIsEnableCreatePlaylist(true)
         setUpdatePlaylist(!updatePlaylist)
@@ -144,7 +145,8 @@ const Profile = () => {
   const handleAddPlaylist = ()=>{
     setSelectedPlaylistPrivacy("Private");
     setPlaylistName("");
-    document.getElementById('my_modal_3').showModal()}
+    document.getElementById('my_modal_3').showModal()
+  }
   useEffect(()=>{
     const getMusic = async() => await api.get('/api/music').then(respone=>{
       if(respone.status===200)
@@ -159,6 +161,7 @@ const Profile = () => {
       }
     }).catch(error => {
       console.error('Error:', error);
+      setIsLoadingPlaylist(false)
     });
     const getPlaylist = async()=> {
       try{
@@ -167,11 +170,12 @@ const Profile = () => {
         console.log(respone)
         setIsLoadingPlaylist(false)
         localStorage.setItem('accessToken',respone.data.accessToken)
-
       }
       catch(e)
       {
         console.log(e)
+        setIsLoadingPlaylist(false)
+
       }
     }
     if(isLoadingMusic)
@@ -254,9 +258,7 @@ const Profile = () => {
                 {listPlaylist.slice(0, 6).map((playlist, index) => (
                   <Playlist
                     key={index}
-                    urlImg={playlist.avatarPlaylist}
-                    playlistName={playlist.playlistName}
-                    author={playlist.ownerPlaylistID.displayName}
+                    playlist = {playlist}
                   />
                 ))}
 
@@ -297,9 +299,9 @@ const Profile = () => {
                   </div>
                   <div className="flex flex-col gap-1 ">
                     <div >
-                      <input type="radio" name="visibility" id="Public"/>
+                      <input type="radio" name="visibility" id="Public" checked={selectedPlaylistPrivacy === "Public"} onChange={handleRadioChange}/>
                       <label htmlFor="Public" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300 "
-                      checked={selectedPlaylistPrivacy === "Public"} onChange={handleRadioChange}>Public</label>
+                      >Public</label>
                     </div>
                     <div>
                     <input type="radio" name="visibility" id="Private" checked={selectedPlaylistPrivacy === "Private"} onChange={handleRadioChange}/>

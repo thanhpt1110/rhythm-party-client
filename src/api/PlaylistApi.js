@@ -13,4 +13,14 @@ const removeMusicFromPlaylist = async(musicId,playlistId)=>{
 const getPlaylistCurrentUser = async() =>{
     return await api.get('/api/playlist')
 }
-export {createPlaylist,addMusicToPlaylist,removeMusicFromPlaylist,getPlaylistCurrentUser};
+const getTop20Playlist = async() =>{
+    return await api.get('/api/playlist/top-playlist')
+}
+const getPlaylistById = async(id)=>{
+    return await api.get(`/api/playlist/${id}`)
+}
+const updatePlaylistById = async(updatePlaylist,id)=>{
+    return await api.put(`/api/playlist/${id}`,updatePlaylist)
+}
+export {createPlaylist,addMusicToPlaylist,removeMusicFromPlaylist,getPlaylistCurrentUser
+    ,getTop20Playlist,getPlaylistById, updatePlaylistById};

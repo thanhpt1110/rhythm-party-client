@@ -8,7 +8,7 @@ import { sendMessage ,getMusicByID } from '../api/MusicApi';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import Error from '../components/Error';
-
+import ErrorNotFound from '../components/ErrorNotFound';
 
 
 const SongDetail = () => {
@@ -20,12 +20,35 @@ const SongDetail = () => {
     const [isError, setIsError] = useState(false);
     const [isLoading,setIsLoading] = useState(true);
     const [isGuest,setIsGuest] = useState(false);
+    const [isNotFound,setIsNotFound] = useState(false);
     const socketRef = useRef();
 
     useEffect(() =>{
         const getMusic = async() =>{
             try{
             const respone = await getMusicByID(id);
+            if(respone.status === 404)
+            {
+                setIsNotFound(true);
+                setIsLoading(false);    
+                return;
+            }
+            if(respone.status !== 200 )
+            {
+                setIsError(true);
+                setIsLoading(false);    
+                return;
+            }
+            const music = respone.data.data;
+            if(!(music.musicPrivacyType === "Public" && music.musicAuthorize === "Authorize"))
+            {
+                if(!authUser || authUser._id !== music.musicPostOwnerID)
+                {
+                    setIsNotFound(true);
+                    setIsLoading(false);    
+                    return;
+                }
+            }
             setSong(respone.data.data)
             setListComment(respone.data.data.messages);
             setIsLoading(false);
@@ -135,7 +158,7 @@ const SongDetail = () => {
             <span class="loader"></span>
             </div>
         ):
-        isError ? (<Error/>) : ( <div>
+        isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>) : ( <div>
             <Header />
             <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
                 <div className='relative bg-[#9890A0] '>

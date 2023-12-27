@@ -7,59 +7,24 @@ import { useMusicContext } from '../utils/MusicContext';
 import { storage } from '../utils/Firebase';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import Swal from 'sweetalert2';
-
-const SongsData = [
-    {
-      id: 1,
-      SongImg: 'https://photo-resize-zmp3.zmdcdn.me/w256_r1x1_jpeg/cover/2/f/a/7/2fa7217d7ba558e5f9ab43b267e7de5e.jpg',
-      SongName: 'Từng Quen',
-      SongArtist: 'Wren Evans',
-      duration: '2:51',
-    },
-    {
-      id: 2,
-      SongImg: 'https://photo-resize-zmp3.zmdcdn.me/w600_r1x1_jpeg/cover/c/4/b/0/c4b0da67bae11731685f79432dc462b7.jpg',
-      SongName: 'Một Đêm Say',
-      SongArtist: 'Thịnh Suy',
-      duration: '2:20',
-    },
-    {
-      id: 3,
-      SongImg: 'https://i.ytimg.com/vi/tRFLs_-54gE/maxresdefault.jpg',
-      SongName: 'Love Story',
-      SongArtist: 'Taylor Swift',
-      duration: '3:05',
-    },
-    {
-      id: 4,
-      SongImg: 'https://i1.sndcdn.com/artworks-0aDqhBAzd6pkEtIU-eJ1E1Q-t500x500.jpg',
-      SongName: 'Tự Sự',
-      SongArtist: 'Obito ft MCK',
-      duration: '4:10',
-    },
-    {
-      id: 5,
-      SongImg: 'https://avatar-ex-swe.nixcdn.com/song/2023/04/19/d/2/5/3/1681879735020_640.jpg',
-      SongName: 'Không Thể Say',
-      SongArtist: 'HieuThuHai',
-      duration: '1:53',
-    },
-    {
-      id: 6,
-      SongImg: 'https://cafebiz.cafebizcdn.vn/2019/12/23/all-i-want-for-christmas-is-you-15770727420652046746371.jpg',
-      SongName: 'All I Want for Christmas Is You',
-      SongArtist: 'Mariah Carey',
-      duration: '2:11',
-    }
-  ];
+import Error from '../components/Error';
+import ErrorNotFound from '../components/ErrorNotFound';
+import { getPlaylistById, updatePlaylistById } from '../api/PlaylistApi';
+import { useParams } from 'react-router';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '../utils/AuthContext';
 
 const AlbumDetail = () => {
     const fileInputRef = useRef(null);
     const location = useLocation();
-    const AlbumName = decodeURIComponent(
-        location.pathname.replace('/playlist-detail/', '')
-    );
-    const imageInputRef = useRef(null);
+    const [playlist, setPlaylist] = useState(null);
+    const [isLoadingPlaylist, setIsLoadingPlaylist] = useState(true);
+    const [isNotFound,setIsNotFound] = useState(false);
+    const [isError,setIsError] = useState(false);
+    const  {id} = useParams();
+    const [isOwner, setIsOwner] = useState(false) 
+    const {authUser} = useAuth();
     const handleBackClick = () => {
         window.history.back();
     };
@@ -67,6 +32,70 @@ const AlbumDetail = () => {
     event.preventDefault();
     fileInputRef.current.click();
   };
+  const uploadFile = (folder, file, id) => {
+    return new Promise((resolve, reject) => {
+      if (file) {
+        const storageRef = ref(storage, `${folder}/${`${id}.png`}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+          },
+          (error) => {
+            alert(error);
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              console.log(`URL: ${downloadURL}`);
+              resolve(downloadURL);
+            });
+          }
+        );
+      }
+    });
+  };
+  useEffect(()=>{
+    const getPlaylist = async()=>{
+      const respone = await getPlaylistById(id);
+      
+      if(respone.status === 404)
+      {
+        setIsNotFound(true)
+        setIsLoadingPlaylist(false);
+        return;
+      }
+      if(respone.status !==200)
+      {
+        setIsError(true);
+        setIsLoadingPlaylist(false);
+        return;
+      }
+      const playlistRes = respone.data.data
+      console.log(playlistRes)
+      if(playlistRes.privacyStatus === "Private" )
+      {
+        if(!authUser || authUser._id !== playlistRes.ownerPlaylistID._id)
+        {
+          setIsNotFound(true)
+          setIsLoadingPlaylist(false);
+          return;
+        }
+      }
+      if((!authUser || authUser._id!==playlistRes.ownerPlaylistID._id))
+      {
+        playlistRes.listMusic = playlistRes.listMusic.filter(music => music.musicPrivacyType === "Public" && music.musicAuthorize === "Authorize") 
+      }
+      if(authUser && playlistRes.ownerPlaylistID._id === authUser._id)
+        setIsOwner(true)
+      setPlaylist(playlistRes);
+      setIsLoadingPlaylist(false);
+    }
+    if(isLoadingPlaylist)
+      getPlaylist();
+  },[])
   const handleDeleteUploadSong = () => {
         Swal.fire({
             title: "Are you sure?",
@@ -86,7 +115,21 @@ const AlbumDetail = () => {
             }
             });
     };
-
+    const handleImageChange = async (event) => {
+      try{
+        const newImg = await uploadFile("playlist_avatar",event.target.files[0],playlist._id);
+        const updatePlaylist = {avatarPlaylist: newImg};
+        const newPlaylist = await updatePlaylistById(updatePlaylist,playlist._id);
+        setPlaylist(newPlaylist.data.data);
+        // setImage(event.target.files[0]);
+        toast.success("Avatar update successful!");
+      }
+      catch(e)
+      {
+        toast.error("Change image failed");
+        console.log(e)
+      }
+    }
     const {music, setIsActive} = useMusicContext();
     useEffect(()=>{
       if(music!==null && music !==undefined)
@@ -94,10 +137,26 @@ const AlbumDetail = () => {
       else
         setIsActive(false)
     },[music])
-    return (
+    return ( 
+      isLoadingPlaylist? (
         <div>
+            <span class="loader"></span>
+        </div>) : isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>):
+        (<div>
             <Header />
+            
             <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
+            <ToastContainer position="bottom-right"
+                              autoClose={2000}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              className=''
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
+                              theme="dark" />
                 <div className='relative bg-[#9890A0] '>
                     <div className=' h-[22rem] bg-cover bg-center bg-gradient-to-b from-transparent to-[#181818]'></div>
                     <div className='absolute top-1/2 ml-24 transform -translate-y-1/2 items-center flex flex-row '>
@@ -111,22 +170,28 @@ const AlbumDetail = () => {
 
                             <div className="relative">
                                 <img
-                                  src="https://seed-mix-image.spotifycdn.com/v6/img/artist/4GJ6xDCF5jaUqD6avOuQT6/vi/default"
+                                  src={playlist.avatarPlaylist ? playlist.avatarPlaylist : "https://seed-mix-image.spotifycdn.com/v6/img/artist/4GJ6xDCF5jaUqD6avOuQT6/vi/default"}
                                   alt="AlbumImg"
                                   className="h-60 w-60 rounded shadow-2xl shadow-black "
                                 />
-                                <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-8 py-1 rounded-xl text-white flex flex-row gap-2 text-sm items-center" onClick={handleUpdateImageClick}>
+                                {isOwner && (<button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-8 py-1 rounded-xl text-white flex flex-row gap-2 text-sm items-center" onClick={handleUpdateImageClick}>
                                   <i className="ri-camera-line text-lg"></i>
                                   Update
-                                </button>
+                                </button>)}
+                                <input type='file'
+                                  onChange={handleImageChange}
+                                  accept='image/*'
+                                  style={
+                                    {display: 'none'}
+                                  }
+                                  ref={fileInputRef}/>
                             </div>
                             <div className='flex flex-col gap-6'>
                                 <p className='text-sm font-semibold'>
                                     Playlist
                                 </p>
                                 <p className='font-bold text-[80px]'>
-                                    {' '}
-                                    {AlbumName} Album
+                                    {playlist && playlist.playlistName} 
                                 </p>
                                 <div className='flex flex-col gap-1'>
                                     <p className='text-sm font-semibold'>
@@ -144,7 +209,7 @@ const AlbumDetail = () => {
                                               hours
                                           </p>
                                         </div>
-                                        <div className='btnEditDelete flex flex-row gap-2'>
+                                        {isOwner &&(<div className='btnEditDelete flex flex-row gap-2'>
                                             <button className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' onClick={()=>document.getElementById('my_modal_3').showModal()}>
                                                 <i className="ri-pencil-fill"></i>
                                                 <p className='text-xs font-semibold ' >Edit</p>
@@ -153,7 +218,7 @@ const AlbumDetail = () => {
                                                 <i className="ri-delete-bin-6-line"></i>
                                                 <p className='text-xs font-semibold '>Delete</p>
                                             </button>
-                                        </div>
+                                        </div>)}
                                     </div>
 
                                 </div>
@@ -162,12 +227,10 @@ const AlbumDetail = () => {
                     </div>
                 </div>
                 <div className='flex flex-col space-y-1 pb-28 text-white bg-black mt-10'>
-                  {SongsData.map((track,i) =>(
-                    <SongsOfAlbum key={track.id}
-                    track={track.SongName}
-                    imgSong={track.SongImg}
-                    artist={track.SongArtist}
-                    duration={track.duration}
+                  {playlist.listMusic && playlist.listMusic.map((music,i) =>(
+                    <SongsOfAlbum key={music._id}
+                    song = {music} 
+                    listOfSong = {playlist.listMusic}
                     order={i}/>
                   ))}
                 </div>
@@ -203,7 +266,7 @@ const AlbumDetail = () => {
                   </dialog>
             </div>
         </div>
-    );
+    ));
 };
 
 export default AlbumDetail;
