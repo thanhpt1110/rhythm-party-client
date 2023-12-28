@@ -16,6 +16,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../utils/AuthContext';
 import { deletePlaylistByID } from '../api/PlaylistApi';
 import { useNavigate } from 'react-router-dom';
+import PlaylistDefaulImg from '../assets/images/PlaylistDefaultImg.png'
+import Footer from '../components/Footer';
 const AlbumDetail = () => {
     const fileInputRef = useRef(null);
     const location = useLocation();
@@ -24,8 +26,8 @@ const AlbumDetail = () => {
     const [isNotFound,setIsNotFound] = useState(false);
     const [isError,setIsError] = useState(false);
     const  {id} = useParams();
-    const [isOwner, setIsOwner] = useState(false) 
-    const [listMusic, setListMusic] = useState([]) 
+    const [isOwner, setIsOwner] = useState(false)
+    const [listMusic, setListMusic] = useState([])
     const [playlistName, setPlaylistName] = useState('');
     const [selectedPlaylistPrivacy, setSelectedPlaylistPrivacy] = useState("");
     const [isEnableUpdatePlaylist, setIsEnableUpdatePlaylist] = useState(true);
@@ -75,7 +77,7 @@ const AlbumDetail = () => {
   useEffect(()=>{
     const getPlaylist = async()=>{
       const respone = await getPlaylistById(id);
-      
+
       if(respone.status === 404)
       {
         setIsNotFound(true)
@@ -101,7 +103,7 @@ const AlbumDetail = () => {
       }
       if((!authUser || authUser._id!==playlistRes.ownerPlaylistID._id))
       {
-        playlistRes.listMusic = playlistRes.listMusic.filter(music => music.musicPrivacyType === "Public" && music.musicAuthorize === "Authorize") 
+        playlistRes.listMusic = playlistRes.listMusic.filter(music => music.musicPrivacyType === "Public" && music.musicAuthorize === "Authorize")
       }
       if(authUser && playlistRes.ownerPlaylistID._id === authUser._id)
         setIsOwner(true)
@@ -200,17 +202,17 @@ const AlbumDetail = () => {
       {
         console.log(e)
       }
-  
+
     }
-    return ( 
+    return (
       isLoadingPlaylist? (
         <div className='text-center w-screen h-screen py-60'>
           <span className="loader h-20 w-20 "></span>
         </div> ) : isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>):
         (<div>
             <Header />
-            
-            <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
+
+            <div className='py-20 bg-black opacity-90 text-white w-full h-full'>
             <ToastContainer position="bottom-right"
                               autoClose={2000}
                               hideProgressBar={false}
@@ -235,9 +237,9 @@ const AlbumDetail = () => {
 
                             <div className="relative">
                                 <img
-                                  src={playlist.avatarPlaylist ? playlist.avatarPlaylist : "https://seed-mix-image.spotifycdn.com/v6/img/artist/4GJ6xDCF5jaUqD6avOuQT6/vi/default"}
+                                  src={playlist.avatarPlaylist ? playlist.avatarPlaylist : PlaylistDefaulImg}
                                   alt="AlbumImg"
-                                  className="h-60 w-60 rounded shadow-2xl shadow-black "
+                                  className="h-60 w-60 rounded shadow-2xl shadow-black object-cover "
                                 />
                                 {isOwner && (<button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-8 py-1 rounded-xl text-white flex flex-row gap-2 text-sm items-center" onClick={handleUpdateImageClick}>
                                   <i className="ri-camera-line text-lg"></i>
@@ -256,7 +258,7 @@ const AlbumDetail = () => {
                                     Playlist
                                 </p>
                                 <p className='font-bold text-[80px]'>
-                                    {playlist && playlist.playlistName} 
+                                    {playlist && playlist.playlistName}
                                 </p>
                                 <div className='flex flex-col gap-1'>
                                     <p className='text-sm font-semibold'>
@@ -293,7 +295,7 @@ const AlbumDetail = () => {
                 <div className='flex flex-col space-y-1 pb-28 text-white bg-black mt-10'>
                   {listMusic.map((music,i) =>(
                     <SongsOfAlbum key={music._id}
-                    song = {music} 
+                    song = {music}
                     listOfSong = {playlist.listMusic}
                     order={i}
                     isOwner = {isOwner}
@@ -331,8 +333,9 @@ const AlbumDetail = () => {
                   <button className='w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 rounded-xl mt-10 mb-2'
                   onClick={handlePlaylistOnclick}>Update</button>
                 </div>
-        </dialog>
+                </dialog>
             </div>
+            <Footer/>
         </div>
     ));
 };

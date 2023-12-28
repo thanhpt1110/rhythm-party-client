@@ -15,10 +15,13 @@ const Room = () => {
   const handleCloseModal = () => {
     setShowModal(false); // Ẩn modal khi người dùng nhấp vào nút đóng modal
   };
-  const {setIsActive} = useMusicContext();
-  useEffect(()=>{
-    setIsActive(false)
-  })
+  const {music, setIsActive} = useMusicContext();
+    useEffect(()=>{
+      if(music!==null && music !==undefined)
+        setIsActive(true)
+      else
+        setIsActive(false)
+    },[music])
   return (
     <div>
       <header>

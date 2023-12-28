@@ -2,10 +2,13 @@ import React,{useEffect} from 'react'
 import Header from '../components/Header';
 import { useMusicContext } from '../utils/MusicContext';
 const ReportIssues = () => {
-  const {setIsActive} = useMusicContext();
-  useEffect(()=>{
-    setIsActive(false)
-  })
+  const {music, setIsActive} = useMusicContext();
+    useEffect(()=>{
+      if(music!==null && music !==undefined)
+        setIsActive(true)
+      else
+        setIsActive(false)
+    },[music])
   return (
     <div>
       <Header/>

@@ -42,13 +42,13 @@ const SongsOfAlbum = ({ order, song,listOfSong, isOwner, onDeleteMusic}) => {
             });
     };
     return (
-        <div className='grid grid-cols-5 pl-32 mr-28 ml-14 items-center rounded py-4 hover:bg-slate-800 cursor-pointer '>
-            <div className='flex items-center space-x-6 '>
+        <div className='grid grid-cols-5 pl-28 mr-20 ml-14 items-center rounded py-4 hover:bg-slate-800 cursor-pointer '>
+            <div className='flex items-center space-x-4 '>
                     <p className='text-gray-500'>{order + 1}.</p>
-                    <img className='h-14 w-14 rounded' src={song.imgUrl} alt='' />
+                    <img className='h-14 w-14 rounded object-cover' src={song.imgUrl} alt='' />
                     <div>
-                        <p className=' text-base'>{song.musicName}</p>
-                        <p className='text-[13px] text-gray-500'>{song.author}</p>
+                        <p className=' text-base truncate w-40'>{song.musicName}</p>
+                        <p className='text-[13px] text-gray-500 truncate w-32'>{song.author}</p>
                     </div>
             </div>
               <i

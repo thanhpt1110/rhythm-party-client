@@ -289,9 +289,15 @@ const Player = () => {
                         {
                           yourListPlaylist.map((playlist,index)=>
                             (
-                              <li key={index} value={playlist._id} onClick={async (e)=>{
-                              e.preventDefault();
-                              await putMusicToPlaylist(playlist)}}
+                              <li
+                              key={index}
+                              value={playlist._id}
+                              onClick={async (e)=>{e.preventDefault();
+                              await putMusicToPlaylist(playlist);
+                              setShowSubMenu(false);
+
+                                }
+                              }
                               className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' >
                               <i className="ri-play-list-2-fill"></i>
                                 <p>{playlist.playlistName}</p>

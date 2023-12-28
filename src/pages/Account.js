@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';
 
 const Account = () => {
-  const {setIsActive} = useMusicContext();
+  const {music, setIsActive} = useMusicContext();
   const {authUser, setAuthUser} = useAuth();
   const [displayName, setDisplayName] = useState(authUser.displayName);
   const [selectedGender, setSelectedGender] = useState(authUser.gender ? authUser.gender : "None");
@@ -38,9 +38,12 @@ const Account = () => {
   const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
   };
-  useEffect(()=>{
-      setIsActive(false)
-  })
+      useEffect(()=>{
+      if(music!==null && music !==undefined)
+        setIsActive(true)
+      else
+        setIsActive(false)
+    },[music])
   return (
     <div>
        <ToastContainer position="bottom-right"

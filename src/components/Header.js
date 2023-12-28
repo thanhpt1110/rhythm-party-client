@@ -27,12 +27,12 @@ const Header = ({type}) => {
   return (
     <nav className='bg-[#101010] text-white fixed w-full z-20 top-0 left-0 shadow '>
       <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
-        <a href='/' className='flex items-center'>
+        <Link to='/' className='flex items-center'>
           <img src={LOGO} className='w-12 h-12 mr-3' alt='WebsiteLogo'/>
           <span className='self-center text-2xl font-semibold whitespace-nowrap  '>
             Rhythm Party
           </span>
-        </a>
+        </Link>
         <div className=' relative hidden md:block ml-8 focus:text-white '>
           <button className=" absolute left top-1/2 -translate-y-1/2 px-4 mt-[2px]">
               <i className="ri-search-line text-gray-400 hover:text-white "></i>

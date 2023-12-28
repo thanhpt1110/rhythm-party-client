@@ -4,6 +4,7 @@ import SongCard from '../components/SongCard'
 import { useState, useEffect } from 'react'
 import api from '../api/Api'
 import Playlist from '../components/Playlist'
+import { useMusicContext } from '../utils/MusicContext'
 
 
 const TrendingData = [
@@ -43,6 +44,13 @@ const TrendingData = [
 
 const Search = () => {
   const [topsongsData, setTopSongsData] = useState([]);
+  const {music, setIsActive} = useMusicContext();
+    useEffect(()=>{
+      if(music!==null && music !==undefined)
+        setIsActive(true)
+      else
+        setIsActive(false)
+    },[music])
   useEffect(()=>{
     api.get('/api/music/top-music?quantity=20&index=0').then(respone=>{
       console.log(respone)

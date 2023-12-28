@@ -9,10 +9,13 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const About = () => {
   const {authUser} = useAuth();
-  const {setIsActive} = useMusicContext();
-  useEffect(()=>{
-    setIsActive(false)
-  },[])
+  const {music, setIsActive} = useMusicContext();
+    useEffect(()=>{
+      if(music!==null && music !==undefined)
+        setIsActive(true)
+      else
+        setIsActive(false)
+    },[music])
   const handleCreateAccount =( ) =>{
     if(authUser){
       toast.success("Account already exists");
