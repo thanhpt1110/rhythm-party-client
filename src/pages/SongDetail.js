@@ -36,13 +36,13 @@ const SongDetail = () => {
             if(respone.status === 404)
             {
                 setIsNotFound(true);
-                setIsLoading(false);    
+                setIsLoading(false);
                 return;
             }
             if(respone.status !== 200 )
             {
                 setIsError(true);
-                setIsLoading(false);    
+                setIsLoading(false);
                 return;
             }
             const music = respone.data.data;
@@ -51,7 +51,7 @@ const SongDetail = () => {
                 if(!authUser || authUser._id !== music.musicPostOwnerID)
                 {
                     setIsNotFound(true);
-                    setIsLoading(false);    
+                    setIsLoading(false);
                     return;
                 }
             }
@@ -137,13 +137,14 @@ const SongDetail = () => {
             }).then(async (result) => {
             if (result.isConfirmed) {
                 try{
+                    await deletefile("music_avatar","png");
+                    await deletefile("music","mp3");
                     const respone = await deleteMusicByID(song._id);
                     if(music && music._id === song._id)
                     {
                         setMusic(null);
                     }
-                    await deletefile("music_avatar","png");
-                    await deletefile("music","mp3");
+
                     Swal.fire({
                     title: "Deleted!",
                     text: "Your song has been deleted.",
@@ -182,7 +183,7 @@ const SongDetail = () => {
         isLoading ? (
         <div className='text-center w-screen h-screen py-60'>
             <span className="loader h-20 w-20 "></span>
-        </div> 
+        </div>
         ):
         isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>) : ( <div>
             <Header />
