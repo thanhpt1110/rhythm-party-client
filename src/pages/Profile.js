@@ -15,41 +15,8 @@ import api from '../api/Api'
 import { updateUserInfromation } from '../api/UserApi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Swal from 'sweetalert2';
 import {getPlaylistCurrentUser, createPlaylist} from '../api/PlaylistApi'
-const playlistsData = [
-  {
-    urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
-    playlistName: 'Taylor Swift',
-    author: 'LuongLe'
-  },
-  {
-    urlImg: 'https://i1.sndcdn.com/artworks-W86AP4p4wNY1zuR5-tog6CQ-t500x500.jpg',
-    playlistName: 'Ngot',
-    author: 'QuocDung'
-  },
-  {
-    urlImg: 'https://avatar-ex-swe.nixcdn.com/playlist/2023/05/25/5/3/5/f/1684996435586_500.jpg',
-    playlistName: 'Yên',
-    author: 'Hunter'
-  },
-  {
-    urlImg: 'https://i1.sndcdn.com/artworks-uzmx8xPhbzlA3kjl-5oDvYA-t500x500.jpg',
-    playlistName: 'Từng Quen',
-    author: 'Wren Evans'
-  },
-  {
-    urlImg: 'https://i.scdn.co/image/ab67616d00001e02e50594eb6a3b518dcb78bf59',
-    playlistName: 'Cá Hồi Hoang',
-    author: 'PhuongAnh'
-  },
-  {
-    urlImg: 'https://upload.wikimedia.org/wikipedia/vi/5/5f/Blackpink-_The_Album.png',
-    playlistName: 'BlackPink',
-    author: 'BlinkVN'
-  },
-  // Thêm các playlist khác vào đây
-];
+
 
 const Profile = () => {
   const fileInputRef = useRef(null);
@@ -121,7 +88,8 @@ const Profile = () => {
     setSelectedPlaylistPrivacy(event.target.id);
   };
   const handlePlaylistOnclick = async (e)=>{
-    e.preventDefault()
+    if(playlistName === "")
+      return;
     try{
       if(isEnableCreatePlaylist)
       {
@@ -225,9 +193,9 @@ const Profile = () => {
             <div className="absolute top-1/2 ml-32 transform -translate-y-1/2 items-center flex flex-row ">
               <div className="relative ">
                 {
-                authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-44 w-44 rounded-full object-cover"
+                authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-40 w-40 rounded-full object-cover"
                 />
-                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar' className='"h-44 w-44 rounded-full object-cover'/>
+                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar' className='"h-40 w-40 rounded-full object-cover'/>
                 }
                 <button className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-6 py-1 rounded text-white flex flex-row gap-2"
                        onClick={handleImageClick}
@@ -303,12 +271,12 @@ const Profile = () => {
                   </div>
                   <div className="flex flex-col gap-1 ">
                     <div >
-                      <input type="radio" name="visibility" id="Public" checked={selectedPlaylistPrivacy === "Public"} onChange={handleRadioChange}/>
+                      <input type="radio" name="visibility" id="Public" checked={selectedPlaylistPrivacy === "Public"} onChange={handleRadioChange} required/>
                       <label htmlFor="Public" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300 "
                       >Public</label>
                     </div>
                     <div>
-                    <input type="radio" name="visibility" id="Private" checked={selectedPlaylistPrivacy === "Private"} onChange={handleRadioChange}/>
+                    <input type="radio" name="visibility" id="Private" checked={selectedPlaylistPrivacy === "Private"} onChange={handleRadioChange} required/>
                       <label htmlFor="Private" className="cursor-pointer py-2 px-4 rounded text-sm text-gray-300">Private</label>
                     </div>
                     <p className='ml-7 text-[10px] text-gray-400'>Only you and people share a secret link with will be able to listen to this track</p>

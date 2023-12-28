@@ -128,7 +128,8 @@ const AlbumDetail = () => {
             }).then(async (result) => {
             if (result.isConfirmed) {
                await deletePlaylistByID(playlist._id)
-               await deletefile("playlist_avatar","png")
+              if(playlist.avatarPlaylist)
+                await deletefile("playlist_avatar","png")
                 Swal.fire({
                 title: "Deleted!",
                 text: "Your album has been deleted.",

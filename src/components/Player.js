@@ -133,6 +133,8 @@ const Player = () => {
       }
     };
     const handlePlaylistOnclick = async (e)=>{
+      if(playlistName === "")
+        return;
       try{
         if(isEnableCreatePlaylist)
         {
