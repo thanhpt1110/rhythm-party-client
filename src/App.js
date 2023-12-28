@@ -95,8 +95,7 @@ function App() {
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
                 <Route path='/song-detail/edit/:id' element={authUser ? <EditUploadSong/> : <Navigate to='/signin'/>} />
                 <Route path='/song-detail/:id' element={<SongDetail/>} />
-                <Route path='/search' element={<Search  />} />
-                <Route path='/search/notfound' element={<NotFoundResult  />} />
+                <Route path='/search/:searchInput' element={<Search  />} />
             </Routes>
             <div>
                 {isActive && <Player />}

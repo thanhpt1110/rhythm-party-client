@@ -1,12 +1,13 @@
 import Header from '../components/Header'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import SongCard from '../components/SongCard'
 import { useState, useEffect } from 'react'
 import api from '../api/Api'
 import Playlist from '../components/Playlist'
 import { useMusicContext } from '../utils/MusicContext'
-
-
+import { searchMusicByName } from '../api/MusicApi'
+import { searchPlaylistByName } from '../api/PlaylistApi'
+import NotFoundResult from '../components/NotFoundResult'
 const TrendingData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -40,10 +41,13 @@ const TrendingData = [
   },
   // Thêm các playlist khác vào đây
 ];
-
-
 const Search = () => {
-  const [topsongsData, setTopSongsData] = useState([]);
+  const [searchSongData, setSearchSongData] = useState([]);
+  const [searchPlaylistData, setSearchPlaylistData] = useState([]);
+  const [isLoadingSong, setIsLoadingSong] = useState(true);
+  const [isLoadingPlaylist, setIsLoadingPlaylist] = useState(true);
+
+  const {searchInput} = useParams();
   const {music, setIsActive} = useMusicContext();
     useEffect(()=>{
       if(music!==null && music !==undefined)
@@ -52,51 +56,85 @@ const Search = () => {
         setIsActive(false)
     },[music])
   useEffect(()=>{
-    api.get('/api/music/top-music?quantity=20&index=0').then(respone=>{
-      console.log(respone)
-      if(respone.status===200)
-        {
-            const musics = respone.data.data;
-            setTopSongsData(musics)
+    const getMusic = async () => {
+      try {
+        const respone = await searchMusicByName(searchInput);
+        if (respone.status === 200) {
+          setSearchSongData(respone.data.data);
         }
-    }).catch(error => {
-    console.error('Error:', error);
-  });
-  },[])
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoadingSong(false);
+      }
+    };
+
+    const getPlaylist = async () => {
+      try {
+        const respone = await searchPlaylistByName(searchInput);
+        if (respone.status === 200) {
+          setSearchPlaylistData(respone.data.data);
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoadingPlaylist(false);
+      }
+    };
+    // Reset loading states before making new requests
+    setIsLoadingSong(true);
+    setIsLoadingPlaylist(true);
+
+    // Perform both requests simultaneously
+    Promise.all([getMusic(), getPlaylist()]);
+  },[searchInput])
   return (
     <div>
        <Header />
+       {isLoadingPlaylist && isLoadingSong ? (        
+       <div className='text-center w-screen h-screen py-60'>
+            <span className="loader h-20 w-20 "></span>
+        </div> ): searchSongData.length === 0 && searchPlaylistData.length === 0 ? <NotFoundResult searchInput = {searchInput}/> :(
         <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
             <div className='py-10 max-w-screen-xl  mx-auto px-4 '>
-              <p className='font-bold text-gray-400 text-3xl'>Search results for "aaaa"</p>
+              <p className='font-bold text-gray-400 text-3xl'>Search results for {searchInput}</p>
               <div className='flex items-baseline justify-between pt-12'>
                     <p className=' font-bold text-2xl mb-4 '> Songs</p>
               </div>
-               <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                      {topsongsData.slice(0, 6).map((song, index) => (
+              {
+                searchSongData.length === 0 ?            
+                (<div className='py-40 max-w-screen-xl  mx-auto px-4 text-center '>
+                <p className='font-bold text-xl'>No songs found for "{searchInput}".</p> </div>): 
+                (<div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
+                      {searchSongData.slice(0, 6).map((song, index) => (
                         <SongCard
                           key={index}
-                          song = {song}
+                          song ={song}
                         />
                       ))}
-                </div>
+                </div>)
+              }
+
                 <div className='flex items-baseline justify-between pt-12'>
                     <p className=' font-bold text-2xl mb-4 '> Playlist/Album</p>
-
                 </div>
-                 <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
-                    {TrendingData.slice(0, 6).map((playlist, index) => (
-                      <Playlist
-                        key={index}
-                        urlImg={playlist.urlImg}
-                        playlistName={playlist.playlistName}
-                        author={playlist.author}
-                      />
-                    ))}
-                  </div>
+                {
+                  searchPlaylistData.length === 0 ?  (<div className='py-40 max-w-screen-xl  mx-auto px-4 text-center '>
+                  <p className='font-bold text-xl'>No playlists found for "{searchInput}".</p> </div>): 
+                  <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
+                  {searchPlaylistData.slice(0, 6).map((playlist, index) => (
+                    <Playlist
+                      key={index}
+                      playlist={playlist}
+                    />
+                  ))}
+                </div>
+                }
+
 
             </div>
-        </div>
+        </div>)}
+        
     </div>
   )
 }

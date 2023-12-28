@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom';
 import LOGO from '../assets/images/LOGO.png';
 import UserAvartar from './UserAvatar'
 import { useAuth } from '../utils/AuthContext';
+import { useNavigate } from 'react-router-dom';
 const Header = ({type}) => {
   const {authUser, } = useAuth()
 
   const [openMenus, setOpenMenus] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
   const Menus = [
     {name : 'Home' , href:'/' , color: 'text-white' },
     {name : 'Room' , href:'/rooms' ,color: 'text-white' },
     {name : 'About' , href:'/about',color: 'text-white'  },
     {name : 'Upload' , href:'/upload' ,color: 'text-orange-600 ' },
   ]
+  const navigate = useNavigate();
   const [active, setActive] = useState(undefined)
   useEffect(() => {
     switch(type){
@@ -23,6 +26,18 @@ const Header = ({type}) => {
         break;
     }
   }, [])
+  const handleSubmitSearch = ()=>{
+    navigate(`/search/${searchInput}`)
+  }
+  const handleKeyPress = (e)=>{
+    if(e.key === "Enter")
+    {
+      handleSubmitSearch();
+    }
+  }
+  const handleSearchInputChange = (e)=>{
+    setSearchInput(e.target.value)
+  }
 
   return (
     <nav className='bg-[#101010] text-white fixed w-full z-20 top-0 left-0 shadow '>
@@ -40,7 +55,11 @@ const Header = ({type}) => {
            <input
             type="search"
             className=" pl-14 mt-[8px] pr-6 pt-2 pb-2 rounded-md bg-[#222222] "
-            placeholder="Search"/>
+            placeholder="Search"
+            value={searchInput}
+            onChange={handleSearchInputChange}
+            onKeyDown={handleKeyPress}
+            />
         </div>
         <div className='flex md:order-2'>
           {
