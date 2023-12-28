@@ -220,9 +220,9 @@ const Profile = () => {
             <div className="absolute top-1/2 ml-32 transform -translate-y-1/2 items-center flex flex-row ">
               <div className="relative ">
                 {
-                authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-44 w-44 rounded-full object-cover"
+                authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-40 w-40 rounded-full object-cover"
                 />
-                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar' className='"h-44 w-44 rounded-full object-cover'/>
+                : <img src='https://img.freepik.com/premium-photo/cartoonish-3d-animation-boy-glasses-with-blue-hoodie-orange-shirt_899449-25777.jpg' alt='avatar' className='"h-40 w-40 rounded-full object-cover'/>
                 }
                 <button className="absolute bottom-[5%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 bg-slate-500 hover:opacity-100 transition duration-300 ease-in-out px-6 py-1 rounded text-white flex flex-row gap-2"
                        onClick={handleImageClick}
