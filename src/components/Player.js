@@ -255,7 +255,7 @@ const Player = () => {
                               className=''
                               closeOnClick
                               rtl={false}
-                              pauseOnFocusLoss
+                              pauseOnFocusLoss  
                               draggable
                               pauseOnHover
                               theme="dark" />
@@ -348,15 +348,15 @@ const Player = () => {
                     </button>
                 </div>
                 <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
-                    <i className={`ri-shuffle-fill button ${isShuffleEnabled ? 'text-gray-500' : ''}`} onClick={toggleShuffle}></i>
-                    <i className='ri-rewind-fill button' onClick={playBackSong}></i>
+                    <i className={`ri-shuffle-fill button ${isShuffleEnabled ? '' : 'text-gray-500'}`} onClick={toggleShuffle}></i>
+                    <i className='ri-rewind-fill button' onClick={onClickBackSong}></i>
                      <i
                         className={`ri-${isPlaying ? 'pause-circle-fill' : 'play-circle-fill'} h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center`}
                         onClick={handlePlayIconClick}
                     ></i>
                     <i className='ri-speed-fill button' onClick={onClickNextSong}></i>
                     <i
-                        className={`ri-loop-left-fill button ${isLooping ? 'text-gray-500' : ''}`}
+                        className={`ri-loop-left-fill button ${isLooping ? '' : 'text-gray-500'}`}
                         onClick={handleLoopIconClick}></i>
                 </div>
 
