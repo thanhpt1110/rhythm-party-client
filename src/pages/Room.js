@@ -25,7 +25,7 @@ const Room = () => {
   return (
     <div>
       <header>
-        <nav className='bg-[#101010] text-white fixed w-full z-20 top-0 left-0 shadow'>
+        <nav className='bg-[#101010] text-white w-full z-20 top-0 left-0 shadow fixed'>
           <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
             <div className='flex items-center'>
               <img src={LOGO} className='h-8 mr-3' alt='WebsiteLogo'/>
@@ -48,9 +48,9 @@ const Room = () => {
           </div>
             </div>
             <div className='items-center justify-between hidden w-full md:flex md:w-auto md:order-1' id='navbar-sticky'>
-              <div className='flex flex-col p-4 md:p-0 mt-4 font-bold border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0  md:text-xl text-white '>
-                Join a room to start listening to music!
-              </div>
+            <div className='absolute text-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4 md:p-0 mt-4 font-bold border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0  md:text-xl text-white '>
+              Join a room to start listening to music!
+            </div>
             </div>
           </div>
         </nav>
@@ -63,7 +63,7 @@ const Room = () => {
             className=' h-96 w-96'/>
         </div>
         <div className='text-3xl font-bold text-center pb-4'>
-          Welcome back, UserName !
+          Welcome back, UserName!
         </div>
         <p>It's great to see you again.</p>
         <p className='text-xs'>
@@ -96,11 +96,11 @@ const Room = () => {
               <h2 className='text-2xl font-bold '>Create a Room</h2>
               <button className='text-gray-600 hover:text-gray-800 text-2xl rounded-md px-2 hover:bg-slate-200'
                 onClick={handleCloseModal}>
-                &times;
+                &times; 
               </button>
             </div>
             <p className='font-semibold'>Room name:</p>
-            <input className="border border-gray-300 shadow-sm rounded-lg py-2 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500 mt-4 w-full" type="text" placeholder="Your Room"/>
+            <input className="border border-gray-300 shadow-sm rounded-lg py-2 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500 mt-4 w-full text-white" type="text" placeholder="Your Room"/>
             <div className='flex justify-between mt-16'>
               <button onClick={handleCloseModal}
                 className=' hover:bg-slate-200 border border-gray-300 shadow-sm rounded-lg py-2 px-6'>Cancel</button>
