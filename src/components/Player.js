@@ -7,6 +7,7 @@ import { getPlaylistCurrentUser, createPlaylist, addMusicToPlaylist } from '../a
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -29,7 +30,7 @@ const Player = () => {
     const [isEnableCreatePlaylist, setIsEnableCreatePlaylist] = useState(true);
     const [playlistName, setPlaylistName] = useState('');
     const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
-
+    const navigate = useNavigate();
     const handleChangePlaylistName = (e)=>{
       setPlaylistName(e.target.value)
     }
@@ -203,7 +204,6 @@ const Player = () => {
   const putMusicToPlaylist = async (playlist)=>{
     if(!playlist.listMusic.includes(music._id))
     {
-      console.log("hello")
       const respone = await addMusicToPlaylist(music._id,playlist._id);
       setYourListPlaylist(prevPlaylists => (
         prevPlaylists.map(playlist =>
@@ -246,6 +246,9 @@ const Player = () => {
     }
     playBackSong();
   }
+  const HandleOpenSongDetail = ()=>{
+    navigate(`/song-detail/${music._id}`)
+  }
     return (
       <div className='z-[99] fixed w-full bottom-0'>
                  <ToastContainer position="bottom-right"
@@ -264,15 +267,18 @@ const Player = () => {
             {music && <audio ref={audioRef} src={music.url}  onTimeUpdate={handleTimeUpdate} />}
 
             <div className='flex items-center gap-2 md:gap-0'>
-                <img
-                    className='hidden md:inline h-12 w-12 rounded object-cover'
+              <div className='flex items-center gap-2 md:gap-0 cursor-pointer' onClick={HandleOpenSongDetail}>
+              <img
+                    className='hidden md:inline h-12 w-12 rounded object-cover '
                     src={music !==null ? music.imgUrl : 'https://media.pitchfork.com/photos/650de105eacc5b460e151343/master/w_1280%2Cc_limit/Taylor-Swift-1989-Taylors-Version.jpg'}
                     alt='playerImg'
                 />
-                <div className='md:w-36 w-20 md:ml-4 flex flex-col gap-[2px] '>
+                <div className='md:w-36 w-20 md:ml-4 flex flex-col gap-[2px]'>
                     <h3 className=' font-bold text-[12px] md:text-base truncate'>{music && music.musicName}</h3>
                     <p className=' font-semibold text-[10px] md:text-xs text-gray-300 truncate'>{music && music.author}</p>
                 </div>
+              </div>
+
                {authUser && (
                <div className='ml-4 md:ml-20 w-full'>
                  <ToolTip text="Add to Favorite">
