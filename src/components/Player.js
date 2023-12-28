@@ -231,6 +231,10 @@ const Player = () => {
     }
     playNextSong();
   }
+  const handleClickCloseButton = (e)=>{
+    e.preventDefault();
+    handleCloseModal();
+  }
   const onClickBackSong = ()=>{
     if(listOfSong.length === 1)
     {
@@ -380,9 +384,8 @@ const Player = () => {
                 <div className="modal-box bg-[#1f2937]">
                   <form method="dialog">
                     {/* if there is a button in form, it will close the modal */}
-                    <button className="btn btn-sm btn-circle btn-ghost hover:bg-slate-600 absolute right-2 top-2">✕</button>
-                  </form>
-                  <h3 className="font-bold text-xl text-center pt-2">Create new PlayList!</h3>
+                    <button className="btn btn-sm btn-circle btn-ghost hover:bg-slate-600 absolute right-2 top-2" onClick={handleClickCloseButton}>✕</button>
+                    <h3 className="font-bold text-xl text-center pt-2">Create new PlayList!</h3>
                   <div className='flex flex-row gap-2 items-center '>
                     <p className='py-4 font-semibold'>Playlist Title</p>
                     <span className='text-red-600'>*</span>
@@ -406,6 +409,8 @@ const Player = () => {
                   </div>
                   <button className='w-full py-2 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 rounded-xl mt-10 mb-2'
                   onClick={handlePlaylistOnclick}>Create</button>
+                  </form>
+
                 </div>
         </dialog>
       </div>
