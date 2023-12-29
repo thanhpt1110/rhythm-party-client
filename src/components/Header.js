@@ -26,9 +26,16 @@ const Header = ({type}) => {
         break;
     }
   }, [])
+
   const handleSubmitSearch = ()=>{
-    navigate(`/search/${searchInput}`)
+    let searchTerm = searchInput.replace(/[./]/g, '');
+    searchTerm = searchTerm.trim();
+    setSearchInput(searchTerm);  
+
+    if (searchTerm !== '') 
+      navigate(`/search/${searchTerm}`)
   }
+
   const handleKeyPress = (e)=>{
     if(e.key === "Enter")
     {
