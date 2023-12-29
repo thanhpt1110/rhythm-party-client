@@ -95,7 +95,7 @@ function App() {
                 <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
                 <Route path='/song-detail/edit/:id' element={authUser ? <EditUploadSong/> : <Navigate to='/signin'/>} />
                 <Route path='/song-detail/:id' element={<SongDetail/>} />
-                <Route path='/search/:searchInput' element={<Search  />} />
+                <Route path='/search' element={<Search  />} exact />
             </Routes>
             <div>
                 {isActive && <Player />}
