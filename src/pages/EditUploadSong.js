@@ -16,7 +16,6 @@ import Swal from 'sweetalert2';
 const EditUploadSong = () => {
   const  {id} = useParams();
   const navigate = useNavigate();
-
   const [song, setSong] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -79,7 +78,6 @@ const EditUploadSong = () => {
         data.push({label: foundItem.label, value: foundItem.value})
       })
       setSelectedPrivacy(respone.data.data.musicPrivacyType);
-      data.push({value: 'other', label: 'Other'})
       setMusicName(respone.data.data.musicName);
       setMusicGerne(data);
       setArtist(respone.data.data.author);

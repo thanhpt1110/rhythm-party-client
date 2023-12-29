@@ -107,7 +107,7 @@ const SongDetail = () => {
     }, [socket, setListComment]);
     const handleSendClick = async ()=>{
         if(authUser){
-             const message = {message: commentText}
+            const message = {message: commentText}
             const comment = await sendMessage(message,id);
             comment.musicId = id;
             console.log(comment);

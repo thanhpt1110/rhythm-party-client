@@ -16,7 +16,7 @@ const SignIn = () => {
   const handleLoginSubmit = (e) => {
   e.preventDefault();
     const account = {username: username, password: password}
-    api.post('/auth/user/login',account).then(respone=>{
+    api.post('/auth/login',account).then(respone=>{
       console.log(respone.data)
       if(respone.status===200)
         {
