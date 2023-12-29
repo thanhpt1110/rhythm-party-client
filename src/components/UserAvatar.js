@@ -48,18 +48,18 @@ const UserAvatar = () => {
       </button>
       {isOpen && (
         <ul className="absolute mt-2 bg-black rounded-lg shadow-md w-40 text-white">
-          <li className="py-2 px-4 hover:bg-gray-800">
-            <Link to="/profile">Profile</Link>
-          </li>
-           <li className="py-2 px-4 hover:bg-gray-800">
-            <Link to="/accountsetting">Account Setting</Link>
-          </li>
-          <li className="py-2 px-4 hover:bg-gray-800">
-            <Link to="/report">Report issues</Link>
-          </li>
-          <li className="py-2 px-4 hover:bg-gray-800">
-            <Link to="/" onClick={onLogout} >Sign out</Link>
-          </li>
+            <Link to="/profile">
+                <li className="py-2 px-4 hover:bg-gray-800">Profile</li>
+            </Link>
+            <Link to="/accountsettings">
+                <li className="py-2 px-4 hover:bg-gray-800">Account settings</li>
+            </Link>
+            <li className="py-2 px-4 hover:bg-gray-800">
+                <Link to="/reportissues">Report issues</Link>
+            </li>
+            <li className="py-2 px-4 hover:bg-gray-800">
+                <Link to="/" onClick={onLogout}>Sign out</Link>
+            </li>
         </ul>
       )}
     </div>

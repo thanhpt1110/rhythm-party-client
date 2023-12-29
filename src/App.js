@@ -82,9 +82,9 @@ function App() {
                 <Route path='/rooms' element={authUser !== null ? <Room />: <Navigate to= '/signin'/>} />
                 <Route path='/upload' element={authUser !== null ? <Upload /> : <Navigate to='/signin'/>} />
                 <Route path='/profile' element={authUser !== null ? <Profile />: <Navigate to='/signin'/>} />
-                <Route path='/accountsetting' element={authUser !== null ?<Account/>: <Navigate to='/signin'/>} />
+                <Route path='/accountsettings' element={authUser !== null ?<Account/>: <Navigate to='/signin'/>} />
                 <Route path='/about' element={<About />} />
-                <Route path='/report' element={<ReportIssues />} />
+                <Route path='/reportissues' element={<ReportIssues />} />
                 <Route path='/AllPlaylists' element={<AllPlaylist />} />
                 <Route path='/AllTopSongs' element={<AllTopSong  />} />
                 <Route path='/AllArtist' element={<AllArtist />} />

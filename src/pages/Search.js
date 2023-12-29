@@ -128,7 +128,7 @@ const Search = () => {
               {
                 searchSongData.length === 0 ?            
                 (<div className={`${paddingYSong} max-w-screen-xl mx-auto px-0 text-left`}>
-                <p className='font-bold text-xl'>We couldn’t find any songs matching “{searchInput}”. Please try different keywords.</p> </div>):
+                <p className='text-lg text-gray-400'>We couldn’t find any songs matching “{searchInput}”. Please try different keywords.</p> </div>):
                 (<div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
                       {searchSongData.slice(0, 6).map((song, index) => (
                         <SongCard
@@ -145,7 +145,7 @@ const Search = () => {
                 {
                   searchPlaylistData.length === 0 ?            
                   (<div className={`${paddingYPlaylist} max-w-screen-xl mx-auto px-0 text-left`}>
-                  <p className='font-bold text-xl'>We couldn’t find any playlists matching “{searchInput}”. Please try different keywords.</p> </div>): 
+                  <p className='text-lg text-gray-400'>We couldn’t find any playlists matching “{searchInput}”. Please try different keywords.</p> </div>): 
                   <div className='text-white mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6 '>
                   {searchPlaylistData.slice(0, 6).map((playlist, index) => (
                     <Playlist
