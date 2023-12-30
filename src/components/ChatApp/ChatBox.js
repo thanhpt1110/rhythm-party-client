@@ -19,6 +19,12 @@ const ChatBox = () => {
       text : 'Nice to see you',
       name : 'Lunaa',
     },
+    {
+      id: 2,
+      text : 'Hi',
+      name : 'BiBi',
+    },
+   
   ]
   return (
     <div className='containerWrap pb-20'>

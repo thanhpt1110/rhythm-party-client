@@ -91,21 +91,17 @@ const Room = () => {
       showModal && (
         <div className='fixed inset-0 flex items-center justify-center z-50'>
           <div className='fixed inset-0 bg-gray-900 opacity-50'></div>
-          <div className='modal-container bg-white w-96 rounded-lg p-6 z-50 text-black'>
+          <div className='modal-container bg-[#1f2937] text-white w-96 rounded-lg p-6 z-50'>
             <div className='flex justify-between items-center mb-4'>
               <h2 className='text-2xl font-bold '>Create a Room</h2>
-              <button className='text-gray-600 hover:text-gray-800 text-2xl rounded-md px-2 hover:bg-slate-200'
+              <button className='text-white  text-2xl rounded-full px-2 hover:bg-slate-600'
                 onClick={handleCloseModal}>
-                &times; 
+                &times;
               </button>
             </div>
-            <p className='font-semibold'>Room name:</p>
-            <input className="border border-gray-300 shadow-sm rounded-lg py-2 px-4 focus:outline-none focus:ring-blue-500 focus:border-blue-500 mt-4 w-full text-white" type="text" placeholder="Your Room"/>
-            <div className='flex justify-between mt-16'>
-              <button onClick={handleCloseModal}
-                className=' hover:bg-slate-200 border border-gray-300 shadow-sm rounded-lg py-2 px-6'>Cancel</button>
-              <button className='border border-gray-300 shadow-sm rounded-lg py-2 px-6 bg-blue-700 hover:bg-blue-800 text-white'>Create</button>
-            </div>
+            <p className='font-semibold mt-8'>Room name:</p>
+            <input className="border border-gray-300 shadow-sm rounded-lg py-2 px-4 bg-[#1f2937] mt-4 w-full " type="text" placeholder="Your Room"/>
+            <button className='  shadow-sm rounded-lg py-2 px-6 bg-gradient-to-r from-indigo-600 to-purple-700   w-full mt-16'>Create</button>
           </div>
         </div>
       )
