@@ -24,11 +24,6 @@ const SongDetail = () => {
     const [isGuest,setIsGuest] = useState(false);
     const [isNotFound,setIsNotFound] = useState(false);
     const navigate = useNavigate();
-    const deletefile = async(filePath, fileType) =>{
-    const path = `${filePath}/${id}.${fileType}`;
-    const objectRef = ref(storage, path);
-    return await deleteObject(objectRef);
-    }
     useEffect(() =>{
         const getMusic = async() =>{
             try{
@@ -137,8 +132,6 @@ const SongDetail = () => {
             }).then(async (result) => {
             if (result.isConfirmed) {
                 try{
-                    await deletefile("music_avatar","png");
-                    await deletefile("music","mp3");
                     const respone = await deleteMusicByID(song._id);
                     if(music && music._id === song._id)
                     {
