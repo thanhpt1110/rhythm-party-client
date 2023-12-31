@@ -1,5 +1,4 @@
 import Header from '../components/Header'
-import { Link, useParams } from 'react-router-dom'
 import SongCard from '../components/SongCard'
 import { useState, useEffect } from 'react'
 import api from '../api/Api'
@@ -9,6 +8,7 @@ import { searchMusicByName } from '../api/MusicApi'
 import { searchPlaylistByName } from '../api/PlaylistApi'
 import NotFoundResult from '../components/NotFoundResult'
 import Footer from '../components/Footer'
+import { useLocation } from 'react-router-dom'
 const TrendingData = [
   {
     urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
@@ -50,8 +50,9 @@ const Search = () => {
   const [searchPlaylistData, setSearchPlaylistData] = useState([]);
   const [isLoadingSong, setIsLoadingSong] = useState(true);
   const [isLoadingPlaylist, setIsLoadingPlaylist] = useState(true);
-
+  const [searchInput, setSearchInput] = useState('');
   useEffect(() => {
+
     setPaddingYSong(searchSongData.length === 0 ? 'py-0' : 'py-40');
     setPaddingYPlaylist(searchPlaylistData.length === 0 ? 'py-0' : 'py-40');
     if (searchSongData.length === 0 && searchPlaylistData.length === 0) {
@@ -63,7 +64,7 @@ const Search = () => {
     }
 }, [searchSongData, searchPlaylistData]);
 
-  const {searchInput} = useParams();
+    const location = useLocation();
   const {music, setIsActive} = useMusicContext();
     useEffect(()=>{
       if(music!==null && music !==undefined)
@@ -104,6 +105,13 @@ const Search = () => {
     // Perform both requests simultaneously
     Promise.all([getMusic(), getPlaylist()]);
   },[searchInput])
+  useEffect(() => {
+    // Lấy thông tin query params từ location.search
+    const searchParams = new URLSearchParams(location.search);
+    const query = searchParams.get('search-input');
+    console.log('Query Params:', query);
+    setSearchInput(query)
+  }, [location.search]);
   return (
     <div>
        <Header />

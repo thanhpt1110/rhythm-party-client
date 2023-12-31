@@ -33,7 +33,7 @@ const Header = ({type}) => {
     setSearchInput(searchTerm);  
 
     if (searchTerm !== '') 
-      navigate(`/search/${searchTerm}`)
+      navigate(`/search?search-input=${searchTerm}`)
   }
 
   const handleKeyPress = (e)=>{

@@ -24,11 +24,6 @@ const SongDetail = () => {
     const [isGuest,setIsGuest] = useState(false);
     const [isNotFound,setIsNotFound] = useState(false);
     const navigate = useNavigate();
-    const deletefile = async(filePath, fileType) =>{
-    const path = `${filePath}/${id}.${fileType}`;
-    const objectRef = ref(storage, path);
-    return await deleteObject(objectRef);
-    }
     useEffect(() =>{
         const getMusic = async() =>{
             try{
@@ -107,7 +102,7 @@ const SongDetail = () => {
     }, [socket, setListComment]);
     const handleSendClick = async ()=>{
         if(authUser){
-             const message = {message: commentText}
+            const message = {message: commentText}
             const comment = await sendMessage(message,id);
             comment.musicId = id;
             console.log(comment);
@@ -137,8 +132,6 @@ const SongDetail = () => {
             }).then(async (result) => {
             if (result.isConfirmed) {
                 try{
-                    await deletefile("music_avatar","png");
-                    await deletefile("music","mp3");
                     const respone = await deleteMusicByID(song._id);
                     if(music && music._id === song._id)
                     {
@@ -218,7 +211,8 @@ const SongDetail = () => {
                                         <p className='text-xs text-gray-300'>
                                         Release in {song && song.releaseYear} - {song && song.view} View
                                         </p>
-                                        {!isGuest && (<div className='btnEditDelete flex flex-row gap-2'>
+                                        {!isGuest && (<div className='btnEditDelete flex flex-row gap-2 items-center'>
+                                            <i className="ri-checkbox-circle-fill text-2xl mr-4 text-green-600"></i>
                                             <Link to={`/song-detail/edit/${song && song._id}`} className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' >
                                                 <i className="ri-pencil-fill"></i>
                                                 <p className='text-xs font-semibold '>Edit</p>

@@ -69,11 +69,6 @@ const AlbumDetail = () => {
       }
     });
   };
-  const deletefile = async(filePath, fileType) =>{
-    const path = `${filePath}/${id}.${fileType}`;
-    const objectRef = ref(storage, path);
-    return await deleteObject(objectRef);
-    }
   useEffect(()=>{
     const getPlaylist = async()=>{
       const respone = await getPlaylistById(id);
@@ -129,7 +124,6 @@ const AlbumDetail = () => {
             if (result.isConfirmed) {
                await deletePlaylistByID(playlist._id)
               if(playlist.avatarPlaylist)
-                await deletefile("playlist_avatar","png")
                 Swal.fire({
                 title: "Deleted!",
                 text: "Your album has been deleted.",
