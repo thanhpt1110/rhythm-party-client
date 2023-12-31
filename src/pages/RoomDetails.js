@@ -54,7 +54,7 @@ const RoomDetails = () => {
   const [isActivePlaying, setIsActivePlaying] = useState(false);
   const [isActivePlayer,setIsActivePlayer] =useState(false);
   const { musicCurrent,cleanRoom, setListOfSong} = useRoomContext();
-  
+
   useEffect(()=>{
     if(musicCurrent)
     {
@@ -234,7 +234,7 @@ useEffect(() => {
     isLoading ?  (
       <div className='text-center w-screen h-screen py-60'>
           <span className="loader h-20 w-20 "></span>
-      </div> ) : 
+      </div> ) :
     isError ? <Error/> : isNotFound ? <ErrorNotFound/> :
     <div className='w-screen h-screen flex overflow-hidden max-h-screen'>
       <ToastContainer position="bottom-right"
@@ -254,10 +254,14 @@ useEffect(() => {
             className="ri-arrow-left-s-line cursor-pointer text-2xl text-white rounded-full bg-slate-700 px-3 py-2 hover:bg-slate-600 ml-8"
             onClick={handleBackClick}
           ></i>
-          <p className='border border-gray-700 py-4 px-10 text-white bg-gray-800 rounded'>{room && room.roomName}</p>
+          <div className='border flex flex-col gap-2 items-center border-gray-700 py-2 px-6 text-white bg-gray-800 rounded'>
+            <p className='text-xl'>{room && room.roomName}'s Room</p>
+            <p className='text-xs text-gray-400'>ID: {room && room._id}</p>
+          </div>
+
         </div>
-        <p className='text-xl font-semibold ml-8 mb-2'>Chat Box</p>
-        <div className='max-h-[70%] overflow-y-auto '>
+        <p className='text-xl font-bold text-gray-200 ml-32 mb-2'>Chat Box</p>
+        <div className='max-h-[50%] overflow-y-auto '>
           <ChatBox messages= {listMessage}/>
           <MessageForm idRoom={room._id} onAddMessage = {callBackAddMessage}/>
         </div>
@@ -265,7 +269,7 @@ useEffect(() => {
       <div className="w-[30%] bg-black opacity-90 text-white px-8 pb-20">
         <div className='flex flex-row justify-between items-center'>
           <p className='my-8 font-bold text-xl'>Songs in Queue</p>
-           {authUser === room.roomOwner && <i className="ri-play-list-add-line hover:text-gray-500 cursor-pointer text-xl" onClick={handleSearchMusicPlaylist}></i>}
+           {authUser._id === room.roomOwner && <i className="ri-play-list-add-line hover:text-gray-500 cursor-pointer text-xl" onClick={handleSearchMusicPlaylist}></i>}
         </div>
         <div className='h-screen overflow-y-auto max-h-screen '>
           {listMusicInQueue.map((music, index) => (

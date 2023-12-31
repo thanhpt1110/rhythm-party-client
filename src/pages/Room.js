@@ -50,7 +50,7 @@ const Room = () => {
     }
     try{
       const room = {roomName: roomName}
-      const respone  = await postNewRoom(room);  
+      const respone  = await postNewRoom(room);
       if(respone.status === 200)
       {
         toast.success('Create room success')
@@ -95,13 +95,13 @@ const Room = () => {
           return;
         }
         else{
-          toast.error('Join room failed')
+          toast.error('Join room failed!')
         }
       }
       catch(e)
       {
         console.log(e)
-        toast.error('Join room failed')
+        toast.error('Join room failed!')
       }
     }
   }
@@ -164,19 +164,18 @@ const Room = () => {
             alt='listenImg'
             className=' h-96 w-96'/>
         </div>
-        <div className='text-3xl font-bold text-center pb-4'>
-          Welcome back, UserName!
+        <div className='text-2xl font-bold text-center '>
+          It's great to see you again.
         </div>
-        <p>It's great to see you again.</p>
-        <p className='text-xs'>
+        <p className='text-xs font-semibold text-gray-400'>
           Have a room code? Join a room with it:
         </p>
         <div className='flex'>
-          <input type='text' placeholder='XXXXXX' 
-          value={roomJoinId} 
-          onChange={handleRoomIdOnchange} 
-          className=' rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300 bg-[#181818] '/>
-          <button className='bg-gradient-to-r from-indigo-600 to-purple-700  text-white font-medium rounded-r-md px-4 py-2'
+          <input type='text' placeholder='XXXXXX'
+          value={roomJoinId}
+          onChange={handleRoomIdOnchange}
+          className=' rounded-l-lg text-sm font-bold w-64 px-8 py-4 focus:outline-none focus:ring-1 focus:ring-gray-400 bg-[#181818] '/>
+          <button className='bg-gradient-to-r from-indigo-600 to-purple-700  text-white font-medium rounded-r-lg px-6 py-2'
           onClick={handleJoinRoom}>
             Join
           </button>
@@ -189,7 +188,7 @@ const Room = () => {
         <div className='grid grid-cols-1 md:grid-cols-3 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6'>
           {
             listOwnRoom.map((room,index) => (
-              <PublicRoom 
+              <PublicRoom
               room = {room}
               key={index}/>
             ))

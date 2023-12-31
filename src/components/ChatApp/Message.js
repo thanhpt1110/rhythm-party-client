@@ -6,7 +6,7 @@ const Message = ({ message }) => {
     const isSender = message.userId._id === authUser._id;
     return (
         <div>
-            <div className='chat chat-start'>
+            <div className={`chat ${isSender ? "chat-end" : "chat-start"}`}>
                 <div className='chat-image avatar'>
                     <div className='w-10 rounded-full'>
                         <img
