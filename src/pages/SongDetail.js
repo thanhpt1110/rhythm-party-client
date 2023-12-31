@@ -13,8 +13,10 @@ import { deleteMusicByID } from '../api/MusicApi';
 import { useNavigate } from 'react-router-dom';
 import { storage } from '../utils/Firebase';
 import {  ref, deleteObject } from 'firebase/storage';
+import { useMusicContext } from '../utils/MusicContext';
 const SongDetail = () => {
-    const {authUser,socket, music,setMusic} = useAuth();
+    const {authUser,socket} = useAuth();
+    const {music,setMusic} = useMusicContext()
     const  {id} = useParams();
     const [song, setSong] = useState(null);
     const [commentText, setCommentText] = useState('');

@@ -6,23 +6,26 @@ export function useRoomContext(){
     return useContext(RoomContext)
 }
 export const RoomContextProvider = (props) => {
-    const [music, setMusicCurrent] = useState(null)
+    const [musicCurrent, setMusicCurrent] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
-    const [isActivePlayer, setIsActivePlayer] = useState(false)
     const [listOfSong, setListOfSong] = useState([])
     const [updatePlaylist, setUpdatePlaylist] = useState(false);
     const setMusic = async (song) =>{
         setMusicCurrent(song);
        //await updateViewMusic(song._id);
     }
+    const cleanRoom = ()=>{
+        setMusicCurrent(null);
+        setIsPlaying(false);
+        setListOfSong([]);
+    }
     const value = {
-        music,
-        setMusic,
+        musicCurrent,
+        setMusicCurrent,
         isPlaying,
         setIsPlaying,
-        setIsActivePlayer,
         listOfSong,
-        setListOfSong,updatePlaylist,setUpdatePlaylist
+        setListOfSong,updatePlaylist,setUpdatePlaylist,cleanRoom
     }
     return (
         <RoomContext.Provider value={value}>{props.children}</RoomContext.Provider>

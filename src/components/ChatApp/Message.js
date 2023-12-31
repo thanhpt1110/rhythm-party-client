@@ -1,6 +1,9 @@
 import React from 'react';
+import { useAuth } from '../../utils/AuthContext';
 
 const Message = ({ message }) => {
+    const {authUser} = useAuth();
+    const isSender = message.userId._id === authUser._id;
     return (
         <div>
             <div className='chat chat-start'>
@@ -8,14 +11,14 @@ const Message = ({ message }) => {
                     <div className='w-10 rounded-full'>
                         <img
                             alt='UserAvatarImg'
-                            src='https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
+                            src={message.userId.avatar}
                         />
                     </div>
                 </div>
                 <div className='chat-header'>
-                  {message.name}
+                  {message.userId.displayName}
                 </div>
-                <div className='chat-bubble'>{message.text}</div>
+                <div className='chat-bubble'>{message.message}</div>
             </div>
 
         </div>

@@ -29,6 +29,7 @@ import AllUploadSongs from './pages/AllUploadSongs';
 import EditUploadSong from './pages/EditUploadSong';
 import AllAlbum from './pages/AllAlbum';
 import AllFavSong from './pages/AllFavSong';
+import { RoomContextProvider } from './utils/RoomContext';
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, socket, setSocket} = useAuth();
@@ -92,7 +93,7 @@ function App() {
                 <Route path='/AllFavSong' element={<AllFavSong />} />
                 <Route path='/AllUploadSongs' element={<AllUploadSongs />} />
                 <Route path='/playlist-detail/:id' element={<AlbumDetail />} />
-                <Route path='/room-detail/:roomName' element={<RoomDetails/>} />
+                <Route path='/room-detail/:id' element={authUser ? <RoomContextProvider><RoomDetails/></RoomContextProvider> : <Navigate to='/signin'/>} />
                 <Route path='/song-detail/edit/:id' element={authUser ? <EditUploadSong/> : <Navigate to='/signin'/>} />
                 <Route path='/song-detail/:id' element={<SongDetail/>} />
                 <Route path='/search' element={<Search  />} exact />

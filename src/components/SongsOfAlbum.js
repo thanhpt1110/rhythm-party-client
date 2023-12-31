@@ -18,7 +18,7 @@ const SongsOfAlbum = ({ order, song,listOfSong, isOwner, onDeleteMusic}) => {
         await setListOfSong(listOfSong)
         await setMusic(song)
     };
-    const {music,  setMusic,setListOfSong, isPlaying} = useMusicContext()
+    const {music, setMusic,setListOfSong, isPlaying} = useMusicContext()
     useEffect(()=>{
       if(music && music._id === song._id)
         setIsCurrentPlaying(isPlaying);

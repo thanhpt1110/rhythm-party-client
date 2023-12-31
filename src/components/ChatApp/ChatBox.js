@@ -1,38 +1,23 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Message from './Message'
+import ScrollToBottom from 'react-scroll-to-bottom'
 
-const ChatBox = () => {
+const ChatBox = ({messages}) => {
+  const messagesEndRef = useRef(null)
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
 
-  const messages =[
-    {
-      id: 1,
-      text : 'Hello world',
-      name : 'DungLe',
-    },
-    {
-      id: 2,
-      text : 'Hi',
-      name : 'BiBi',
-    },
-    {
-      id: 3,
-      text : 'Nice to see you',
-      name : 'Lunaa',
-    },
-    {
-      id: 2,
-      text : 'Hi',
-      name : 'BiBi',
-    },
-   
-  ]
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages]);
+
   return (
-    <div className='containerWrap pb-20'>
-      {messages.map(message =>(
-        <Message key={message.id} message={message}/>
+    <div className='containerWrap '>
+      {messages.map((message, index) => (
+        <Message key={message._id} message={message} />
       ))}
     </div>
-  )
+  );
 }
-
 export default ChatBox

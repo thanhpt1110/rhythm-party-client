@@ -1,14 +1,34 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import logoRoom from '../../src/assets/images/logoRoom.png';
 import PublicRoom from '../components/PublicRoom';
 import {useState,useEffect} from 'react';
 import UserAvatar from '../components/UserAvatar';
 import LOGO from '../../src/assets/images/LOGO.png'
 import { useMusicContext } from '../utils/MusicContext';
+import { getCurrentRoomMusic, postNewRoom , getRoomById} from '../api/RoomApi';
+import { ToastContainer, toast } from 'react-toastify';
+
 const Room = () => {
 //lay user data tu trong context
   const [showModal, setShowModal] = useState(false);
+  const [listOwnRoom, setListOwnRoom] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [roomName, setRoomName] = useState('');
+  const [roomJoinId, setRoomJoinId] = useState('');
+  const navigate = useNavigate();
+  useEffect(()=>{
+    const loadYourRoom = async ()=>{
+      const respone = await getCurrentRoomMusic();
+      if(respone.status===200)
+      {
+        setListOwnRoom(respone.data.data);
+      }
+      setIsLoading(false)
+    }
+    if(isLoading)
+      loadYourRoom()
+  },[isLoading])
   const handleOpenModal = () => {
     setShowModal(true); // Hiển thị modal khi người dùng nhấp vào nút mở modal
   };
@@ -22,8 +42,90 @@ const Room = () => {
       else
         setIsActive(false)
     },[music])
+  const handleCreateRoom = async (e)=>{
+    if(roomName==='')
+    {
+      alert("Enter your room name")
+      return;
+    }
+    try{
+      const room = {roomName: roomName}
+      const respone  = await postNewRoom(room);  
+      if(respone.status === 200)
+      {
+        toast.success('Create room success')
+      }
+      else
+        toast.error("Create room failed");
+    }
+    catch(e)
+    {
+      console.log(e)
+    }
+    finally{
+      toast.error("Create room failed");
+      setRoomName('');
+      setIsLoading(true);
+      handleCloseModal();
+    }
+  }
+  const handleRoomNameOnChange = (e) =>{
+    setRoomName(e.target.value)
+  }
+  const handleJoinRoom = async()=>{
+    if(roomJoinId==='')
+    {
+      toast.warn('Add your room ID')
+      return;
+    }
+    else{
+      try{
+        console.log(roomJoinId);
+        const respone = await getRoomById(roomJoinId);
+        console.log(respone)
+        if(respone.status === 200)
+        {
+          const room = respone.data.data;
+          toast.success(`Your join to room ${room.roomName}`)
+          navigate(`/room-detail/${room._id}`);
+        }
+        else if(respone.status === 404)
+        {
+          toast.error('Your room ID is not existed');
+          return;
+        }
+        else{
+          toast.error('Join room failed')
+        }
+      }
+      catch(e)
+      {
+        console.log(e)
+        toast.error('Join room failed')
+      }
+    }
+  }
+  const handleRoomIdOnchange = (e)=>{
+    setRoomJoinId(e.target.value)
+  }
   return (
+  isLoading ? (
+    <div className='text-center w-screen h-screen py-60'>
+        <span className="loader h-20 w-20 "></span>
+    </div> ):
+    (
     <div>
+      <ToastContainer position="bottom-right"
+                              autoClose={2000}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              className=''
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
+                              theme="dark" />
       <header>
         <nav className='bg-[#101010] text-white w-full z-20 top-0 left-0 shadow fixed'>
           <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
@@ -70,45 +172,52 @@ const Room = () => {
           Have a room code? Join a room with it:
         </p>
         <div className='flex'>
-          <input type='text' placeholder='XXXXXX' className=' rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300 bg-[#181818] '/>
-          <button className='bg-gradient-to-r from-indigo-600 to-purple-700  text-white font-medium rounded-r-md px-4 py-2'>
+          <input type='text' placeholder='XXXXXX' 
+          value={roomJoinId} 
+          onChange={handleRoomIdOnchange} 
+          className=' rounded-l-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-300 bg-[#181818] '/>
+          <button className='bg-gradient-to-r from-indigo-600 to-purple-700  text-white font-medium rounded-r-md px-4 py-2'
+          onClick={handleJoinRoom}>
             Join
           </button>
         </div>
       </main>
       <div className=' max-w-screen-xl mx-auto p-4'>
         <p className='text-3xl font-bold pb-8'>
-          Public Rooms
+          Your Rooms
         </p>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-6'>
-          <PublicRoom roomName="David's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
-          <PublicRoom roomName="Hanna's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
-          <PublicRoom roomName="Lucy's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
-          <PublicRoom roomName="Vuong Pham's Room" urlImg="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" song="1989s" artist="Taylor Swift"/>
+          {
+            listOwnRoom.map((room,index) => (
+              <PublicRoom 
+              room = {room}
+              key={index}/>
+            ))
+          }
+
         </div>
       </div>
       {
       showModal && (
-        <div className='fixed inset-0 flex items-center justify-center z-50'>
-          <div className='fixed inset-0 bg-gray-900 opacity-50'></div>
-          <div className='modal-container bg-[#1f2937] text-white w-96 rounded-lg p-6 z-50'>
-            <div className='flex justify-between items-center mb-4'>
-              <h2 className='text-2xl font-bold '>Create a Room</h2>
-              <button className='text-white  text-2xl rounded-full px-2 hover:bg-slate-600'
-                onClick={handleCloseModal}>
-                &times;
-              </button>
+          <div className='fixed inset-0 flex items-center justify-center z-50'>
+            <div className='fixed inset-0 bg-gray-900 opacity-50'></div>
+            <div className='modal-container bg-[#1f2937] text-white w-96 rounded-lg p-6 z-50'>
+              <div className='flex justify-between items-center mb-4'>
+                <h2 className='text-2xl font-bold '>Create a Room</h2>
+                <button className='text-white  text-2xl rounded-full px-2 hover:bg-slate-600'
+                  onClick={handleCloseModal}>
+                  &times;
+                </button>
+              </div>
+              <p className='font-semibold mt-8'>Room name:</p>
+              <input value={roomName} onChange={handleRoomNameOnChange} className="border border-gray-300 shadow-sm rounded-lg py-2 px-4 bg-[#1f2937] mt-4 w-full " type="text" placeholder="Your Room" required/>
+              <button onClick={handleCreateRoom} className='  shadow-sm rounded-lg py-2 px-6 bg-gradient-to-r from-indigo-600 to-purple-700   w-full mt-16'>Create</button>
             </div>
-            <p className='font-semibold mt-8'>Room name:</p>
-            <input className="border border-gray-300 shadow-sm rounded-lg py-2 px-4 bg-[#1f2937] mt-4 w-full " type="text" placeholder="Your Room"/>
-            <button className='  shadow-sm rounded-lg py-2 px-6 bg-gradient-to-r from-indigo-600 to-purple-700   w-full mt-16'>Create</button>
           </div>
-        </div>
       )
     } </div>
       </div>
-
-  );
+  ));
 };
 
 export default Room;
