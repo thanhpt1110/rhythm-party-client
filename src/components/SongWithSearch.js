@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-const SongWithSearch = ({onAddSongClick, music,  backgroundSong }) => {
+const SongWithSearch = ({onAddSongClick, music,  backgroundSong,  }) => {
     const handleAddIconClick = () => {
         onAddSongClick();
     };

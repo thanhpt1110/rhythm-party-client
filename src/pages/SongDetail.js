@@ -213,17 +213,21 @@ const SongDetail = () => {
                                         <p className='text-xs text-gray-300'>
                                         Release in {song && song.releaseYear} - {song && song.view} View
                                         </p>
-                                        {!isGuest && (<div className='btnEditDelete flex flex-row gap-2 items-center'>
-                                            <i className="ri-checkbox-circle-fill text-2xl mr-4 text-green-600"></i>
-                                            <Link to={`/song-detail/edit/${song && song._id}`} className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' >
+                                         <div className='btnEditDelete flex flex-row gap-2 items-center'>
+                                           {
+                                            song.musicAuthorize === "Authorize" && <i className="ri-checkbox-circle-fill text-2xl mr-4 text-green-600"></i>
+                                           } 
+                                            {!isGuest && <Link to={`/song-detail/edit/${song && song._id}`} className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' >
                                                 <i className="ri-pencil-fill"></i>
                                                 <p className='text-xs font-semibold '>Edit</p>
-                                            </Link>
+                                            </Link>}
+                                            {!isGuest &&
                                             <button className='flex flex-row gap-2 items-center border px-2 py-[3px] border-gray-400 rounded hover:border-gray-300 '  onClick={handleDeleteUploadSong}>
                                                 <i className="ri-delete-bin-6-line"></i>
                                                 <p className='text-xs font-semibold '>Delete</p>
                                             </button>
-                                        </div>)}
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>

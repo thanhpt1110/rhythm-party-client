@@ -13,7 +13,7 @@ const ChatBox = ({messages}) => {
   }, [messages]);
 
   return (
-    <div className='containerWrap '>
+    <div className='containerWrap  '>
       {messages.map((message, index) => (
         <Message key={message._id} message={message} />
       ))}

@@ -24,6 +24,15 @@ const About = () => {
       window.location.href = '/signin';
     }
   }
+  const handleInstagramClick = ()=>{
+    window.open("https://github.com/leesoonduck3009", '_blank');
+  }
+  const handleFacebookClick = ()=>{
+    window.open("https://github.com/thanhpt1110", '_blank');
+  }
+  const handleYoutubeClick = ()=>{
+    window.open("https://github.com/DungLe2983", '_blank');
+  }
   return (
     <div >
        <ToastContainer position="bottom-right"
@@ -52,15 +61,15 @@ const About = () => {
               <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' onClick={handleCreateAccount} > Create your Account</button>
               <p className='font-bold text-2xl my-8'>Follow us</p>
               <div className='flex flex-col gap-6'>
-                <div className='flex flex-row gap-4 items-center cursor-pointer'>
+                <div className='flex flex-row gap-4 items-center cursor-pointer' onClick={handleInstagramClick}>
                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="instagram" className='h-4 w-4' />
                   <p>Instagram</p>
                 </div>
-                 <div className='flex flex-row gap-4 items-center cursor-pointer'>
+                 <div className='flex flex-row gap-4 items-center cursor-pointer' onClick={handleFacebookClick}>
                   <img src="https://www.facebook.com/images/fb_icon_325x325.png" alt="instagram" className='h-4 w-4' />
                   <p>Facebook</p>
                 </div>
-                 <div className='flex flex-row gap-4 items-center cursor-pointer'>
+                 <div className='flex flex-row gap-4 items-center cursor-pointer' onClick={handleYoutubeClick}>
                   <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-268-721990.png?f=webp" alt="instagram" className='h-4 w-4' />
                   <p>Youtube</p>
                 </div>
