@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-
+import RoomDefaultImg from '../assets/images/PlaylistDefaultImg.png'
 const PublicRoom = ({room}) => {
   const navigate = useNavigate();
 
@@ -11,12 +11,14 @@ const PublicRoom = ({room}) => {
   <div className='flex '>
       <div className='bg-[#181818] w-full text-white flex items-center flex-col gap-4 cursor-pointer hover:bg-gray-800 rounded-lg py-2 px-4' onClick={handleClick}>
       <p className='text-[30px] pt-8 font-bold'>{room.roomName}</p>
-        <div className='w-40 h-40'>
-        <img src="https://store.taylorswift.com/cdn/shop/files/1mjQym0yi2krxJWjFtvkNx0fXwYrHhkH_1024x1024.png?v=1691644764" 
-        alt="SongImage" className='h-40 w-40 object-cover'/>
+        <div className='h-48 w-48 object-cover'>
+        <img src={RoomDefaultImg}
+        alt="RoomImage" className='h-48 w-48 object-cover'/>
       </div>
-      <p className='font-semibold text-lg'>Room ID</p>
-      <p className='text-base pb-4 cursor-text'>{room._id}</p>
+     <div className='flex flex-col gap-2 items-center'>
+        <p className='font-semibold text-lg'>Room ID</p>
+        <p className='text-sm font-semibold pb-4 text-gray-400 cursor-not-allowed'>{room._id}</p>
+     </div>
     </div>
   </div>
 

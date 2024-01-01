@@ -190,7 +190,7 @@ const Profile = () => {
           <div className="relative bg-slate-400">
             <div className=" h-72 w-full bg-cover bg-center bg-gradient-to-b from-transparent to-[#181818]">
             </div>
-            <div className="absolute top-1/2 ml-32 transform -translate-y-1/2 items-center flex flex-row ">
+            <div className="absolute top-1/2 left-[20%] -translate-x-1/2 transform -translate-y-1/2 items-center flex flex-row ">
               <div className="relative ">
                 {
                 authUser.avatar ? <img src={authUser.avatar} alt='avatar' className="h-40 w-40 rounded-full object-cover"

@@ -54,7 +54,7 @@ const RoomDetails = () => {
   const [isActivePlaying, setIsActivePlaying] = useState(false);
   const [isActivePlayer,setIsActivePlayer] =useState(false);
   const { musicCurrent,cleanRoom, setListOfSong} = useRoomContext();
-  
+
   useEffect(()=>{
     if(musicCurrent)
     {
@@ -234,7 +234,7 @@ useEffect(() => {
     isLoading ?  (
       <div className='text-center w-screen h-screen py-60'>
           <span className="loader h-20 w-20 "></span>
-      </div> ) : 
+      </div> ) :
     isError ? <Error/> : isNotFound ? <ErrorNotFound/> :
     <div className='w-screen h-screen flex overflow-hidden max-h-screen'>
       <ToastContainer position="bottom-right"
@@ -249,15 +249,27 @@ useEffect(() => {
                               pauseOnHover
                               theme="dark" />
       <div className="w-[70%] bg-black text-white">
-        <div className='flex items-center text-3xl font-bold py-8 w-full gap-80'>
+        <div className='flex items-center text-3xl font-bold py-8 w-full gap-96'>
            <i
             className="ri-arrow-left-s-line cursor-pointer text-2xl text-white rounded-full bg-slate-700 px-3 py-2 hover:bg-slate-600 ml-8"
             onClick={handleBackClick}
           ></i>
-          <p className='border border-gray-700 py-4 px-10 text-white bg-gray-800 rounded'>{room && room.roomName}</p>
+          <div className='border flex flex-col gap-2 items-center border-gray-700 py-2 px-6 text-white bg-gray-800 rounded'>
+            <p className='text-xl'>{room && room.roomName}'s Room</p>
+            <p className='text-xs text-gray-400'>ID: {room && room._id}</p>
+          </div>
         </div>
-        <p className='text-xl font-semibold ml-8 mb-2'>Chat Box</p>
-        <div className='max-h-[70%] overflow-y-auto '>
+        <div className='flex flex-col gap-3 ml-28 '>
+          <p className='text-xl font-bold text-gray-400 '>Chat Box</p>
+          <div className='flex gap-2 items-center'>
+
+            <p className='flex justify-center items-center w-5 h-5 rounded-full bg-green-500 text-xs font-bold '>24</p>
+             <p className='text-xs font-bold'>Online</p>
+          </div>
+
+        </div>
+
+        <div className='max-h-[50%] overflow-y-auto '>
           <ChatBox messages= {listMessage}/>
           <MessageForm idRoom={room._id} onAddMessage = {callBackAddMessage}/>
         </div>
