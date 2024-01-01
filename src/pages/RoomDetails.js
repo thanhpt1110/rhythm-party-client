@@ -265,7 +265,7 @@ useEffect(() => {
       <div className="w-[30%] bg-black opacity-90 text-white px-8 pb-20">
         <div className='flex flex-row justify-between items-center'>
           <p className='my-8 font-bold text-xl'>Songs in Queue</p>
-           {authUser === room.roomOwner && <i className="ri-play-list-add-line hover:text-gray-500 cursor-pointer text-xl" onClick={handleSearchMusicPlaylist}></i>}
+           {authUser._id === room.roomOwner && <i className="ri-play-list-add-line hover:text-gray-500 cursor-pointer text-xl" onClick={handleSearchMusicPlaylist}></i>}
         </div>
         <div className='h-screen overflow-y-auto max-h-screen '>
           {listMusicInQueue.map((music, index) => (
