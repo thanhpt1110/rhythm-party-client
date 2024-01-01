@@ -20,7 +20,7 @@ const SignIn = () => {
       console.log(respone.data)
       if(respone.status===200)
         {
-          window.open('http://localhost:3000','self')
+          window.location.href ='http://localhost:3000'
         }
       else if (respone.status === 401)
         {
@@ -31,7 +31,7 @@ const SignIn = () => {
   };
   //Google login fucntion
   const googleLogin = ()=>{
-    window.open('http://localhost:8080/auth/google','self')
+    window.location.href = 'http://localhost:8080/auth/google'
   };
   const {setIsActive} = useMusicContext();
   useEffect(()=>{
