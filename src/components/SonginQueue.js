@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useRoomContext } from '../utils/RoomContext';
 import Swal from 'sweetalert2';
-const SonginQueue = ({music, backgroundSong, listOfSong }) => {
+const SonginQueue = ({music, backgroundSong, listOfSong, onRemoveSongClick }) => {
    const [isCurrentPlaying, setIsCurrentPlaying] = useState(false);
     const handlePlayIconClick = async () => {
       await setListOfSong(listOfSong);
       await setMusicCurrent(music);
       setIsPlaying(!isPlaying)
     };
-    const handleDeteleFromQueue = () => {
+    const handleDeteleFromQueue = async() => {
       Swal.fire({
         title: "Are you sure?",
         text: "Do you want to remove this song from Queue?",
@@ -17,8 +17,9 @@ const SonginQueue = ({music, backgroundSong, listOfSong }) => {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
+          await onRemoveSongClick();
           Swal.fire({
             title: "Deleted!",
             text: "Your song has been removed.",

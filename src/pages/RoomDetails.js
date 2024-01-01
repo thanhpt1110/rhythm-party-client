@@ -14,30 +14,6 @@ import { ToastContainer,toast } from 'react-toastify';
 import { useAuth } from '../utils/AuthContext';
 import PlayerRoom from '../components/PlayerRoom';
 import { useRoomContext } from '../utils/RoomContext';
-const SonginQueueData = [
-  {
-urlImg: 'https://i.pinimg.com/564x/17/d8/ff/17d8ff4be178c4cddb05630000420910.jpg',
-NameSong: 'Taylor Swift',
-Artist: 'LuongLe'
-},
-{
-urlImg: 'https://i1.sndcdn.com/artworks-W86AP4p4wNY1zuR5-tog6CQ-t500x500.jpg',
-NameSong: 'Ngot',
-Artist: 'QuocDung'
-},
-{
-urlImg: 'https://avatar-ex-swe.nixcdn.com/playlist/2023/05/25/5/3/5/f/1684996435586_500.jpg',
-NameSong: 'Yên',
-Artist: 'Hunter'
-},
-{
-urlImg: 'https://i1.sndcdn.com/artworks-uzmx8xPhbzlA3kjl-5oDvYA-t500x500.jpg',
-NameSong: 'Từng Quen',
-Artist: 'Wren Evans'
-},
-
-
-];
 
 const RoomDetails = () => {
   const {id} = useParams();
@@ -54,7 +30,7 @@ const RoomDetails = () => {
   const [isActivePlaying, setIsActivePlaying] = useState(false);
   const [isActivePlayer,setIsActivePlayer] =useState(false);
   const { musicCurrent,cleanRoom, setListOfSong} = useRoomContext();
-
+  const [peopleInRoom, setPeopleInRoom] = useState(0);
   useEffect(()=>{
     if(musicCurrent)
     {
@@ -118,6 +94,21 @@ const RoomDetails = () => {
         }
     };
 }, [socket, id]);
+  useEffect(()=>{
+  const handleUpdatePeople = (numberOfPeople) =>{
+    console.log("hello")
+    setPeopleInRoom(numberOfPeople)
+  }
+    if (socket) {
+      socket.on('update-people-in-room',handleUpdatePeople);
+  }
+  return () => {
+      if (socket) {
+          socket.off('update-people-in-room', handleUpdatePeople);
+      }
+  };
+  }
+  ,[setPeopleInRoom,socket])
 const callBackAddMessage = (message)=>{
   setListMessage((list) => [...list,message.data.data]);
 }
@@ -263,7 +254,7 @@ useEffect(() => {
           <p className='text-xl font-bold text-gray-400 '>Chat Box</p>
           <div className='flex gap-2 items-center'>
 
-            <p className='flex justify-center items-center w-5 h-5 rounded-full bg-green-500 text-xs font-bold '>24</p>
+            <p className='flex justify-center items-center w-5 h-5 rounded-full bg-green-500 text-xs font-bold '>{peopleInRoom}</p>
              <p className='text-xs font-bold'>Online</p>
           </div>
 
@@ -286,6 +277,7 @@ useEffect(() => {
               music = {music}
               backgroundSong="#181818"
               listOfSong = {listMusicInQueue}
+              onRemoveSongClick = {() => handleOnRemoveSong(music)}
             />
           ))}
         </div>
@@ -301,7 +293,6 @@ useEffect(() => {
                     key={index}
                     music = {music}
                     onAddSongClick = {()=>handleOnAddSong(music)}
-                    onRemoveSongClick = {() => handleOnRemoveSong(music)}
                     backgroundSong="#2B3440"
                   />
                 ))}
