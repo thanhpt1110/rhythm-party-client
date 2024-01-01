@@ -25,13 +25,13 @@ const About = () => {
     }
   }
   const handleInstagramClick = ()=>{
-    window.open("https://www.facebook.com/phucbinh.nguyen.1422", '_blank');
+    window.open("https://github.com/leesoonduck3009", '_blank');
   }
   const handleFacebookClick = ()=>{
-    window.open("https://www.facebook.com/thanhpt1110", '_blank');
+    window.open("https://github.com/thanhpt1110", '_blank');
   }
   const handleYoutubeClick = ()=>{
-    window.open("https://www.facebook.com/quocdung.le.31945", '_blank');
+    window.open("https://github.com/DungLe2983", '_blank');
   }
   return (
     <div >
