@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { storage } from '../utils/Firebase';
 import {  ref, deleteObject } from 'firebase/storage';
 import { useMusicContext } from '../utils/MusicContext';
+import { ToastContainer, toast } from 'react-toastify';
 const SongDetail = () => {
     const {authUser,socket} = useAuth();
     const {music,setMusic} = useMusicContext()
@@ -43,6 +44,7 @@ const SongDetail = () => {
                 return;
             }
             const music = respone.data.data;
+            console.log(music)
             if(!(music.musicPrivacyType === "Public" && music.musicAuthorize === "Authorize"))
             {
                 if(!authUser || authUser._id !== music.musicPostOwnerID)
@@ -135,17 +137,23 @@ const SongDetail = () => {
             if (result.isConfirmed) {
                 try{
                     const respone = await deleteMusicByID(song._id);
-                    if(music && music._id === song._id)
+                    if(respone.status === 200)
                     {
-                        setMusic(null);
+                        console.log(song);
+                        if(music && music._id === song._id)
+                        {
+                            setMusic(null);
+                        }
+                        Swal.fire({
+                        title: "Deleted!",
+                        text: "Your song has been deleted.",
+                        icon: "success"
+                        });
+                        navigate('/profile')
                     }
-
-                    Swal.fire({
-                    title: "Deleted!",
-                    text: "Your song has been deleted.",
-                    icon: "success"
-                    });
-                    navigate('/profile')
+                    else{
+                        toast.error("Delete song failed");
+                    }
                 }
                 catch(ex)
                 {
@@ -182,6 +190,17 @@ const SongDetail = () => {
         ):
         isError ? (<Error/>) : isNotFound ? (<ErrorNotFound/>) : ( <div>
             <Header />
+            <ToastContainer position="bottom-right"
+                              autoClose={2000}
+                              hideProgressBar={false}
+                              newestOnTop={false}
+                              className=''
+                              closeOnClick
+                              rtl={false}
+                              pauseOnFocusLoss
+                              draggable
+                              pauseOnHover
+                              theme="dark" />
             <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
                 <div className='relative bg-[#9890A0] '>
                     <div className=' h-[18rem] bg-cover bg-center bg-gradient-to-b from-transparent to-[#181818]'></div>

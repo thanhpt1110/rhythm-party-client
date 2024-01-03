@@ -16,8 +16,9 @@ import { updateUserInfromation } from '../api/UserApi'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {getPlaylistCurrentUser, createPlaylist} from '../api/PlaylistApi'
+import Swal from 'sweetalert2'
 
-
+const IMAGE_COMPRESS_LINK = "https://imagecompressor.com/"
 const Profile = () => {
   const fileInputRef = useRef(null);
   const {authUser, setAuthUser} = useAuth();
@@ -29,6 +30,7 @@ const Profile = () => {
   const [selectedPlaylistPrivacy, setSelectedPlaylistPrivacy] = useState("Private");
   const [isEnableCreatePlaylist, setIsEnableCreatePlaylist] = useState(true);
   const [image, setImage] = useState(authUser.avatar);
+
   const handleImageClick = (event) => {
     event.preventDefault();
     fileInputRef.current.click();
@@ -60,15 +62,46 @@ const Profile = () => {
   };
   const handleImageChange = async (event) => {
     try{
-      const newAvatar = await uploadFile("user_avatar",event.target.files[0],authUser._id);
-      const updateUser = {avatar: newAvatar};
-      const newUser = await updateUserInfromation(updateUser,authUser._id);
-      setAuthUser(newUser.data.data);
-      setImage(event.target.files[0]);
-      toast.success("Avatar update successful!");
+      if(event.target.files.length>0 )
+      {
+        var selectedFile = event.target.files[0];
+          
+        // Kiểm tra dung lượng của file (đơn vị tính là byte)
+        var fileSizeInBytes = selectedFile.size;
+    
+        // Kiểm tra dung lượng theo đơn vị MB
+        var fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+        if(fileSizeInMB > 5)
+        {
+          Swal.fire({
+            title: "Image file upload failed!",
+            text: `Your image exceeds the 5MB limit. Please use the image compressor tool at this link ${IMAGE_COMPRESS_LINK}`,
+            icon: "error"
+        });
+            event.target.value = null;
+        }
+        else if (!selectedFile.type.startsWith('image/')) {
+          Swal.fire({
+            title: "Image upload failed!",
+            text: "You have uploaded an incorrect file type. Please upload an image file.",
+            icon: "error"
+          });
+          event.target.value = null;
+          return; // Dừng việc thực hiện các hành động khác nếu có lỗi
+        }
+        else{
+          const newAvatar = await uploadFile("user_avatar",event.target.files[0],authUser._id);
+          const updateUser = {avatar: newAvatar};
+          const newUser = await updateUserInfromation(updateUser,authUser._id);
+          setAuthUser(newUser.data.data);
+          setImage(event.target.files[0]);
+          toast.success("Avatar update successful!");
+        }
     }
+  }
     catch(e)
     {
+      toast.error("Avatar update failed!");
     }
   };
   const handleCloseModal = () => {

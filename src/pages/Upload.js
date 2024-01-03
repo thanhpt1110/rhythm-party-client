@@ -9,6 +9,7 @@ import { storage } from '../utils/Firebase';
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
 
 
 const Upload = ({user}) => {
@@ -28,10 +29,38 @@ const Upload = ({user}) => {
   const [isEnableUpload, SetIsEnableUpload] = useState(true);
   const musicInputRef = useRef(null);
   const imageInputRef = useRef(null);
+  const AUDIO_COMPRESS_LINK = "https://www.xconvert.com/audio-compressor"
+  const IMAGE_COMPRESS_LINK = "https://imagecompressor.com/"
+
   const onMusicChange = async(event) => {
-    if(event.target.files.length>0)
-    {
-      setSelectedMusic(event.target.files[0]);
+    var selectedFile = event.target.files[0];
+        
+    // Kiểm tra dung lượng của file (đơn vị tính là byte)
+    var fileSizeInBytes = selectedFile.size;
+
+    // Kiểm tra dung lượng theo đơn vị MB
+    var fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+
+    // Hiển thị thông báo nếu dung lượng vượt quá 15MB
+    if (fileSizeInMB > 15) {
+      Swal.fire({
+        title: "Audio file upload failed!",
+        text: `Your audio exceeds the 15MB limit. Please use the audio compressor tool at this link '${AUDIO_COMPRESS_LINK}'`,
+        icon: "error"
+        });
+        event.target.value = null;
+        return;
+    } else if (!selectedFile.type.startsWith('audio/')) {
+      Swal.fire({
+        title: "Audio upload failed!",
+        text: "You have uploaded an incorrect file type. Please upload an audio file.",
+        icon: "error"
+      });
+      event.target.value = null;
+      return; // Dừng việc thực hiện các hành động khác nếu có lỗi
+  }
+    else {
+      setSelectedMusic(selectedFile);
       setShow(!show);
     }
   };
@@ -66,7 +95,36 @@ const Upload = ({user}) => {
   }
   const onImageChange = (event) => {
     if(event.target.files.length>0 )
-      setSelectedImage(event.target.files[0]);
+    {
+      var selectedFile = event.target.files[0];
+        
+      // Kiểm tra dung lượng của file (đơn vị tính là byte)
+      var fileSizeInBytes = selectedFile.size;
+  
+      // Kiểm tra dung lượng theo đơn vị MB
+      var fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+      if(fileSizeInMB > 5)
+      {
+        Swal.fire({
+          title: "Image file upload failed!",
+          text: `Your image exceeds the 5MB limit. Please use the image compressor tool at this link ${IMAGE_COMPRESS_LINK}`,
+          icon: "error"
+      });
+          event.target.value = null;
+      }
+      else if (!selectedFile.type.startsWith('image/')) {
+        Swal.fire({
+          title: "Image upload failed!",
+          text: "You have uploaded an incorrect file type. Please upload an image file.",
+          icon: "error"
+        });
+        event.target.value = null;
+        return; // Dừng việc thực hiện các hành động khác nếu có lỗi
+    }
+      else{
+        setSelectedImage(event.target.files[0]);
+      }
+    }
   };
   const uploadFile = (folder, file, id,type) => {
     return new Promise((resolve, reject) => {
@@ -242,7 +300,7 @@ useEffect(()=>{
             <div>
               <input type='file'
                 onChange={onMusicChange}
-                accept='audio/mp3'
+                accept='audio/*'
                 style={
                   {display: 'none'}
                 }

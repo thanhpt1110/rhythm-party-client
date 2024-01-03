@@ -13,7 +13,8 @@ export const MusicContextProvider = (props) => {
     const [updatePlaylist, setUpdatePlaylist] = useState(false);
     const setMusic = async (song) =>{
         setMusicCurrent(song);
-       await updateViewMusic(song._id);
+        if(song)
+            await updateViewMusic(song._id);
     }
     const value = {
         music,

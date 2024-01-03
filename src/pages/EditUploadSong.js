@@ -13,6 +13,8 @@ import { getMusicByID } from '../api/MusicApi';
 import { useAuth } from '../utils/AuthContext';
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
+
+const IMAGE_COMPRESS_LINK = "https://imagecompressor.com/"
 const EditUploadSong = () => {
   const  {id} = useParams();
   const navigate = useNavigate();
@@ -111,9 +113,39 @@ const EditUploadSong = () => {
   const onImageChange = (event) => {
     if(event.target.files.length>0 )
      {
-      setSelectedImage(event.target.files[0]);
-      setIsImageChange(true);
+      if(event.target.files.length>0 )
+      {
+        var selectedFile = event.target.files[0];
+          
+        // Kiểm tra dung lượng của file (đơn vị tính là byte)
+        var fileSizeInBytes = selectedFile.size;
+    
+        // Kiểm tra dung lượng theo đơn vị MB
+        var fileSizeInMB = fileSizeInBytes / (1024 * 1024);
+        if(fileSizeInMB > 5)
+        {
+          Swal.fire({
+            title: "Image file upload failed!",
+            text: `Your image exceeds the 5MB limit. Please use the image compressor tool at this link ${IMAGE_COMPRESS_LINK}`,
+            icon: "error"
+        });
+            event.target.value = null;
+        }
+        else if (!selectedFile.type.startsWith('image/')) {
+          Swal.fire({
+            title: "Image upload failed!",
+            text: "You have uploaded an incorrect file type. Please upload an image file.",
+            icon: "error"
+          });
+          event.target.value = null;
+          return; // Dừng việc thực hiện các hành động khác nếu có lỗi
+        }
+        else{
+          setSelectedImage(event.target.files[0]);
+          setIsImageChange(true);
+        }
      }
+    }
   };
   const uploadFile = (folder, file, id) => {
     return new Promise((resolve, reject) => {
