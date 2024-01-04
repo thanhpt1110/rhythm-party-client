@@ -29,16 +29,17 @@ const RoomDetails = () => {
   const [listMessage, setListMessage] = useState([])
   const [isActivePlaying, setIsActivePlaying] = useState(false);
   const [isActivePlayer,setIsActivePlayer] =useState(false);
-  const { musicCurrent,cleanRoom, setListOfSong} = useRoomContext();
+  const { roomCurrent,cleanRoom, setRoomCurrent, setIsPlaying} = useRoomContext();
   const [peopleInRoom, setPeopleInRoom] = useState(0);
+  const [roomTime, setRoomTime] = useState(0);
   useEffect(()=>{
-    if(musicCurrent)
+    if(roomCurrent)
     {
       setIsActivePlayer(true)
     }
     else
       setIsActivePlayer(false)
-  },[musicCurrent])
+  },[roomCurrent])
   useEffect(()=>{
     const getRoomDetail = async()=>{
       try{
@@ -50,6 +51,8 @@ const RoomDetails = () => {
           console.log(respone.data.data)
           setListMessage(respone.data.data.messages)
           setListMusicInQueue(respone.data.data.musicInQueue)
+          setRoomCurrent(respone.data.data);
+          setIsPlaying(true);
         }
         else if(respone.status ===404)
         {
@@ -85,15 +88,15 @@ const RoomDetails = () => {
     setIsActive(false);
   }, []);
   useEffect(() => {
-    if (socket) {
-        socket.emit('join_room', id);
+    if (socket && room) {
+        socket.emit('join_room', room);
     }
     return () => {
-        if (socket) {
-            socket.emit('leave_room', id);
+        if (socket && room) {
+            socket.emit('leave_room', room);
         }
     };
-}, [socket, id]);
+}, [socket, room]);
   useEffect(()=>{
   const handleUpdatePeople = (numberOfPeople) =>{
     console.log("hello")
@@ -109,6 +112,7 @@ const RoomDetails = () => {
   };
   }
   ,[setPeopleInRoom,socket])
+
 const callBackAddMessage = (message)=>{
   setListMessage((list) => [...list,message.data.data]);
 }
@@ -126,9 +130,8 @@ useEffect(() => {
   };
 }}, [socket, setListMessage]);
 useEffect(() => {
-  const handleReceivePlaylist = (music) => {
-      setListMusicInQueue(music.musicInQueue);
-      setListOfSong(music.musicInQueue);
+  const handleReceivePlaylist = (room) => {
+      setListMusicInQueue(room.room.musicInQueue);
   };
   if (socket) {
       socket.on('receive_playlist_change_room', handleReceivePlaylist);
@@ -160,7 +163,7 @@ useEffect(() => {
       {
         toast.success("Add music to playlist");
         setListMusicInQueue(respone.data.data.musicInQueue);
-        const responeData = {roomId: room._id, musicInQueue: respone.data.data.musicInQueue}
+        const responeData = {room: room}
         socket.emit("on_playlist_change_room",responeData)
       }
       else{
@@ -180,7 +183,7 @@ useEffect(() => {
       {
         toast.success("Remove music from playlist");
         setListMusicInQueue(respone.data.data.musicInQueue);
-        const responeData = {roomId: room._id, musicInQueue: respone.data.data.musicInQueue}
+        const responeData = {room: room}
         socket.emit("on_playlist_change_room",responeData)
       }
       else{
@@ -302,7 +305,7 @@ useEffect(() => {
           <button onClick={handledCloseButton}>close</button>
         </form>
       </dialog>
-      {isActivePlayer && <PlayerRoom/>}
+      {roomCurrent.currentMusicPlay && <PlayerRoom/>}
     </div>
   );
 };
