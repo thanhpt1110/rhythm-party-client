@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import { useMusicContext } from '../utils/MusicContext';
 import { ToastContainer, toast } from 'react-toastify';
+import Footer from '../components/Footer';
 
 const ReportIssues = () => {
   const { music, setIsActive } = useMusicContext();
@@ -23,7 +24,7 @@ const ReportIssues = () => {
   };
 
   return (
-    <div>
+    <div className='w-full h-full bg-black opacity-90'>
       <Header />
       <ToastContainer position="bottom-right"
                               autoClose={2000}
@@ -59,6 +60,9 @@ const ReportIssues = () => {
               </button>
           </form>
         </div>
+      </div>
+      <div className='pt-10'>
+        <Footer/>
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {getPlaylistCurrentUser, createPlaylist} from '../api/PlaylistApi'
 import Swal from 'sweetalert2'
+import Footer from '../components/Footer'
 
 const IMAGE_COMPRESS_LINK = "https://imagecompressor.com/"
 const Profile = () => {
@@ -65,10 +66,10 @@ const Profile = () => {
       if(event.target.files.length>0 )
       {
         var selectedFile = event.target.files[0];
-          
+
         // Kiểm tra dung lượng của file (đơn vị tính là byte)
         var fileSizeInBytes = selectedFile.size;
-    
+
         // Kiểm tra dung lượng theo đơn vị MB
         var fileSizeInMB = fileSizeInBytes / (1024 * 1024);
         if(fileSizeInMB > 5)
@@ -205,9 +206,9 @@ const Profile = () => {
       <div className='text-center w-screen h-screen py-60'>
         <span className="loader h-20 w-20 "></span>
       </div> ) :(
-    <div className=''>
+    <div className='h-full w-full bg-black opacity-90'>
       <Header />
-      <div className='py-16 bg-black opacity-90'>
+      <div className='py-20 bg-black opacity-90'>
          <ToastContainer position="bottom-right"
                               autoClose={2000}
                               hideProgressBar={false}
@@ -320,6 +321,9 @@ const Profile = () => {
 
                 </div>
         </dialog>
+      </div>
+      <div className='pt-10'>
+        <Footer/>
       </div>
     </div>
   ))
