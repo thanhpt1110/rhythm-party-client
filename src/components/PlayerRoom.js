@@ -297,7 +297,7 @@ const PlayerRoom = () => {
                     <i className='ri-speed-fill button' ></i>
                     <i
                         className={`ri-loop-left-fill button ${isLooping ? '' : 'text-gray-500'}`}
-                        onClick={handleLoopIconClick}></i>
+                          ></i>
                 </div>
 
             </div>
