@@ -30,9 +30,9 @@ const Header = ({type}) => {
   const handleSubmitSearch = ()=>{
     let searchTerm = searchInput.replace(/[./]/g, '');
     searchTerm = searchTerm.trim();
-    setSearchInput(searchTerm);  
+    setSearchInput(searchTerm);
 
-    if (searchTerm !== '') 
+    if (searchTerm !== '')
       navigate(`/search?search-input=${searchTerm}`)
   }
 
@@ -68,9 +68,8 @@ const Header = ({type}) => {
             onKeyDown={handleKeyPress}
             />
         </div>
-        <div className='flex md:order-2 cursor-pointer'>
+        <div className='flex md:order-2 ml-16 md:ml-0 cursor-pointer'>
           {
-            
             authUser ?(<UserAvartar />):
             (
               <Link className='text-white bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300   rounded font-bold text-sm px-6 py-2 ml-10 md:ml-0 md:mr-0 ' to="/signin">Sign In

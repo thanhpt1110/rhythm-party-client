@@ -8,6 +8,7 @@ import LOGO from '../../src/assets/images/LOGO.png'
 import { useMusicContext } from '../utils/MusicContext';
 import { getCurrentRoomMusic, postNewRoom , getRoomById} from '../api/RoomApi';
 import { ToastContainer, toast } from 'react-toastify';
+import Footer from '../components/Footer';
 
 const Room = () => {
 //lay user data tu trong context
@@ -115,7 +116,7 @@ const Room = () => {
         <span className="loader h-20 w-20 "></span>
     </div> ):
     (
-    <div>
+    <div className='w-full h-full bg-black opacity-90'>
       <ToastContainer position="bottom-right"
                               autoClose={2000}
                               hideProgressBar={false}
@@ -216,7 +217,11 @@ const Room = () => {
           </div>
       )
     } </div>
+      <div className='pt-20'>
+        <Footer/>
       </div>
+      </div>
+
   ));
 };
 
