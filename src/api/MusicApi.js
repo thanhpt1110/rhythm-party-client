@@ -12,7 +12,7 @@ const getTop20Music = async()=>{
    return await api.get('/api/music/top-music?quantity=20&index=0')
 }
 const deleteMusicByID = async(id)=>{
-    return await api.delete(`/api/music/${id}`)
+    return await api.delete(`/api/music/${id}`)     
  }
 const searchMusicByName = async(musicName) =>{
     return await api.get(`/api/music/search?music_name=${musicName}`)

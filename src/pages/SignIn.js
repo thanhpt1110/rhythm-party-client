@@ -21,7 +21,7 @@ const SignIn = () => {
       if(respone.status===200)
         {
             window.location.href = 'http://localhost:3000'; 
-            //   window.open('http://localhost:3000','self')
+            //   window.open('http://localhost:3000','self')    
         }
       else if (respone.status === 401)
         {
@@ -51,13 +51,13 @@ const SignIn = () => {
           <h2 className='text-3xl font-bold text-[#377dee] text-center'>Sign In</h2>
           <form className='mt-6' action='#'>
             <div>
-              <label className='block text-gray-200'>Email:</label>
+              <label className='block text-gray-200'>Email</label>
               <input type='email' name='' id='email' value={username} onChange={handleEnterUserName} placeholder='Enter your email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white ' autoFocus autoComplete='' required/>
             </div>
 
             <div className='mt-4'>
               <label className='block text-gray-200'>Password:</label>
-              <input type='password' name='' id='pass' value={password} onChange={handleEnterPassword} placeholder='Enter password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
+              <input type='password' name='' id='pass' value={password} onChange={handleEnterPassword} placeholder='Enter your password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <div className='text-right mt-2'>
@@ -66,11 +66,11 @@ const SignIn = () => {
               </a>
             </div>
             { isLoginFailed && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
-                <strong className="font-bold">Thông báo!</strong>
-                <span className="block sm:inline"> Thông tin đăng nhập không đúng. Vui lòng kiểm tra lại.</span>
+                <strong className="font-bold">Notification!</strong>
+                <span className="block sm:inline">The login information is incorrect. Please check again.</span>
             </div>}
             <button type='submit' onClick={handleLoginSubmit} className='w-full block bg-blue-500  text-white font-semibold rounded-lg px-4 py-3 mt-6 text-sm hover:scale-105 duration-300'>
-              Log In
+              Sign In
             </button>
           </form>
 
@@ -82,7 +82,7 @@ const SignIn = () => {
 
           <button onClick={googleLogin} className='bg-white border py-2 w-full rounded-lg mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 '>
             <img src='https://storage.googleapis.com/support-kms-prod/ZAl1gIwyUsvfwxoW9ns47iJFioHXODBbIkrK' alt='googleimg' className='h-6 w-6'/>
-            <span className='ml-4 text-black font-semibold'>Login with Google</span>
+            <span className='ml-4 text-black font-semibold'>Sign in with Google</span>
           </button>
 
           <div className='text-sm flex gap-1 items-center mt-6'>

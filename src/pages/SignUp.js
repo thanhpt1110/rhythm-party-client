@@ -83,25 +83,25 @@ export const SignUp = () => {
       <div className='bg-[#181818] text-white p-5 flex rounded-2xl shadow-lg md:w-1/3 my-8'>
         <div className='md:w-full px-5'>
           <h2 className='text-3xl font-bold text-[#377dee] text-center'>Sign Up</h2>
-          <p className='text-sm mt-6 text-[#377dee] font-semibold text-center'>
-            Create your account to enjoy Rhythm Party
+          <p className='text-sm mt-6 text-white font-semibold text-center'>
+            Create your account to enjoy <span className='text-violet-800 text-xl'>Rhythm Party</span>
           </p>
           <form className='mt-8' action='#'>
             <div>
-              <label className='block text-gray-200'>Email:</label>
+              <label className='block text-gray-200'>Email</label>
               <input type='email' name=''onChange={handleEmailChange} value={email} id='email' placeholder='Enter your email' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' autoFocus autoComplete='' required/>
             </div>
              <div className='mt-4'>
-              <label className='block text-gray-200'>UserName:</label>
-              <input type='username' name='' onChange={handleUsernameChange} value={username} id='username' placeholder='Your name' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
+              <label className='block text-gray-200'>Display name</label>
+              <input type='username' name='' onChange={handleUsernameChange} value={username} id='username' placeholder='Enter your display name' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
             <div className='mt-4'>
-              <label className='block text-gray-200'>Password:</label>
-              <input type='password' name='' id='pass' onChange={handlePasswordChange} value={password} placeholder='Enter password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
+              <label className='block text-gray-200'>Password</label>
+              <input type='password' name='' id='pass' onChange={handlePasswordChange} value={password} placeholder='Enter your password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
 
             <div className='mt-4'>
-              <label className='block text-gray-200'>Confirm Password:</label>
+              <label className='block text-gray-200'>Confirm password</label>
               <input type='password' name='' id='pass'onChange={handleConfirmPasswordChange} value={confirmPassword} placeholder='Confirm your password' minLength='6' className='w-full px-4 py-3 rounded-lg mt-2 border border-gray-600 bg-[#181818] text-white' required/>
             </div>
             { isWrongPass ? (<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
@@ -124,14 +124,14 @@ export const SignUp = () => {
 
           <button className='bg-white border py-3 w-full rounded-lg mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 '>
             <img src='https://storage.googleapis.com/support-kms-prod/ZAl1gIwyUsvfwxoW9ns47iJFioHXODBbIkrK' alt='googleimg' className='h-6 w-6'/>
-            <span className='ml-4 text-black font-semibold text-[16px]'>SignIn with Google</span>
+            <span className='ml-4 text-black font-semibold text-[16px]'>Sign in with Google</span>
           </button>
 
           <div className='text-sm flex gap-1 items-center mt-6'>
             <p>Already have an account?</p>
             <div className='text-right '>
               <Link to='/signin' className='text-sm font-bold hover:underline text-blue-400 hover:text-blue-700 '>
-                Sign In
+                Sign in
               </Link>
             </div>
           </div>

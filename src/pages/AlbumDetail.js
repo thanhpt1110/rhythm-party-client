@@ -83,7 +83,7 @@ const AlbumDetail = () => {
       {
         setIsError(true);
         setIsLoadingPlaylist(false);
-        return;
+        return; 
       }
       const playlistRes = respone.data.data
       console.log(playlistRes)
