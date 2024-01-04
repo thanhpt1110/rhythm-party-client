@@ -1,31 +1,39 @@
 import React, {useState, useContext, useEffect} from "react";
 import { updateViewMusic } from "../api/MusicApi";
+import {getRoomById} from '../api/RoomApi'
+import { useAuth } from "./AuthContext";
 const RoomContext = React.createContext();
 
 export function useRoomContext(){
     return useContext(RoomContext)
 }
 export const RoomContextProvider = (props) => {
-    const [musicCurrent, setMusicCurrent] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
-    const [listOfSong, setListOfSong] = useState([])
     const [updatePlaylist, setUpdatePlaylist] = useState(false);
-    const setMusic = async (song) =>{
-        setMusicCurrent(song);
-       //await updateViewMusic(song._id);
+    const [roomCurrent,setRoomCurrent] = useState(null);
+    const [firstTime,setFirstTime] = useState(true);
+    const {socket} = useAuth();
+    const UpdateRoomInfo = async ()=>{
+        const respone = await getRoomById(roomCurrent._id)
+        if(respone.status === 200)
+            setRoomCurrent(respone.data.data)
     }
     const cleanRoom = ()=>{
-        setMusicCurrent(null);
+        setRoomCurrent(null);
         setIsPlaying(false);
-        setListOfSong([]);
     }
+    useEffect(()=>{
+    if(socket)
+        socket.on('update_music_current',(room)=>{setRoomCurrent(room);})
+    },[socket,setRoomCurrent])
     const value = {
-        musicCurrent,
-        setMusicCurrent,
+
         isPlaying,
         setIsPlaying,
-        listOfSong,
-        setListOfSong,updatePlaylist,setUpdatePlaylist,cleanRoom
+        roomCurrent,
+        setRoomCurrent,
+        UpdateRoomInfo,
+        updatePlaylist,setUpdatePlaylist,cleanRoom,firstTime,setFirstTime
     }
     return (
         <RoomContext.Provider value={value}>{props.children}</RoomContext.Provider>

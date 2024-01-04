@@ -18,6 +18,8 @@ function formatTime(seconds) {
   }
 const PlayerRoom = () => {
     const audioRef = useRef(null)
+    const playerRef = useRef(null)
+
     const [isLiked, setIsLiked] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [isLooping, setIsLooping] = useState(false);
@@ -29,6 +31,8 @@ const PlayerRoom = () => {
     const [playlistName, setPlaylistName] = useState('');
     const [isShuffleEnabled, setIsShuffleEnabled] = useState(false);
     const [listSongPlaying, setListSongPlaying] = useState([])
+    const {roomCurrent, UpdateRoomInfo,firstTime, setFirstTime
+      ,isPlaying, setIsPlaying,updatePlaylist,setUpdatePlaylist} = useRoomContext()
     const navigate = useNavigate();
     const handleChangePlaylistName = (e)=>{
       setPlaylistName(e.target.value)
@@ -43,15 +47,6 @@ const PlayerRoom = () => {
         setCurrentTime(audioRef.current.currentTime);
       };
     const [enableChangeSong, setEnableChangeSong] = useState(true);
-    const {musicCurrent,setMusicCurrent
-        ,isPlaying, setIsPlaying,listOfSong,updatePlaylist, setListOfSong,setUpdatePlaylist, cleanRoom} = useRoomContext()
-    if(!listOfSong)
-      setListOfSong([musicCurrent])
-    const [currentSongIndex, setCurrentSongIndex] = useState(0);
-    const debounceTimeoutChangeSongButton =()=> setTimeout(() => {
-       setEnableChangeSong(true); //
-      clearTimeout(debounceTimeoutChangeSongButton);
-    }, 800);
     useEffect(()=>{
       try{
         const getPlaylist = async() =>{
@@ -67,65 +62,31 @@ const PlayerRoom = () => {
         console.log(e);
       }
     },[updatePlaylist])
-    const playNextSong = () => {
-        if (enableChangeSong) {
-      let nextIndex;
-      if (isShuffleEnabled) {
-        // Lấy một chỉ mục ngẫu nhiên khác với `currentSongIndex`
-        nextIndex = Math.floor(Math.random() * listSongPlaying.length);
-        while (nextIndex === currentSongIndex) {
-          nextIndex = Math.floor(Math.random() * listSongPlaying.length);
-        }
-      } else {
-        nextIndex = (currentSongIndex + 1) % listSongPlaying.length;
-      }
-      setCurrentSongIndex(nextIndex);
-      // Update the musicCurrent context to the next song
-      setMusicCurrent(listSongPlaying[nextIndex]);
-      setEnableChangeSong(false);
-      debounceTimeoutChangeSongButton();
-    }
-  };
-  const toggleShuffle = () => {
-  setIsShuffleEnabled(!isShuffleEnabled);
-};
-    const playBackSong = () => {
-      if(enableChangeSong) {
-      // Increment the index to get the next song
-      const backIndex = (currentSongIndex - 1+ listSongPlaying.length) % listOfSong.length;
-      setCurrentSongIndex(backIndex);
-      // Update the musicCurrent context to the next song
-      setMusicCurrent(listSongPlaying[backIndex]);
-      setEnableChangeSong(false);
-      debounceTimeoutChangeSongButton();
-      // Play the next song
-      }};
-    useEffect(()=>{
-        if (!isPlaying) {
-            audioRef.current.pause();
-          } else {
-            audioRef.current.play();
+   
+      useEffect(()=>{
+        const loadRoom = async() =>{        
+          try{
+          console.log(roomCurrent)
+          if(roomCurrent.currentMusicPlay)
+          {
+            if (!isPlaying) {
+              audioRef.current.pause();
+            } else {
+                audioRef.current.currentTime = roomCurrent.currentTime;
+                audioRef.current.play();
+            }
           }
-    },[isPlaying,musicCurrent])
+        
+        }catch(e)
+        {
+          console.log(e)
+        }}
+        loadRoom();
+      },[isPlaying,roomCurrent])
+
     const handleLoopIconClick = () => {
         setIsLooping(!isLooping);
     };
-    const handleSongEnd = useCallback(() => {
-      // If looping is enabled, play the same song again
-      if (isLooping) {
-        audioRef.current.currentTime = 0;
-        audioRef.current.play();
-      } else {
-        // Otherwise, play the next song
-        const nextIndex = (currentSongIndex + 1) % listSongPlaying.length;
-        if(nextIndex===currentSongIndex)
-        {
-          setIsPlaying(!isPlaying)
-          return;
-        }
-        playNextSong();
-      }
-    }, [isLooping, currentSongIndex, listSongPlaying]);
     const handleCloseModal = () => {
       const modal = document.getElementById('my_modal_3');
       if (modal) {
@@ -156,30 +117,17 @@ const PlayerRoom = () => {
       }
 
     }
-    useEffect(() => {
-      // Set up event listener for the ended event
-      audioRef.current.addEventListener('ended', handleSongEnd);
-
-      // Clean up the event listener on component unmount
-      return () => {
-        audioRef.current && audioRef.current.removeEventListener('ended', handleSongEnd);
-      };
-    }, [handleSongEnd]);
-    const handleSeekChange = (e) => {
-        const newValue = e.target.value;
-        // Cập nhật thời gian hiện tại của bài hát dựa trên giá trị thanh trượt
-        setCurrentTime(newValue);
-        audioRef.current.currentTime = newValue;
-      };
     useEffect(()=>{
-        if(musicCurrent!==null && musicCurrent!==undefined)
+      if(firstTime)
+      {
+        if(roomCurrent.currentMusicPlay!==null && roomCurrent.currentMusicPlay!==undefined)
         {
             setIsPlaying(true);
+            setFirstTime(false);
         }
-    },[musicCurrent]);
-    useEffect(()=>{
-        setListSongPlaying(listOfSong)
-    },listOfSong)
+      }
+
+    },[roomCurrent]);
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
        audioRef.current.volume = volume;
@@ -202,9 +150,9 @@ const PlayerRoom = () => {
   };
 
   const putMusicToPlaylist = async (playlist)=>{
-    if(!playlist.listMusic.includes(musicCurrent._id))
+    if(!playlist.listMusic.includes(roomCurrent.currentMusicPlay._id))
     {
-      const respone = await addMusicToPlaylist(musicCurrent._id,playlist._id);
+      const respone = await addMusicToPlaylist(roomCurrent.currentMusicPlay._id,playlist._id);
       setYourListPlaylist(prevPlaylists => (
         prevPlaylists.map(playlist =>
           playlist._id === respone.data.data._id ? { ...playlist, ...respone.data.data } : playlist
@@ -225,32 +173,16 @@ const PlayerRoom = () => {
     setShowSubMenu(!showSubMenu);
   };
   const handlePlayIconClick = ()=>{
+    if(!isPlaying)
+      UpdateRoomInfo();
     setIsPlaying(!isPlaying)
-  }
-  const onClickNextSong = ()=>{
-    if(listSongPlaying.length === 1)
-    {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-      return;
-    }
-    playNextSong();
   }
   const handleClickCloseButton = (e)=>{
     e.preventDefault();
     handleCloseModal();
   }
-  const onClickBackSong = ()=>{
-    if(listSongPlaying.length === 1)
-    {
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-      return;
-    }
-    playBackSong();
-  }
   const HandleOpenSongDetail = ()=>{
-    navigate(`/song-detail/${musicCurrent._id}`)
+    navigate(`/song-detail/${roomCurrent.currentMusicPlay._id}`)
   }
     return (
       <div className='z-[99] fixed w-full bottom-0'>
@@ -267,18 +199,18 @@ const PlayerRoom = () => {
                               theme="dark" />
         <div className=' h-20  bg-gradient-to-b from-black to-gray-900 text-white grid grid-cols-3 text-xs md:text-base px-2 md:px-8'>
             {/* Left */}
-            {musicCurrent && <audio ref={audioRef} src={musicCurrent.url}  onTimeUpdate={handleTimeUpdate} />}
+            {roomCurrent.currentMusicPlay && <audio ref={audioRef} src={roomCurrent.currentMusicPlay.url}  onTimeUpdate={handleTimeUpdate} />}
 
             <div className='flex items-center gap-2 md:gap-0'>
               <div className='flex items-center gap-2 md:gap-0 cursor-pointer' onClick={HandleOpenSongDetail}>
               <img
                     className='hidden md:inline h-12 w-12 rounded object-cover '
-                    src={musicCurrent !==null ? musicCurrent.imgUrl : 'https://media.pitchfork.com/photos/650de105eacc5b460e151343/master/w_1280%2Cc_limit/Taylor-Swift-1989-Taylors-Version.jpg'}
+                    src={roomCurrent.currentMusicPlay !==null ? roomCurrent.currentMusicPlay.imgUrl : 'https://media.pitchfork.com/photos/650de105eacc5b460e151343/master/w_1280%2Cc_limit/Taylor-Swift-1989-Taylors-Version.jpg'}
                     alt='playerImg'
                 />
                 <div className='md:w-36 w-20 md:ml-4 flex flex-col gap-[2px]'>
-                    <h3 className=' font-bold text-[12px] md:text-base truncate'>{musicCurrent && musicCurrent.musicName}</h3>
-                    <p className=' font-semibold text-[10px] md:text-xs text-gray-300 truncate'>{musicCurrent && musicCurrent.author}</p>
+                    <h3 className=' font-bold text-[12px] md:text-base truncate'>{roomCurrent.currentMusicPlay && roomCurrent.currentMusicPlay.musicName}</h3>
+                    <p className=' font-semibold text-[10px] md:text-xs text-gray-300 truncate'>{roomCurrent.currentMusicPlay && roomCurrent.currentMusicPlay.author}</p>
                 </div>
               </div>
 
@@ -310,7 +242,6 @@ const PlayerRoom = () => {
                               onClick={async (e)=>{e.preventDefault();
                               await putMusicToPlaylist(playlist);
                               setShowSubMenu(false);
-
                                 }
                               }
                               className='flex flex-row gap-2 items-center hover:bg-gray-600 px-4 py-2 rounded-lg cursor-pointer' >
@@ -343,12 +274,11 @@ const PlayerRoom = () => {
                         min={0}
                         max={audioRef.current ? audioRef.current.duration : 100}
                         value={currentTime}
-                        onChange={handleSeekChange}
                         className='md:block w-24 md:w-96 h-1 mx-4 md:mx-6 rounded-lg '
 
                     />
                     <p className='text-white text-xs'>
-                        {formatTime(musicCurrent ? musicCurrent.duration : 0)}
+                        {formatTime(roomCurrent.currentMusicPlay ? roomCurrent.currentMusicPlay.duration : 0)}
                     </p>
                     <button
                         type='button'
@@ -357,13 +287,14 @@ const PlayerRoom = () => {
                     </button>
                 </div>
                 <div className='flex items-stretch justify-evenly gap-2 md:gap-14 mt-8 md:mt-0 '>
-                    <i className={`ri-shuffle-fill button ${isShuffleEnabled ? '' : 'text-gray-500'}`} onClick={toggleShuffle}></i>
-                    <i className='ri-rewind-fill button' onClick={onClickBackSong}></i>
+                    <i className={`ri-shuffle-fill button ${isShuffleEnabled ? '' : 'text-gray-500'}`} ></i>
+                    <i className='ri-rewind-fill button' ></i>
                      <i
+                     ref={playerRef}
                         className={`ri-${isPlaying ? 'pause-circle-fill' : 'play-circle-fill'} h-10 w-10 md:text-2xl cursor-pointer md:scale-125 hover:scale-125 transition transform duration-100 ease-out text-center`}
                         onClick={handlePlayIconClick}
                     ></i>
-                    <i className='ri-speed-fill button' onClick={onClickNextSong}></i>
+                    <i className='ri-speed-fill button' ></i>
                     <i
                         className={`ri-loop-left-fill button ${isLooping ? '' : 'text-gray-500'}`}
                         onClick={handleLoopIconClick}></i>
