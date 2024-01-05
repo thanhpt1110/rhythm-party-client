@@ -17,7 +17,7 @@ import { useMusicContext } from '../utils/MusicContext';
 import { ToastContainer, toast } from 'react-toastify';
 const SongDetail = () => {
     const {authUser,socket} = useAuth();
-    const {music,setMusic, setListOfSong} = useMusicContext()
+    const {music,setMusic, setListOfSong, isPlaying, setIsPlaying} = useMusicContext()
     const  {id} = useParams();
     const [song, setSong] = useState(null);
     const [commentText, setCommentText] = useState('');
@@ -26,7 +26,12 @@ const SongDetail = () => {
     const [isLoading,setIsLoading] = useState(true);
     const [isGuest,setIsGuest] = useState(false);
     const [isNotFound,setIsNotFound] = useState(false);
+    const [yourSongIsPlaying, setYourSongIsPlaying] = useState(fla)
     const navigate = useNavigate();
+    useEffect(()=>{
+        if(isPlaying && music._id === song._id)
+            setYourSongIsPlaying(true);
+    },[isPlaying,music]);
     useEffect(() =>{
         const getMusic = async() =>{
             try{
@@ -120,8 +125,20 @@ const SongDetail = () => {
 
     }
     const handlePlayButton = ()=>{
-        setListOfSong([song])
-        setMusic(song)
+        if(song._id !== music._id)
+        {
+            setListOfSong([song])
+            setMusic(song)
+        }
+        else{
+            setIsPlaying(true);
+            setYourSongIsPlaying(true);
+        }
+    }
+    const handlePauseButton = ()=>{
+        if(yourSongIsPlaying)
+            setIsPlaying(false);
+        setYourSongIsPlaying(false);
     }
     const handleBackClick = () => {
         window.history.back();

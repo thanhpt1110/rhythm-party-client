@@ -24,7 +24,7 @@ export const RoomContextProvider = (props) => {
     }
     useEffect(()=>{
     if(socket)
-        socket.on('update_music_current',(room)=>{isPlaying&&setRoomCurrent(room);})
+        socket.on('update_music_current',(room)=>{setRoomCurrent(room);})
     },[socket,setRoomCurrent])
     const value = {
 
