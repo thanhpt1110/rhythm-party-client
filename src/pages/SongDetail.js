@@ -17,7 +17,7 @@ import { useMusicContext } from '../utils/MusicContext';
 import { ToastContainer, toast } from 'react-toastify';
 const SongDetail = () => {
     const {authUser,socket} = useAuth();
-    const {music,setMusic} = useMusicContext()
+    const {music,setMusic, setListOfSong} = useMusicContext()
     const  {id} = useParams();
     const [song, setSong] = useState(null);
     const [commentText, setCommentText] = useState('');
@@ -119,7 +119,10 @@ const SongDetail = () => {
         }
 
     }
-
+    const handlePlayButton = ()=>{
+        setListOfSong([song])
+        setMusic(song)
+    }
     const handleBackClick = () => {
         window.history.back();
     };
