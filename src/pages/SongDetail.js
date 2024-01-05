@@ -238,7 +238,7 @@ const SongDetail = () => {
                                          <div className='btnEditDelete flex flex-row gap-2 items-center'>
                                            {
                                             song.musicAuthorize === "Authorize" && <i className="ri-checkbox-circle-fill text-2xl mr-4 text-green-600"></i>
-                                           } 
+                                           }
                                             {!isGuest && <Link to={`/song-detail/edit/${song && song._id}`} className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' >
                                                 <i className="ri-pencil-fill"></i>
                                                 <p className='text-xs font-semibold '>Edit</p>
@@ -258,7 +258,8 @@ const SongDetail = () => {
                     </div>
                 </div>
                 <div className='max-w-screen-xl mx-auto py-8'>
-                    <p className='font-bold py-8 text-xl mt-10 border-b border-gray-500'>
+                    <i className="ri-play-circle-fill text-[60px] cursor-pointer text-green-600 " onClick={handlePlayButton}></i>
+                    <p className='font-bold py-8 text-xl border-b border-gray-500'>
                         Lyrics of the Song:
                     </p>
                    <div className='text-slate-300 text-sm py-8 leading-7'>

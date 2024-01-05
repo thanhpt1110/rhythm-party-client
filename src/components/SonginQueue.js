@@ -3,11 +3,7 @@ import { useRoomContext } from '../utils/RoomContext';
 import Swal from 'sweetalert2';
 const SonginQueue = ({music, backgroundSong, listOfSong, onRemoveSongClick }) => {
    const [isCurrentPlaying, setIsCurrentPlaying] = useState(false);
-    const handlePlayIconClick = async () => {
-      await setListOfSong(listOfSong);
-      await setMusicCurrent(music);
-      setIsPlaying(!isPlaying)
-    };
+
     const handleDeteleFromQueue = async() => {
       Swal.fire({
         title: "Are you sure?",
@@ -28,7 +24,7 @@ const SonginQueue = ({music, backgroundSong, listOfSong, onRemoveSongClick }) =>
         }
       });
     }
-    const {musicCurrent,  setMusicCurrent,setListOfSong, isPlaying,setIsPlaying} = useRoomContext()
+    const {musicCurrent, isPlaying,setIsPlaying} = useRoomContext()
 
     useEffect(()=>{
       if(musicCurrent && musicCurrent._id === music._id)
@@ -47,7 +43,7 @@ const SonginQueue = ({music, backgroundSong, listOfSong, onRemoveSongClick }) =>
               </div>
             </div>
             <i
-                className={`ri-${isCurrentPlaying ? 'pause-circle-fill' : 'play-circle-fill'} md:text-3xl cursor-pointer md:scale-125 text-center`} onClick={handlePlayIconClick}>
+                className={`ri-${isCurrentPlaying ? 'pause-circle-fill' : 'play-circle-fill'} md:text-3xl cursor-pointer md:scale-125 text-center`} >
             </i>
             <i class="ri-delete-bin-6-line text-sm text-gray-400 hover:text-white cursor-pointer" onClick={handleDeteleFromQueue}></i>
          </div>
