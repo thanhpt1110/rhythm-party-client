@@ -56,9 +56,9 @@ const About = () => {
               <p className='mt-8 text-gray-400'>Established in <span className='text-blue-400'>2023</span>, Rhythm Party stands as a vibrant online community that unites music enthusiasts, offering a unique platform where users can come together to listen, discover, and share their favorite tunes. With a strong emphasis on fostering a sense of connection and collaboration, Rhythm Party goes beyond being a mere music streaming service. This web platform is artist-centric, providing musicians with cutting-edge tools and resources to not only showcase their talent but also to cultivate and expand their musical careers.<br/>
               <br/>
               Boasting an extensive library featuring a diverse range of tracks, Rhythm Party brings together over 50 million songs from a community of 10 million artists. With its commitment to empowering both artists and fans alike, Rhythm Party envisions a future where the joy of music is celebrated and shared collaboratively.</p>
-              <p className='mt-16 text-[14px]'>Don't have a free account yet?</p>
+              {!authUser && <p className='mt-16 text-[14px]'>Don't have a free account yet?</p>}
 
-              <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' onClick={handleCreateAccount} > Create your Account</button>
+              {!authUser && <button className='px-4 py-2 text-[14px] font-bold rounded mt-4 bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300' onClick={handleCreateAccount} > Create your Account</button> }
               <p className='font-bold text-2xl my-8'>Follow us</p>
               <div className='flex flex-col gap-6'>
                 <div className='flex flex-row gap-4 items-center cursor-pointer' onClick={handleInstagramClick}>

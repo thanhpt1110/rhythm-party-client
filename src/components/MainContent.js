@@ -82,7 +82,7 @@ const MainContent = () => {
       </div>):
           (<div className=' py-20 max-w-screen-xl md:flex flex-wrap justify-between mx-auto p-4 text-white'>
                 <div>
-                {authUser && <FavSongs />}
+                {/* {authUser && <FavSongs />} */}
                   <div className='flex items-baseline justify-between pt-12'>
                     <p className='text-white font-bold text-2xl mb-4 '>Top Songs</p>
                     <Link to='/AllTopSongs' className='text-white font-semibold text-[12px] hover:underline cursor-pointer'>Show All</Link>
