@@ -17,7 +17,7 @@ import { useMusicContext } from '../utils/MusicContext';
 import { ToastContainer, toast } from 'react-toastify';
 const SongDetail = () => {
     const {authUser,socket} = useAuth();
-    const {music,setMusic, setListOfSong, isPlaying, setIsPlaying} = useMusicContext()
+    const {music,setMusic, setListOfSong, isPlaying, setIsPlaying, isActive, setIsActive} = useMusicContext()
     const  {id} = useParams();
     const [song, setSong] = useState(null);
     const [commentText, setCommentText] = useState('');
@@ -29,9 +29,15 @@ const SongDetail = () => {
     const [yourSongIsPlaying, setYourSongIsPlaying] = useState(false)
     const navigate = useNavigate();
     useEffect(()=>{
-        if(isPlaying && music._id === song._id)
-            setYourSongIsPlaying(true);
-    },[isPlaying,music]);
+        if(music!==null && music !==undefined)
+          setIsActive(true)
+        else
+          setIsActive(false)
+      },[music])
+    useEffect(()=>{
+            if(song && music && isPlaying && music._id === song._id)
+                setYourSongIsPlaying(true);
+    },[isPlaying,music,song]);
     useEffect(() =>{
         const getMusic = async() =>{
             try{
@@ -125,7 +131,13 @@ const SongDetail = () => {
 
     }
     const handlePlayButton = ()=>{
-        if(song._id !== music._id)
+        if(!music)
+        {
+            setListOfSong([song])
+            setMusic(song)
+            return;
+        }
+        if(song && song._id !== music._id)
         {
             setListOfSong([song])
             setMusic(song)

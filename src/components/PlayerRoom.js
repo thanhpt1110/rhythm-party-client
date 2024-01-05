@@ -47,6 +47,7 @@ const PlayerRoom = () => {
         setCurrentTime(audioRef.current.currentTime);
       };
     const [enableChangeSong, setEnableChangeSong] = useState(true);
+
     useEffect(()=>{
       try{
         const getPlaylist = async() =>{
@@ -192,6 +193,17 @@ const PlayerRoom = () => {
   const HandleOpenSongDetail = ()=>{
     navigate(`/song-detail/${roomCurrent.currentMusicPlay._id}`)
   }
+  const handlePlay = () => {
+    if(!isPlaying)
+      UpdateRoomInfo();
+    setIsPlaying(true);
+    // Thêm bất kỳ xử lý khác nếu cần
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    // Thêm bất kỳ xử lý khác nếu cần
+  };
     return (
       <div className='z-[99] fixed w-full bottom-0'>
                  <ToastContainer position="bottom-right"
@@ -282,6 +294,8 @@ const PlayerRoom = () => {
                         min={0}
                         max={audioRef.current ? audioRef.current.duration : 100}
                         value={currentTime}
+                        onPlay={handlePlay}
+                        onPause={handlePause}
                         className='md:block w-24 md:w-96 h-1 mx-4 md:mx-6 rounded-lg '
 
                     />

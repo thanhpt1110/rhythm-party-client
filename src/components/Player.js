@@ -100,12 +100,15 @@ const Player = () => {
       debounceTimeoutChangeSongButton();
       // Play the next song
       }};
+    useEffect(()=>{
+      if (!isPlaying) {
+        audioRef.current.pause();
+      } else if(music && isPlaying) {
+        audioRef.current.play();
+      }
+    },[isPlaying, music])
     const handlePlayIconClick = () => {
-        if (isPlaying) {
-            audioRef.current.pause();
-          } else {
-            audioRef.current.play();
-          }
+
           setIsPlaying(!isPlaying)
     };
     const handleLoopIconClick = () => {
@@ -176,7 +179,6 @@ const Player = () => {
         if(music!==null && music!==undefined)
         {
             setIsPlaying(true);
-            audioRef.current.play();
         }
     },[music]);
 
@@ -221,6 +223,16 @@ const Player = () => {
     }
   };
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const handlePlay = () => {
+    setIsPlaying(true);
+    // Thêm bất kỳ xử lý khác nếu cần
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    // Thêm bất kỳ xử lý khác nếu cần
+  };
+
   const handleIconAddPlaylistClick = () => {
     setShowSubMenu(!showSubMenu);
   };
@@ -336,6 +348,8 @@ const Player = () => {
                         {formatTime(currentTime)}
                     </p>
                     <input
+                        onPlay={handlePlay}
+                        onPause={handlePause}
                         type='range'
                         min={0}
                         max={audioRef.current ? audioRef.current.duration : 100}
