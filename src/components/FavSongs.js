@@ -37,7 +37,7 @@ const FavSongsData = [
   // Thêm các playlist khác vào đây
 ];
 const FavSongs = () => {
-
+  
   return (
     <div>
        <div className='flex items-baseline justify-between '>
