@@ -26,7 +26,7 @@ const SongDetail = () => {
     const [isLoading,setIsLoading] = useState(true);
     const [isGuest,setIsGuest] = useState(false);
     const [isNotFound,setIsNotFound] = useState(false);
-    const [yourSongIsPlaying, setYourSongIsPlaying] = useState(fla)
+    const [yourSongIsPlaying, setYourSongIsPlaying] = useState(false)
     const navigate = useNavigate();
     useEffect(()=>{
         if(isPlaying && music._id === song._id)
