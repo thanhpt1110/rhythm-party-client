@@ -131,7 +131,9 @@ useEffect(() => {
 }}, [socket, setListMessage]);
 useEffect(() => {
   const handleReceivePlaylist = (room) => {
+    console.log(room);
       setListMusicInQueue(room.room.musicInQueue);
+      setRoomCurrent(room.room);
   };
   if (socket) {
       socket.on('receive_playlist_change_room', handleReceivePlaylist);
@@ -140,7 +142,7 @@ useEffect(() => {
           socket.off('receive_playlist_change_room', handleReceivePlaylist);
       }
   };
-}}, [socket, setListMusicInQueue]);
+}}, [socket, setRoomCurrent]);
 
   const handleSearchMusicPlaylist = async()=>{
     try{

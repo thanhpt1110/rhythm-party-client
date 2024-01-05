@@ -14,9 +14,9 @@ export const RoomContextProvider = (props) => {
     const [firstTime,setFirstTime] = useState(true);
     const {socket} = useAuth();
     const UpdateRoomInfo = async ()=>{
-        const respone = await getRoomById(roomCurrent._id)
-        if(respone.status === 200)
-            setRoomCurrent(respone.data.data)
+            const respone = await getRoomById(roomCurrent._id)
+            if(respone.status === 200)
+                setRoomCurrent(respone.data.data)
     }
     const cleanRoom = ()=>{
         setRoomCurrent(null);
@@ -24,7 +24,7 @@ export const RoomContextProvider = (props) => {
     }
     useEffect(()=>{
     if(socket)
-        socket.on('update_music_current',(room)=>{setRoomCurrent(room);})
+        socket.on('update_music_current',(room)=>{isPlaying&&setRoomCurrent(room);})
     },[socket,setRoomCurrent])
     const value = {
 
