@@ -270,12 +270,13 @@ const SongDetail = () => {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
                 <div className='max-w-screen-xl mx-auto py-8'>
-                    <i className="ri-play-circle-fill text-[60px] cursor-pointer text-green-600 " onClick={handlePlayButton}></i>
+                    {
+                    yourSongIsPlaying ? <i className='ri-pause-circle-fill text-[60px] cursor-pointer text-green-600' onClick={handlePauseButton}></i>: <i className='ri-play-circle-fill text-[60px] cursor-pointer text-green-600' onClick={handlePlayButton}></i>
+                    }
                     <p className='font-bold py-8 text-xl border-b border-gray-500'>
                         Lyrics of the Song:
                     </p>
