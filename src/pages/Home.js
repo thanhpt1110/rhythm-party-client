@@ -16,7 +16,7 @@ export const Home = () => {
     return (
         <div>
             <header>
-                <Header  type='home' />
+                <Header  type='home' itemSearch={''} />
             </header>
             <main className='bg-black opacity-90'>
                 <MainContent />

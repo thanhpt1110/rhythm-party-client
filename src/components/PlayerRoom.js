@@ -131,12 +131,18 @@ const PlayerRoom = () => {
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
        audioRef.current.volume = volume;
+       localStorage.setItem('volume', volume);
     }, 300); // Thời gian chờ debounce (300ms)
     return () => {
       clearTimeout(debounceTimeout);
     };
   }, [volume]);
-
+  useEffect(()=>{
+    const savedVolume = localStorage.getItem('volume');
+    if (savedVolume) {
+      setVolume(parseFloat(savedVolume));
+    }
+  },[])
   const handleVolumeChange = (event) => {
     const newVolume = parseFloat(event.target.value / 100);
     setVolume(newVolume);
@@ -146,6 +152,7 @@ const PlayerRoom = () => {
       setVolume((prevVolume) => parseFloat((prevVolume + 0.1).toFixed(1)));
     } else {
       setVolume(1);
+
     }
   };
 
@@ -164,6 +171,7 @@ const PlayerRoom = () => {
   const decreaseVolume = () => {
     if (volume >= 0.1) {
       setVolume((prevVolume) => parseFloat((prevVolume - 0.1).toFixed(1)));
+
     } else {
       setVolume(0);
     }
