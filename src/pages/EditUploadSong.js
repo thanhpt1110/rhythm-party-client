@@ -150,7 +150,7 @@ const EditUploadSong = () => {
   const uploadFile = (folder, file, id) => {
     return new Promise((resolve, reject) => {
       if (file) {
-        const storageRef = ref(storage, `${folder}/${`${id}.mp3`}`);
+        const storageRef = ref(storage, `${folder}/${`${id}.png`}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         uploadTask.on(
           "state_changed",
@@ -179,13 +179,13 @@ const EditUploadSong = () => {
       return;
     }
     Swal.fire({
-      title: "Are you sure?",
-      text: "Please check your song information !",
+      title: "Update song information",
+      text: "Are you sure you want to update?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, update it!"
+      confirmButtonText: "Yes"
       }).then(async (result) => {
       if (result.isConfirmed) {
         SetIsEnableUpload(false);

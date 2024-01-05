@@ -29,7 +29,7 @@ const Upload = ({user}) => {
   const [isEnableUpload, SetIsEnableUpload] = useState(true);
   const musicInputRef = useRef(null);
   const imageInputRef = useRef(null);
-  const AUDIO_COMPRESS_LINK = "https://www.xconvert.com/audio-compressor"
+  const AUDIO_COMPRESS_LINK = "https://products.aspose.app/audio/compress"
   const IMAGE_COMPRESS_LINK = "https://imagecompressor.com/"
 
   const onMusicChange = async(event) => {
@@ -84,6 +84,7 @@ const Upload = ({user}) => {
   };
   const handleCancelUpload = () => {
     setShow(false);
+    console.log("Enter cancel")
   }
   const handleMusicSelection = (event) => {
     event.preventDefault();
@@ -152,7 +153,8 @@ const Upload = ({user}) => {
     });
   };
 
-  const handleUploadMusic = async () => {
+  const handleUploadMusic = async (e) => {
+  e.preventDefault();
   if (!isEnableUpload) {
     console.log("Block");
     return;
@@ -199,6 +201,8 @@ const Upload = ({user}) => {
     setMusicGerne([]);
   } catch (error) {
     toast.error("Upload Failed.");
+  } finally {
+    setLoading(false)
   }
   SetIsEnableUpload(true);
 };
@@ -312,7 +316,7 @@ useEffect(()=>{
             </div>
           </form>
         ) : (
-          <form className=' flex flex-col border border-gray-800 rounded shadow bg-[#181818] my-20 '>
+          <form onSubmit={handleUploadMusic} className=' flex flex-col border border-gray-800 rounded shadow bg-[#181818] my-20 '>
             <div className='flex flex-row justify-between mt-14 md:px-16 gap-8'>
             <input type='file'
                 onChange={onImageChange}
@@ -379,12 +383,18 @@ useEffect(()=>{
                           {showOtherInput && <input className=' mt-4 border bg-[#181818] px-2 rounded py-2 w-full' type="text" placeholder="Please fill your other genre" />}
                         </div>
                   </div>
-                <p className='font-bold text-sm '>Description</p>
+                  <div className='flex flex-row gap-1 items-center mt-2'>
+                      <p className='font-bold text-sm'>Description</p>
+                      <span className='text-red-600'>*</span>
+                    </div>
                 <textarea
                 value={description}
                 onChange={e=>setDesscription(e.target.value)}
                 name="descriptionSong" id="descriptionSong" className=' resize-none h-28 border bg-[#181818] px-2 rounded mt-2 py-1' placeholder='Describe your track' cols="20" rows="10"></textarea>
-                <p className='font-bold text-sm my-2 '>Lyrics</p>
+                    <div className='flex flex-row gap-1 items-center mt-2'>
+                      <p className='font-bold text-sm'>Lyrics</p>
+                      <span className='text-red-600'>*</span>
+                    </div>
                 <textarea
                 value={lyrics}
                 onChange={e=>setLyrics(e.target.value)}
@@ -415,8 +425,8 @@ useEffect(()=>{
               </div>
               <div className='flex gap-4 text-sm'>
                 <button className='hover:bg-slate-300 px-6 rounded py-2 hover:text-black'
-                  onClick={handleCancelUpload}>Cancel</button>
-                <button  onClick={handleUploadMusic} type='button'
+                  onClick={handleCancelUpload} type='button '>Cancel</button>
+                <button onClick={handleUploadMusic} type='submit'
                  className=' bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 px-6 rounded py-2 text-white'>Save</button>
               </div>
             </div>

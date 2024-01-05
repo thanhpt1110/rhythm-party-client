@@ -66,7 +66,7 @@ const SignIn = () => {
               </a>
             </div>
             { isLoginFailed && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
-                <strong className="font-bold">Notification!</strong>
+                <strong className="font-bold">Notification! </strong>
                 <span className="block sm:inline">The login information is incorrect. Please check again.</span>
             </div>}
             <button type='submit' onClick={handleLoginSubmit} className='w-full block bg-blue-500  text-white font-semibold rounded-lg px-4 py-3 mt-6 text-sm hover:scale-105 duration-300'>
