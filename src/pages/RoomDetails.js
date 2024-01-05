@@ -31,7 +31,11 @@ const RoomDetails = () => {
   const [isActivePlayer,setIsActivePlayer] =useState(false);
   const { roomCurrent,cleanRoom, setRoomCurrent, setIsPlaying} = useRoomContext();
   const [peopleInRoom, setPeopleInRoom] = useState(0);
-  const [roomTime, setRoomTime] = useState(0);
+  const [isOwner,setIsOwner] = useState(false);  
+  useEffect(()=>{
+    if(room)
+    setIsOwner(authUser._id === room.roomOwner)
+  },[room])
   useEffect(()=>{
     if(roomCurrent)
     {
@@ -273,11 +277,12 @@ useEffect(() => {
       <div className="w-[30%] bg-black opacity-90 text-white px-8 pb-20">
         <div className='flex flex-row justify-between items-center'>
           <p className='my-8 font-bold text-xl'>Songs in Queue</p>
-           {authUser._id === room.roomOwner && <i className="ri-play-list-add-line hover:text-gray-500 cursor-pointer text-xl" onClick={handleSearchMusicPlaylist}></i>}
+           {isOwner && <i className="ri-play-list-add-line hover:text-gray-500 cursor-pointer text-xl" onClick={handleSearchMusicPlaylist}></i>}
         </div>
         <div className='h-screen overflow-y-auto max-h-screen '>
           {listMusicInQueue.map((music, index) => (
             <SonginQueue
+              isOwner = {isOwner}
               key={index}
               music = {music}
               backgroundSong="#181818"
