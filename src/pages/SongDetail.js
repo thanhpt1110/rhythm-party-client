@@ -203,10 +203,10 @@ const SongDetail = () => {
                               theme="dark" />
             <div className='py-16 bg-black opacity-90 text-white w-full h-full'>
                 <div className='relative bg-[#9890A0] '>
-                    <div className=' h-[18rem] bg-cover bg-center bg-gradient-to-b from-transparent to-[#181818]'></div>
-                    <div className='absolute top-1/2 ml-24 transform -translate-y-1/2 items-center flex flex-row '>
-                        <div className='relative flex flex-row gap-6 '>
-                            <div className='mr-6 px-2 py-2 rounded-full'>
+                    <div className='h-[18rem] bg-cover bg-center bg-gradient-to-b from-transparent to-[#181818]'></div>
+                    <div className='absolute w-[70%] top-1/2 ml-0 left-1/2 -translate-x-1/2 transform -translate-y-1/2 items-center flex flex-row '>
+                        <div className='relative flex flex-row gap-6'>
+                            <div className='mr-4 px-2 py-2 rounded-full'>
                                 <i
                                     className='ri-arrow-left-s-line cursor-pointer text-2xl rounded-full bg-slate-800 hover:bg-slate-700 px-2 py-2 '
                                     onClick={handleBackClick}
