@@ -45,7 +45,7 @@ const SongDetail = () => {
             }
             const music = respone.data.data;
             console.log(music)
-            if(!(music.musicPrivacyType === "Public" && music.musicAuthorize === "Authorize"))
+            if(!(music.musicPrivacyType === "Public" ))
             {
                 if(!authUser || authUser._id !== music.musicPostOwnerID)
                 {
