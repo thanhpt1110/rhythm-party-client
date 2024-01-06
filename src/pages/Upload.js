@@ -424,10 +424,10 @@ useEffect(()=>{
                 </p>
               </div>
               <div className='flex gap-4 text-sm'>
-                <button className='hover:bg-slate-300 px-6 rounded py-2 hover:text-black'
-                  onClick={handleCancelUpload} type='button '>Cancel</button>
                 <button onClick={handleUploadMusic} type='submit'
                  className=' bg-gradient-to-r from-indigo-600 to-purple-700 hover:scale-105 duration-300 px-6 rounded py-2 text-white'>Save</button>
+                <button className='hover:bg-slate-300 px-6 rounded py-2 hover:text-black'
+                  onClick={handleCancelUpload} type='button'>Cancel</button>
               </div>
             </div>
           </form>
