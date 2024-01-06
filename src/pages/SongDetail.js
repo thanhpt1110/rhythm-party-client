@@ -17,7 +17,7 @@ import { useMusicContext } from '../utils/MusicContext';
 import { ToastContainer, toast } from 'react-toastify';
 const SongDetail = () => {
     const {authUser,socket} = useAuth();
-    const {music,setMusic} = useMusicContext()
+    const {music,setMusic, setListOfSong, isPlaying, setIsPlaying, isActive, setIsActive} = useMusicContext()
     const  {id} = useParams();
     const [song, setSong] = useState(null);
     const [commentText, setCommentText] = useState('');
@@ -26,7 +26,18 @@ const SongDetail = () => {
     const [isLoading,setIsLoading] = useState(true);
     const [isGuest,setIsGuest] = useState(false);
     const [isNotFound,setIsNotFound] = useState(false);
+    const [yourSongIsPlaying, setYourSongIsPlaying] = useState(false)
     const navigate = useNavigate();
+    useEffect(()=>{
+        if(music!==null && music !==undefined)
+          setIsActive(true)
+        else
+          setIsActive(false)
+      },[music])
+    useEffect(()=>{
+            if(song && music && isPlaying && music._id === song._id)
+                setYourSongIsPlaying(true);
+    },[isPlaying,music,song]);
     useEffect(() =>{
         const getMusic = async() =>{
             try{
@@ -45,7 +56,7 @@ const SongDetail = () => {
             }
             const music = respone.data.data;
             console.log(music)
-            if(!(music.musicPrivacyType === "Public" && music.musicAuthorize === "Authorize"))
+            if(!(music.musicPrivacyType === "Public" ))
             {
                 if(!authUser || authUser._id !== music.musicPostOwnerID)
                 {
@@ -119,7 +130,28 @@ const SongDetail = () => {
         }
 
     }
-
+    const handlePlayButton = ()=>{
+        if(!music)
+        {
+            setListOfSong([song])
+            setMusic(song)
+            return;
+        }
+        if(song && song._id !== music._id)
+        {
+            setListOfSong([song])
+            setMusic(song)
+        }
+        else{
+            setIsPlaying(true);
+            setYourSongIsPlaying(true);
+        }
+    }
+    const handlePauseButton = ()=>{
+        if(yourSongIsPlaying)
+            setIsPlaying(false);
+        setYourSongIsPlaying(false);
+    }
     const handleBackClick = () => {
         window.history.back();
     };
@@ -235,7 +267,7 @@ const SongDetail = () => {
                                          <div className='btnEditDelete flex flex-row gap-2 items-center'>
                                            {
                                             song.musicAuthorize === "Authorize" && <i className="ri-checkbox-circle-fill text-2xl mr-4 text-green-600"></i>
-                                           } 
+                                           }
                                             {!isGuest && <Link to={`/song-detail/edit/${song && song._id}`} className='flex flex-row gap-2 items-center border px-3 py-[3px] border-gray-400 rounded hover:border-gray-300 ' >
                                                 <i className="ri-pencil-fill"></i>
                                                 <p className='text-xs font-semibold '>Edit</p>
@@ -250,12 +282,14 @@ const SongDetail = () => {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
                 <div className='max-w-screen-xl mx-auto py-8'>
-                    <p className='font-bold py-8 text-xl mt-10 border-b border-gray-500'>
+                    {
+                    yourSongIsPlaying ? <i className='ri-pause-circle-fill text-[60px] cursor-pointer text-green-600' onClick={handlePauseButton}></i>: <i className='ri-play-circle-fill text-[60px] cursor-pointer text-green-600' onClick={handlePlayButton}></i>
+                    }
+                    <p className='font-bold py-8 text-xl border-b border-gray-500'>
                         Lyrics of the Song:
                     </p>
                    <div className='text-slate-300 text-sm py-8 leading-7'>

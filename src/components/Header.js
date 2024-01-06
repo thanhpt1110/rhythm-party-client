@@ -4,8 +4,8 @@ import LOGO from '../assets/images/LOGO.png';
 import UserAvartar from './UserAvatar'
 import { useAuth } from '../utils/AuthContext';
 import { useNavigate } from 'react-router-dom';
-const Header = ({type}) => {
-  const {authUser, } = useAuth()
+const Header = ({type, itemSearch}) => {
+  const {authUser } = useAuth()
 
   const [openMenus, setOpenMenus] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -25,6 +25,7 @@ const Header = ({type}) => {
       default:
         break;
     }
+    setSearchInput(itemSearch)
   }, [])
 
   const handleSubmitSearch = ()=>{

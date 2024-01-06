@@ -47,6 +47,7 @@ const PlayerRoom = () => {
         setCurrentTime(audioRef.current.currentTime);
       };
     const [enableChangeSong, setEnableChangeSong] = useState(true);
+
     useEffect(()=>{
       try{
         const getPlaylist = async() =>{
@@ -131,12 +132,18 @@ const PlayerRoom = () => {
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
        audioRef.current.volume = volume;
+       localStorage.setItem('volume', volume);
     }, 300); // Thời gian chờ debounce (300ms)
     return () => {
       clearTimeout(debounceTimeout);
     };
   }, [volume]);
-
+  useEffect(()=>{
+    const savedVolume = localStorage.getItem('volume');
+    if (savedVolume) {
+      setVolume(parseFloat(savedVolume));
+    }
+  },[])
   const handleVolumeChange = (event) => {
     const newVolume = parseFloat(event.target.value / 100);
     setVolume(newVolume);
@@ -146,6 +153,7 @@ const PlayerRoom = () => {
       setVolume((prevVolume) => parseFloat((prevVolume + 0.1).toFixed(1)));
     } else {
       setVolume(1);
+
     }
   };
 
@@ -164,6 +172,7 @@ const PlayerRoom = () => {
   const decreaseVolume = () => {
     if (volume >= 0.1) {
       setVolume((prevVolume) => parseFloat((prevVolume - 0.1).toFixed(1)));
+
     } else {
       setVolume(0);
     }
@@ -184,6 +193,17 @@ const PlayerRoom = () => {
   const HandleOpenSongDetail = ()=>{
     navigate(`/song-detail/${roomCurrent.currentMusicPlay._id}`)
   }
+  const handlePlay = () => {
+    if(!isPlaying)
+      UpdateRoomInfo();
+    setIsPlaying(true);
+    // Thêm bất kỳ xử lý khác nếu cần
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    // Thêm bất kỳ xử lý khác nếu cần
+  };
     return (
       <div className='z-[99] fixed w-full bottom-0'>
                  <ToastContainer position="bottom-right"
@@ -274,6 +294,8 @@ const PlayerRoom = () => {
                         min={0}
                         max={audioRef.current ? audioRef.current.duration : 100}
                         value={currentTime}
+                        onPlay={handlePlay}
+                        onPause={handlePause}
                         className='md:block w-24 md:w-96 h-1 mx-4 md:mx-6 rounded-lg '
 
                     />

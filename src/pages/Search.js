@@ -73,9 +73,15 @@ const Search = () => {
         setIsActive(false)
     },[music])
   useEffect(()=>{
-    const getMusic = async () => {
+
+  },[searchInput])
+  useEffect(() => {
+    // Lấy thông tin query params từ location.search
+    const searchParams = new URLSearchParams(location.search);
+    const query = searchParams.get('search-input');
+    const getMusic = async (query) => {
       try {
-        const respone = await searchMusicByName(searchInput);
+        const respone = await searchMusicByName(query);
         if (respone.status === 200) {
           setSearchSongData(respone.data.data);
         }
@@ -86,9 +92,9 @@ const Search = () => {
       }
     };
 
-    const getPlaylist = async () => {
+    const getPlaylist = async (query) => {
       try {
-        const respone = await searchPlaylistByName(searchInput);
+        const respone = await searchPlaylistByName(query);
         if (respone.status === 200) {
           setSearchPlaylistData(respone.data.data);
         }
@@ -99,22 +105,18 @@ const Search = () => {
       }
     };
     // Reset loading states before making new requests
-    setIsLoadingSong(true);
-    setIsLoadingPlaylist(true);
 
     // Perform both requests simultaneously
-    Promise.all([getMusic(), getPlaylist()]);
-  },[searchInput])
-  useEffect(() => {
-    // Lấy thông tin query params từ location.search
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get('search-input');
-    console.log('Query Params:', query);
+    console.log(searchInput);
+    getMusic(query) 
+    getPlaylist(query)
     setSearchInput(query)
+    setIsLoadingSong(true);
+    setIsLoadingPlaylist(true);
   }, [location.search]);
   return (
-    <div>
-       <Header />
+    !isLoadingPlaylist && !isLoadingSong  && <div>
+      <Header itemSearch = {searchInput}/>
        {isLoadingPlaylist && isLoadingSong ? (        
        <div className='text-center w-screen h-screen py-60'>
             <span className="loader h-20 w-20 "></span>

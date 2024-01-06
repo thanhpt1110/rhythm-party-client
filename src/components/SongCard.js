@@ -18,11 +18,11 @@ const SongCard = ({song, listOfSong}) => {
     await setMusic(song)
   }
   return (
-    <div onClick={handleOnclick}>
-         <div className="bg-[#181818] w-full text-white flex flex-col items-center gap-1 cursor-pointer hover:bg-gray-800 rounded-lg pb-4 pt-2 px-[10px] 2xl:items-start text-center md:text-start "
+    <div >
+         <div  className="bg-[#181818] w-full text-white flex flex-col items-center gap-1 cursor-pointer hover:bg-gray-800 rounded-lg pb-4 pt-2 px-[10px] 2xl:items-start text-center md:text-start "
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}>
-          <div className="w-40 h-40 relative">
+          <div className="w-40 h-40 relative" onClick={handleOnclick}>
             <img src={song.imgUrl} alt="SongImage" className="rounded object-cover h-40 w-40" />
             {isHovered && (
                 <i className="ri-play-circle-fill absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl  opacity-100 transition-opacity duration-300"></i>
