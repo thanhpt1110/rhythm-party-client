@@ -57,12 +57,12 @@ const Upload = ({user}) => {
         icon: "error"
       });
       event.target.value = null;
-      var fileName = selectedFile.name.split('.').slice(0, -1).join('.');
-      setMusicName(fileName);
       return; 
   }
     else {
       setSelectedMusic(selectedFile);
+      var fileName = selectedFile.name.split('.').slice(0, -1).join('.');
+      setMusicName(fileName);
       setShow(!show);
     }
   };

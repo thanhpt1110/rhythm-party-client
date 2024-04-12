@@ -1,5 +1,5 @@
 # <img src="https://raw.githubusercontent.com/thanhpt1110/rhythm-party-admin/master/src/assets/logo.png" alt="Your Image" width="auto" height="30"> Rhythm Party (Website for Client)
-A website designed for music lovers, which allows users to upload their songs, join rooms to chat and listen to music together. This platform is built using the MVC pattern.
+A website designed for music lovers, which allows users to upload their songs, join rooms to chat and listen to music together. This platform is built using the Client-Server architecture.
 
 ## Features
 
@@ -16,6 +16,7 @@ A website designed for music lovers, which allows users to upload their songs, j
     - Node.js 20.10.0+.
     - MongoDB for database storage.
     - Firebase Storage for file storage.
+    - Vercel for hosting.
 
 - Development environment:
     - Node.js 20.10.0+.
@@ -34,7 +35,15 @@ To install and run the project locally, follow these steps:
 
 ## User Guide
 
-You can simply click this [link]() to get started.
+You can simply click this [link](https://rhythm-party.vercel.app/) to get started.
+
+## User Interface
+
+![Home](./demo_ui/Home.png)
+![Upload](./demo_ui/Upload.png)
+![UploadedSong](./demo_ui/UploadedSong.png)
+![SongPostComment](./demo_ui/Song%20post%20and%20comment.png)
+![Room](./demo_ui/Room.jpg)
 
 ## Authors
 
