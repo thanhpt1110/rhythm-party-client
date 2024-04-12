@@ -77,7 +77,7 @@ const Room = () => {
   const handleJoinRoom = async()=>{
     if(roomJoinId==='')
     {
-      toast.warn('Add your room ID')
+      toast.warn('Please enter your room code')
       return;
     }
     else{
@@ -93,11 +93,11 @@ const Room = () => {
         }
         else if(respone.status === 404)
         {
-          toast.error('Your room ID is not existed');
+          toast.error('Your room code is not existed');
           return;
         }
         else{
-          toast.error('Join room failed!')
+          toast.error('Your room code is not existed')
         }
       }
       catch(e)

@@ -29,13 +29,13 @@ const api = {
     });
 
     if (!response.ok) { // if HTTP-status is 401-599
-        const responeData = {status: response.status};
-        return responeData;
+        const responseData = {status: response.status};
+        return responseData;
     }
 
     const dataRes = await response.json();
-    const responeData = {status: response.status, data: dataRes};
-    return responeData;
+    const responseData = {status: response.status, data: dataRes};
+    return responseData;
   } catch(error) {
     console.log(error); // Logs any network error.
   }
@@ -52,8 +52,8 @@ const api = {
       body: JSON.stringify(data),
     });
     const dataRes = await response.json();
-    const responeData = {status: response.status, data: dataRes}
-    return responeData;
+    const responseData = {status: response.status, data: dataRes}
+    return responseData;
   },
 
   put: async (endpoint, data) => {
@@ -67,13 +67,13 @@ const api = {
       body: JSON.stringify(data),
     });
     if (!response.ok) { // if HTTP-status is 401-599
-      const responeData = {status: response.status};
-      return responeData;
+      const responseData = {status: response.status};
+      return responseData;
   }
 
   const dataRes = await response.json();
-  const responeData = {status: response.status, data: dataRes};
-  return responeData;
+  const responseData = {status: response.status, data: dataRes};
+  return responseData;
   },
 
   delete: async (endpoint) => {
@@ -87,9 +87,9 @@ const api = {
     });
     console.log(response);
     const dataRes = await response.json();
-    const responeData = {status: response.status, data: dataRes}
+    const responseData = {status: response.status, data: dataRes}
 
-    return responeData;
+    return responseData;
   }
     catch(e)
     {

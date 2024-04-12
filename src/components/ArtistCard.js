@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
  const data = [
     {
       title: "Song 1",
@@ -42,6 +43,14 @@ import { Link } from 'react-router-dom';
     // Add more songs as needed
   ];
 const ArtistCard = () => {
+    const handleArtistCardClick = () => {
+        Swal.fire({
+            title: "Oops!",
+            text: `This feature is not available yet.`,
+            icon: "error"
+            });        
+    };
+
     const topPlays = data?.slice(0, 8);
     return (
 
@@ -66,6 +75,7 @@ const ArtistCard = () => {
               key={artist.title}
               style={{ width: '21%', height: 'auto' }}
               className=" rounded-full animate-slideright"
+              onClick={handleArtistCardClick}
             >
               <div className='flex flex-col items-center gap-4 cursor-pointer'>
                 <img src={artist.imageUrl} alt="Name"  className="rounded-full object-cover h-24 w-24 md:h-36 md:w-36 lg:h-40 lg:w-40 xl:h-40 xl:w-40 2xl:h-44 2xl:w-44"/>
