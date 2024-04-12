@@ -43,11 +43,11 @@ const Upload = ({user}) => {
 
     // Hiển thị thông báo nếu dung lượng vượt quá 15MB
     if (fileSizeInMB > 15) {
-      Swal.fire({
-        title: "Audio file upload failed!",
-        text: `Your audio exceeds the 15MB limit. Please use the audio compressor tool at this link '${AUDIO_COMPRESS_LINK}'`,
-        icon: "error"
-        });
+        Swal.fire({
+            title: 'Audio file upload failed!',
+            html: `Your audio exceeds the 15MB limit. Please use the audio compressor tool at this <span><a target="blank" href="${AUDIO_COMPRESS_LINK}" class="text-blue-500 underline">link</a></span>`,
+            icon: "error"
+          });                       
         event.target.value = null;
         return;
     } else if (!selectedFile.type.startsWith('audio/')) {
@@ -107,10 +107,10 @@ const Upload = ({user}) => {
       if(fileSizeInMB > 5)
       {
         Swal.fire({
-          title: "Image file upload failed!",
-          text: `Your image exceeds the 5MB limit. Please use the image compressor tool at this link ${IMAGE_COMPRESS_LINK}`,
-          icon: "error"
-      });
+            title: 'Image file upload failed!',
+            html: `Your image exceeds the 5MB limit. Please use the image compressor tool at this <span><a target="blank" href="${IMAGE_COMPRESS_LINK}" class="text-blue-500 underline">link</a></span>`,
+            icon: "error"
+          });            
           event.target.value = null;
       }
       else if (!selectedFile.type.startsWith('image/')) {

@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { useMusicContext } from '../utils/MusicContext';
-import api from '../api/Api';
+import api, { API_URL} from '../api/Api';
+
 const SignIn = () => {
+  const homeLink = 'http://localhost:3000';
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoginFailed, setIsLoginFailed] = useState(false);
@@ -20,8 +23,7 @@ const SignIn = () => {
       console.log(respone.data)
       if(respone.status===200)
         {
-            window.location.href = 'http://localhost:3000'; 
-            //   window.open('http://localhost:3000','self')    
+            window.location.href = homeLink; 
         }
       else if (respone.status === 401)
         {
@@ -32,8 +34,7 @@ const SignIn = () => {
   };
   //Google login fucntion
   const googleLogin = ()=>{
-    window.location.href = 'http://localhost:8080/auth/google'; 
-    //window.open('http://localhost:8080/auth/google','self')
+    window.location.href = `${API_URL}/auth/google`; 
   };
   const {setIsActive} = useMusicContext();
   useEffect(()=>{
