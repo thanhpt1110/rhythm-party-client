@@ -5,7 +5,7 @@ import { useMusicContext } from '../utils/MusicContext';
 import api, { API_URL} from '../api/Api';
 
 const SignIn = () => {
-  const homeLink = 'http://localhost:3000';
+  const homeLink = 'https://rhythm-party.vercel.app';
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
