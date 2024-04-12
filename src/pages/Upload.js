@@ -19,7 +19,7 @@ const Upload = ({user}) => {
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [musicName, setMusicName] = useState('');
-  const [description, setDesscription] = useState('');
+  const [description, setDescription] = useState('');
   const [selectedPrivacy, setSelectedPrivacy] = useState('Private');
   const [musicGerne, setMusicGerne] = useState([]);
   const [artist, setArtist] = useState('');
@@ -57,7 +57,9 @@ const Upload = ({user}) => {
         icon: "error"
       });
       event.target.value = null;
-      return; // Dừng việc thực hiện các hành động khác nếu có lỗi
+      var fileName = selectedFile.name.split('.').slice(0, -1).join('.');
+      setMusicName(fileName);
+      return; 
   }
     else {
       setSelectedMusic(selectedFile);
@@ -194,7 +196,7 @@ const Upload = ({user}) => {
     setLoading(false);
     toast.success("Upload Success!");
     setShow(false);
-    setDesscription("");
+    setDescription("");
     setMusicName("");
     setArtist("");
     setSelectedPrivacy("Private");
@@ -333,15 +335,16 @@ useEffect(()=>{
                   <p className='text-[14px]'>Upload image</p>
                 </button>
               </div>:
-              <div className='relative w-56 h-56'>
+              <div className='relative w-56 h-56 group'>
                 <img src={URL.createObjectURL(selectedImage)} alt="SongImage" className="rounded object-cover h-56 w-56" />
-                <button className=' opacity-0 hover:opacity-100 absolute bottom-0 mb-4 bg-slate-600 ml-10 flex rounded-lg items-center px-2 gap-2 py-1'
+                <button className='opacity-0 group-hover:opacity-100 absolute bottom-0 mb-4 bg-slate-600 ml-10 flex rounded-lg items-center px-2 gap-2 py-1'
                 onClick={handleImageSelection}
                 type = 'button'>
                   <i class="ri-camera-line"></i>
                   <p className='text-[14px]'>Upload image</p>
                 </button>
-              </div>}
+              </div>
+              }
 
               <div className='w-3/4 flex flex-col'>
                 <div className='flex flex-row gap-1 items-center '>
@@ -389,7 +392,7 @@ useEffect(()=>{
                     </div>
                 <textarea
                 value={description}
-                onChange={e=>setDesscription(e.target.value)}
+                onChange={e=>setDescription(e.target.value)}
                 name="descriptionSong" id="descriptionSong" className=' resize-none h-28 border bg-[#181818] px-2 rounded mt-2 py-1' placeholder='Describe your track' cols="20" rows="10"></textarea>
                     <div className='flex flex-row gap-1 items-center mt-2'>
                       <p className='font-bold text-sm'>Lyrics</p>

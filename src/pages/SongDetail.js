@@ -116,14 +116,13 @@ const SongDetail = () => {
         };
     }, [socket, setListComment]);
     const handleSendClick = async ()=>{
-        if(authUser){
+        if(authUser && commentText !== ''){
             const message = {message: commentText}
+            setCommentText('')
             const comment = await sendMessage(message,id);
             comment.musicId = id;
-            console.log(comment);
             await socket.emit('send_message_music',comment);
             setListComment((list) => [comment.data.data, ...list]);
-            setCommentText('')
         }
         else{
             window.location.href = '/signin';
