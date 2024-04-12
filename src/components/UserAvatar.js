@@ -3,19 +3,19 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../utils/AuthContext';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { API_URL } from '../api/Api';
 const UserAvatar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const {authUser, setAuthUser,socket,setSocket} = useAuth()
   const toggleMenu = (e) => {
-  e.preventDefault();
+  e.preventDefault(); 
   setIsOpen(!isOpen);
 };
 
   const onLogout = async (e) => {
     try {
-      const response = await fetch('http://localhost:8080/auth/logout', {
+      const response = await fetch(API_URL+'/auth/logout', {
         method: 'GET',
         credentials: 'include', // Đảm bảo gửi cookie với yêu cầu
       });

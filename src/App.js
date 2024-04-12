@@ -30,6 +30,8 @@ import EditUploadSong from './pages/EditUploadSong';
 import AllAlbum from './pages/AllAlbum';
 import AllFavSong from './pages/AllFavSong';
 import { RoomContextProvider } from './utils/RoomContext';
+import { API_URL } from './api/Api';
+
 function App() {
     const [user, setUser] = useState(null)
     const {authUser, setAuthUser, socket, setSocket} = useAuth();
@@ -60,7 +62,10 @@ function App() {
         if(isLoadFirst)
         {
             if (!socketRef.current) {
-                socketRef.current = io.connect("http://localhost:8080");
+                socketRef.current = io.connect(API_URL, {
+                    forceNew: true,
+                    origins: API_URL,
+                  });
                 setSocket(socketRef.current);
             }
             getUser();

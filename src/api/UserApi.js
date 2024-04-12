@@ -5,4 +5,7 @@ const updateUserInfromation = async(user,id)=>{
 const createUser = async(user) =>{
     return await api.post('/api/user', user);
 }
-export {updateUserInfromation, createUser};
+const logout = async()=>{
+    return await api.get('/auth/logout');
+}
+export {updateUserInfromation, createUser,logout};
